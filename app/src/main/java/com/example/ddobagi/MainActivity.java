@@ -1,8 +1,11 @@
 package com.example.ddobagi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,11 +29,17 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_MAIN = 101;
     static RequestQueue requestQueue;
+    final int PERMISSION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            // 퍼미션 체크
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO}, PERMISSION);
+        }
 
         Button nextBtn  = findViewById(R.id.login_btn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
