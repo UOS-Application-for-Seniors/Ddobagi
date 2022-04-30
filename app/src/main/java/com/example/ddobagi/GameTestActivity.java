@@ -46,7 +46,7 @@ public class GameTestActivity extends AppCompatActivity {
     TextView quizDetail;
 
     Intent intent;
-    SpeechRecognizer mRecognizer;
+    SpeechRecognizer vRecognizer;
     Button sttBtn;
     TextView textView;
     char[] ansCh = new char[10];
@@ -79,9 +79,9 @@ public class GameTestActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
         sttBtn.setOnClickListener(v -> {
-            mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-            mRecognizer.setRecognitionListener(listener);
-            mRecognizer.startListening(intent);
+            vRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+            vRecognizer.setRecognitionListener(listener);
+            vRecognizer.startListening(intent);
         });
 
         //음성입력으로 정답판별
@@ -202,13 +202,13 @@ public class GameTestActivity extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onResults(Bundle bundle) {
-            ArrayList<String> matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            ArrayList<String> voiceInput = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             ArrayList<String> ansArrayList = new ArrayList<>();
-            for(int i = 0; i < matches.size() ; i++){
-                textView.setText(matches.get(i));
+            for(int i = 0; i < voiceInput.size() ; i++){
+                textView.setText(voiceInput.get(i));
             }
-            for(int i = 0; i < matches.size(); i++) {
-                ansArrayList.addAll(matches);
+            for(int i = 0; i < voiceInput.size(); i++) {
+                ansArrayList.addAll(voiceInput);
             }
             ansStr = String.join("", ansArrayList);
             ansCh = ansStr.toCharArray();
