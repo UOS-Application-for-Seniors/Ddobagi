@@ -1,6 +1,4 @@
-package com.example.ddobagi;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.ddobagi.Activity;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -23,13 +23,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ddobagi.LoadImage;
+import com.example.ddobagi.Quiz;
+import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameTestActivity extends AppCompatActivity {
+public class GameTestActivity2 extends AppCompatActivity {
     static RequestQueue requestQueue;
     Bitmap bitmap;
     ImageView imageView;
