@@ -1,4 +1,4 @@
-package com.example.ddobagi;
+package com.example.ddobagi.Class;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
