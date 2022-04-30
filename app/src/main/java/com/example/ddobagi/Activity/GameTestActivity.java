@@ -23,8 +23,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ddobagi.LoadImage;
-import com.example.ddobagi.Quiz;
+import com.example.ddobagi.Class.Communication;
+import com.example.ddobagi.Class.LoadImage;
+import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
@@ -32,8 +33,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameTestActivity2 extends AppCompatActivity {
-    static RequestQueue requestQueue;
+public class GameTestActivity extends AppCompatActivity {
     Bitmap bitmap;
     ImageView imageView;
     Button[] choiceBtn = new Button[4];
@@ -43,10 +43,6 @@ public class GameTestActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_test);
-
-        if(requestQueue == null){
-            requestQueue = Volley.newRequestQueue(getApplicationContext());
-        }
 
         makeRequest();
         //downloadImage();
@@ -121,7 +117,7 @@ public class GameTestActivity2 extends AppCompatActivity {
             }
         };
         request.setShouldCache(false);
-        requestQueue.add(request);
+        Communication.requestQueue.add(request);
         println("요청 보냄.");
     }
 

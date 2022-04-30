@@ -1,4 +1,4 @@
-package com.example.ddobagi;
+package com.example.ddobagi.Class;
 
 public class Quiz {
     public int quizid;

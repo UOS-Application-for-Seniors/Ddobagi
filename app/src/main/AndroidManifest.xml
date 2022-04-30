@@ -13,10 +13,13 @@
         android:theme="@style/Theme.Ddobagi"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".GameTestActivity"
+            android:name=".Activity.PlayActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.GameTestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
