@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         //통신 requestQueue 초기화
         Communication.init(this);
 
-        Button nextBtn  = findViewById(R.id.commit_btn);
+        Button nextBtn  = findViewById(R.id.login_btn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +56,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button loginBtn = findViewById(R.id.login_btn);
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });
