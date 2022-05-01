@@ -4,15 +4,20 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/pes48/Desktop/Ddobagi/app/src/main/res/layout/activity_main.xml" value="0.9" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_game_test.xml" value="0.2692502532928065" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_main.xml" value="0.2653985507246377" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_registration.xml" value="0.33" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_mutiple_choice.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_painting.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_short_answer.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/drawable-v24/blue_btn.xml" value="0.1" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/drawable-v24/exit_btn.xml" value="0.1875" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/drawable-v24/green_btn.xml" value="0.1875" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/font/font_batang.xml" value="0.14270833333333333" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_game_test.xml" value="0.25" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_main.xml" value="0.175" />
-        <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_play.xml" value="0.18307291666666667" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_voice_recognizer.xml" value="0.12760416666666666" />
-        <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/fragment_mutiple_choice.xml" value="0.18307291666666667" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/fragment_voice_recognizer.xml" value="0.12066831683168316" />
       </map>
     </option>
