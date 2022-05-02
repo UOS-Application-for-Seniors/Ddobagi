@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import com.example.ddobagi.R;
 
 public class DrawClockFragment extends GameFragment{
-    void commit(){
+    public void commit(){
 
     }
 
@@ -27,7 +27,7 @@ public class DrawClockFragment extends GameFragment{
 
     }
 
-    void onGetGameDataResponse(){
+    public void onGetGameDataResponse(String response){
 
     }
 

@@ -14,10 +14,12 @@ import com.example.ddobagi.Fragment.ShortAnswerFragment;
 import com.example.ddobagi.R;
 
 public class PlayActivity extends AppCompatActivity {
+    GameFragment curGameFragment;
     MultipleChoiceFragment multipleChoiceFragment;
     ShortAnswerFragment shortAnswerFragment;
     LineConnectionFragment lineConnectionFragment;
     DrawClockFragment drawClockFragment;
+
 
     int fragmentIndex = 0;
     int fragmentNum = 4;
@@ -31,6 +33,16 @@ public class PlayActivity extends AppCompatActivity {
         shortAnswerFragment = new ShortAnswerFragment();
         lineConnectionFragment = new LineConnectionFragment();
         drawClockFragment = new DrawClockFragment();
+
+        Button commitBtn = findViewById(R.id.commit_btn);
+        commitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(curGameFragment != null){
+                    curGameFragment.commit();
+                }
+            }
+        });
 
         Button exitBtn = findViewById(R.id.exit_btn);
         exitBtn.setOnClickListener(new View.OnClickListener() {
@@ -65,25 +77,24 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void fragmentChange(){
-        GameFragment gameFragment;
         switch(fragmentIndex){
             case 0:
-                gameFragment = multipleChoiceFragment;
+                curGameFragment = multipleChoiceFragment;
                 break;
             case 1:
-                gameFragment = shortAnswerFragment;
+                curGameFragment = shortAnswerFragment;
                 break;
             case 2:
-                gameFragment = lineConnectionFragment;
+                curGameFragment = lineConnectionFragment;
                 break;
             case 3:
-                gameFragment = drawClockFragment;
+                curGameFragment = drawClockFragment;
                 break;
             default:
-                gameFragment = multipleChoiceFragment;
+                curGameFragment = multipleChoiceFragment;
                 break;
 
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, gameFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, curGameFragment).commit();
     }
 }

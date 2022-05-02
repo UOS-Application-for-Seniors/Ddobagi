@@ -17,11 +17,11 @@ import com.example.ddobagi.Class.Line;
 import java.util.ArrayList;
 
 public class LineConnectionView extends View {
-    final int circleRadius = 20;
+    final int pointRadius = 20;
     final int touchSpace = 50;
-    final int circleHeightMargin = 10;
+    final int pointHeightMargin = 10;
     int choiceCount = 4;
-    float[][] circleCoordinate = new float[choiceCount * 2][2];
+    float[][] pointCoordinate = new float[choiceCount * 2][2];
     Line[] connectedLine = new Line[choiceCount * 2];
     boolean touchCancle = true;
     int startCircleNum = -1, endCircleNum = -1;
@@ -29,7 +29,7 @@ public class LineConnectionView extends View {
     int canvasWidth, canvasHeight;
     Canvas mCanvas;
     Bitmap mBitmap;
-    Paint linePaint, circlePaint;
+    Paint linePaint, pointPaint;
 
     float startX, startY, curX, curY;
 
@@ -53,10 +53,10 @@ public class LineConnectionView extends View {
         linePaint.setStrokeCap(Paint.Cap.ROUND);
         linePaint.setStrokeWidth(10.0F);
 
-        circlePaint = new Paint();
-        circlePaint.setAntiAlias(true);
-        circlePaint.setColor(Color.RED);
-        circlePaint.setStyle(Paint.Style.FILL);
+        pointPaint = new Paint();
+        pointPaint.setAntiAlias(true);
+        pointPaint.setColor(Color.RED);
+        pointPaint.setStyle(Paint.Style.FILL);
 
         this.startX = this.startY = -1;
     }
@@ -73,11 +73,15 @@ public class LineConnectionView extends View {
         canvasHeight = h;
 
         for(int i=0;i<choiceCount; i++){
-            circleCoordinate[i][0] = canvasWidth / (choiceCount*2) * (i*2 + 1);
-            circleCoordinate[i][1] = circleHeightMargin;
-            circleCoordinate[i + choiceCount][0] = circleCoordinate[i][0];
-            circleCoordinate[i + choiceCount][1] = canvasHeight - circleHeightMargin;
+            pointCoordinate[i][0] = canvasWidth / (choiceCount*2) * (i*2 + 1);
+            pointCoordinate[i][1] = pointHeightMargin;
+            pointCoordinate[i + choiceCount][0] = pointCoordinate[i][0];
+            pointCoordinate[i + choiceCount][1] = canvasHeight - pointHeightMargin;
         }
+    }
+
+    public ArrayList<Line> getLineList(){
+        return lineList;
     }
 
     protected void onDraw(Canvas canvas){
@@ -93,7 +97,7 @@ public class LineConnectionView extends View {
 
     private void drawChoiceCircle(Canvas canvas){
         for(int i=0;i<choiceCount*2;i++){
-            canvas.drawCircle(circleCoordinate[i][0], circleCoordinate[i][1], circleRadius, circlePaint);
+            canvas.drawCircle(pointCoordinate[i][0], pointCoordinate[i][1], pointRadius, pointPaint);
         }
     }
 
@@ -134,13 +138,13 @@ public class LineConnectionView extends View {
             Line line = connectedLine[circleNum];
             if(line != null){
                 lineList.remove(line);
-                connectedLine[line.startCircleNum] = null;
-                connectedLine[line.endCircleNum] = null;
+                connectedLine[line.start] = null;
+                connectedLine[line.end] = null;
             }
 
             touchCancle = false;
-            startX = circleCoordinate[circleNum][0];
-            startY = circleCoordinate[circleNum][1];
+            startX = pointCoordinate[circleNum][0];
+            startY = pointCoordinate[circleNum][1];
         }
         else{
             touchCancle = true;
@@ -166,18 +170,18 @@ public class LineConnectionView extends View {
         int circleNum = findInCircle(curX, curY);
 
         if(circleNum != -1){
-            if(circleCoordinate[startCircleNum][1] != circleCoordinate[circleNum][1]){
+            if(pointCoordinate[startCircleNum][1] != pointCoordinate[circleNum][1]){
                 Line delLine = connectedLine[circleNum];
                 if(delLine != null){
                     lineList.remove(delLine);
-                    connectedLine[delLine.startCircleNum] = null;
-                    connectedLine[delLine.endCircleNum] = null;
+                    connectedLine[delLine.start] = null;
+                    connectedLine[delLine.end] = null;
                 }
                 Line line;
                 Path path = new Path();
 
                 path.moveTo(startX, startY);
-                path.lineTo(circleCoordinate[circleNum][0], circleCoordinate[circleNum][1]);
+                path.lineTo(pointCoordinate[circleNum][0], pointCoordinate[circleNum][1]);
                 line = new Line(path, startCircleNum, circleNum);
                 lineList.add(line);
                 connectedLine[startCircleNum] = line;
@@ -194,7 +198,7 @@ public class LineConnectionView extends View {
     private int findInCircle(float x, float y){
         int result = -1;
         for(int i=0;i<choiceCount*2;i++){
-            if(getDistance(x, y, circleCoordinate[i][0], circleCoordinate[i][1]) < touchSpace){
+            if(getDistance(x, y, pointCoordinate[i][0], pointCoordinate[i][1]) < touchSpace){
                 result = i;
                 break;
             }

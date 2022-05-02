@@ -15,7 +15,7 @@ import com.example.ddobagi.R;
 public class MultipleChoiceFragment extends GameFragment{
     ProgressDialog dialog;
 
-    void commit(){
+    public void commit(){
 
     }
 
@@ -34,7 +34,7 @@ public class MultipleChoiceFragment extends GameFragment{
 
     }
 
-    void onGetGameDataResponse(){
+    public void onGetGameDataResponse(String response){
 
     }
 

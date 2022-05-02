@@ -70,19 +70,6 @@ public class GameTestActivity extends AppCompatActivity {
         quizDetail = findViewById(R.id.quizDetail);
     }
 
-    public void handleVolleyError(VolleyError error){
-        NetworkResponse response = error.networkResponse;
-        if(error instanceof ServerError && response != null){
-            try{
-                String res = new String(response.data, HttpHeaderParser.parseCharset(response.headers,"utf-8"));
-                println(res);
-            }catch (UnsupportedEncodingException e1){
-                e1.printStackTrace();
-            }
-        }
-        println("onErrorResponse: " + String.valueOf(error));
-    }
-
 
     public void makeRequest(){
         String url = "http://121.164.170.67:3000/quiz/1";
@@ -100,7 +87,7 @@ public class GameTestActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        handleVolleyError(error);
+                        Communication.handleVolleyError(error);
                     }
                 }
         ){

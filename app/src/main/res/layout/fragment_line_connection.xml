@@ -45,7 +45,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_btn"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/line_connection_btn2"
@@ -55,7 +55,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_btn"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/line_connection_btn3"
@@ -65,7 +65,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_btn"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/line_connection_btn4"
@@ -75,15 +75,14 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_btn"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <com.example.ddobagi.View.LineConnectionView
-                android:id="@+id/draw_clock_view"
+                android:id="@+id/line_connection_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.7"
-                android:textSize="30sp" />
+                android:layout_weight="0.7"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,7 +98,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_btn"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/line_connection_btn6"
@@ -109,7 +108,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_btn"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/line_connection_btn7"
@@ -119,7 +118,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_btn"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/line_connection_btn8"
@@ -129,7 +128,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_btn"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>
 
