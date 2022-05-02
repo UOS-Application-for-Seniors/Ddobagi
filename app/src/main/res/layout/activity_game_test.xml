@@ -85,7 +85,7 @@
                     android:textSize="30sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/selectBtn2"
+                    android:id="@+id/draw_clock_view"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"

@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.example.ddobagi.R;
 
-public class PaintingFragment extends GameFragment{
+public class LineConnectionFragment extends GameFragment{
     void commit(){
 
     }
@@ -34,7 +34,7 @@ public class PaintingFragment extends GameFragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_painting, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_line_connection, container, false);
         return rootView;
     }
 }

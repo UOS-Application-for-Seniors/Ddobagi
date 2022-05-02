@@ -26,17 +26,17 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-            <com.example.ddobagi.View.TestDraw
-                android:id="@+id/selectBtn2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
+            <com.example.ddobagi.View.DrawClockView
+                android:id="@+id/draw_clock_view"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
                 android:textSize="30sp" />
+
         </LinearLayout>
 
     </LinearLayout>

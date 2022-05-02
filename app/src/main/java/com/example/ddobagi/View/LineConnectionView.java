@@ -16,10 +16,11 @@ import com.example.ddobagi.Class.Line;
 
 import java.util.ArrayList;
 
-public class TestDraw extends View {
+public class LineConnectionView extends View {
     final int circleRadius = 20;
+    final int touchSpace = 50;
     final int circleHeightMargin = 10;
-    int choiceCount = 5;
+    int choiceCount = 4;
     float[][] circleCoordinate = new float[choiceCount * 2][2];
     Line[] connectedLine = new Line[choiceCount * 2];
     boolean touchCancle = true;
@@ -34,12 +35,12 @@ public class TestDraw extends View {
 
     ArrayList<Line> lineList = new ArrayList<>();
 
-    public TestDraw(Context context) {
+    public LineConnectionView(Context context) {
         super(context);
         init(context);
     }
 
-    public TestDraw(Context context, @Nullable AttributeSet attrs) {
+    public LineConnectionView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
@@ -72,7 +73,7 @@ public class TestDraw extends View {
         canvasHeight = h;
 
         for(int i=0;i<choiceCount; i++){
-            circleCoordinate[i][0] = canvasWidth / (choiceCount + 1) * (i+1);
+            circleCoordinate[i][0] = canvasWidth / (choiceCount*2) * (i*2 + 1);
             circleCoordinate[i][1] = circleHeightMargin;
             circleCoordinate[i + choiceCount][0] = circleCoordinate[i][0];
             circleCoordinate[i + choiceCount][1] = canvasHeight - circleHeightMargin;
@@ -193,7 +194,7 @@ public class TestDraw extends View {
     private int findInCircle(float x, float y){
         int result = -1;
         for(int i=0;i<choiceCount*2;i++){
-            if(getDistance(x, y, circleCoordinate[i][0], circleCoordinate[i][1]) < circleRadius){
+            if(getDistance(x, y, circleCoordinate[i][0], circleCoordinate[i][1]) < touchSpace){
                 result = i;
                 break;
             }

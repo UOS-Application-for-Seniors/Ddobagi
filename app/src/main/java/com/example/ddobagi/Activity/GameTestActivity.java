@@ -16,13 +16,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.LoadImage;
 import com.example.ddobagi.Class.Quiz;
@@ -56,7 +54,7 @@ public class GameTestActivity extends AppCompatActivity {
         });
 
         choiceBtn[0] = findViewById(R.id.selectBtn1);
-        choiceBtn[1] = findViewById(R.id.selectBtn2);
+        choiceBtn[1] = findViewById(R.id.draw_clock_view);
         choiceBtn[2] = findViewById(R.id.selectBtn3);
         choiceBtn[3] = findViewById(R.id.selectBtn4);
 
