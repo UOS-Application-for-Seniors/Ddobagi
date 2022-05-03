@@ -14,12 +14,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.LoadImage;
@@ -27,7 +24,6 @@ import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,7 +50,7 @@ public class GameTestActivity extends AppCompatActivity {
         });
 
         choiceBtn[0] = findViewById(R.id.selectBtn1);
-        choiceBtn[1] = findViewById(R.id.draw_clock_view);
+        choiceBtn[1] = findViewById(R.id.trace_shape_example);
         choiceBtn[2] = findViewById(R.id.selectBtn3);
         choiceBtn[3] = findViewById(R.id.selectBtn4);
 
@@ -72,7 +68,7 @@ public class GameTestActivity extends AppCompatActivity {
 
 
     public void makeRequest(){
-        String url = "http://121.164.170.67:3000/quiz/1";
+        String url = "http://121.164.170.67:3000/quiz/0";
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
@@ -116,11 +112,11 @@ public class GameTestActivity extends AppCompatActivity {
 
         quizDetail.setText(quiz.quizdetail);
 
-        String[] splitString = quiz.quizchoicesdetail.split("/");
+        String[] splitString = quiz.quizchoicesdetail.split(",");
 
         for(int i=0;i<4;i++){
             String tmp = url;
-            tmp = tmp + Integer.toString(i + 1) + ".jfif";
+            tmp = tmp + Integer.toString(i) + ".jfif";
             setImage(tmp, choiceBtn[i]);
             choiceBtn[i].setText(splitString[i]);
         }

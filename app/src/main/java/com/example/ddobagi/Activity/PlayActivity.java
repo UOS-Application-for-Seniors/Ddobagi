@@ -13,20 +13,23 @@ import com.example.ddobagi.Fragment.MultipleChoiceFragment;
 import com.example.ddobagi.Fragment.LineConnectionFragment;
 import com.example.ddobagi.Fragment.SequenceChoiceFragment;
 import com.example.ddobagi.Fragment.ShortAnswerFragment;
+import com.example.ddobagi.Fragment.TraceShapeFragment;
 import com.example.ddobagi.R;
 
 public class PlayActivity extends AppCompatActivity {
     GameFragment curGameFragment;
+
     MultipleChoiceFragment multipleChoiceFragment;
     ShortAnswerFragment shortAnswerFragment;
     LineConnectionFragment lineConnectionFragment;
     DrawClockFragment drawClockFragment;
     SequenceChoiceFragment sequenceChoiceFragment;
     ChoiceWithPictureFragment choiceWithPictureFragment;
+    TraceShapeFragment traceShapeFragment;
 
 
     int fragmentIndex = 0;
-    int fragmentNum = 6;
+    int fragmentNum = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class PlayActivity extends AppCompatActivity {
         drawClockFragment = new DrawClockFragment();
         sequenceChoiceFragment = new SequenceChoiceFragment();
         choiceWithPictureFragment = new ChoiceWithPictureFragment();
+        traceShapeFragment = new TraceShapeFragment();
 
         Button commitBtn = findViewById(R.id.commit_btn);
         commitBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +105,9 @@ public class PlayActivity extends AppCompatActivity {
                 break;
             case 5:
                 curGameFragment = choiceWithPictureFragment;
+                break;
+            case 6:
+                curGameFragment = traceShapeFragment;
                 break;
             default:
                 curGameFragment = multipleChoiceFragment;
