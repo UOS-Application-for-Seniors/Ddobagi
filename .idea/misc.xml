@@ -16,9 +16,13 @@
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/drawable-v24/green_btn.xml" value="0.1875" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/font/font_batang.xml" value="0.14270833333333333" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_game_test.xml" value="0.25" />
+        <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_login.xml" value="0.18307291666666667" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_main.xml" value="0.175" />
+        <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_registration.xml" value="0.18307291666666667" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_voice_recognizer.xml" value="0.12760416666666666" />
+        <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/fragment_short_answer.xml" value="0.18307291666666667" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/fragment_voice_recognizer.xml" value="0.12066831683168316" />
+        <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/xml/root_preferences.xml" value="0.25" />
       </map>
     </option>
   </component>

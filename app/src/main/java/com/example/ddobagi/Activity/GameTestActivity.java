@@ -50,12 +50,17 @@ public class GameTestActivity extends AppCompatActivity {
     Button sttBtn;
     TextView textView;
 
+    int voiceAnswer;
+    TextView voiceanscheck;
+    String voiceString;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_test);
 
-        makeRequest();
+//        makeRequest();
         //downloadImage();
 
         Button exitBtn = findViewById(R.id.exit_btn);
@@ -65,6 +70,8 @@ public class GameTestActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        voiceanscheck = (TextView) findViewById(R.id.sttResult2);
 
         textView = (TextView) findViewById(R.id.sttResult);
         sttBtn = (Button) findViewById(R.id.sttStart);
@@ -93,6 +100,8 @@ public class GameTestActivity extends AppCompatActivity {
 
         quizDetail = findViewById(R.id.quizDetail);
     }
+
+/*
 
     public void handleVolleyError(VolleyError error){
         NetworkResponse response = error.networkResponse;
@@ -197,6 +206,10 @@ public class GameTestActivity extends AppCompatActivity {
         loadImage.execute(url);
     }
 
+    public void println(String data){
+        Log.d("GameTestActivity", data);
+    }
+*/
     private RecognitionListener listener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
@@ -263,9 +276,20 @@ public class GameTestActivity extends AppCompatActivity {
         @Override
         public void onResults(Bundle bundle) {
             ArrayList<String> matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            for(int i = 0; i < matches.size() ; i++){
+            for (int i = 0; i < matches.size(); i++) {
                 textView.setText(matches.get(i));
+
+//            String key = "";
+//            key = SpeechRecognizer.RESULTS_RECOGNITION;
+//            ArrayList<String> mResult = bundle.getStringArrayList(key);
+//            String[] rs = new String[mResult.size()];
+//            mResult.toArray(rs);
+//            for(int i = 0; i < mResult.size(); i++) {
+//                textView.setText(mResult.get(i));
+//            }
             }
+            voiceString = matches.toString();
+            voiceanscheck.setText(voiceString);
         }
 
         @Override
@@ -278,8 +302,4 @@ public class GameTestActivity extends AppCompatActivity {
 
         }
     };
-
-    public void println(String data){
-        Log.d("GameTestActivity", data);
-    }
 }
