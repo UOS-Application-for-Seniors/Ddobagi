@@ -3,10 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/jsm44/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/jsm44/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_play.xml" value="0.1" />
+        <entry key="..\:/Users/jsm44/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/activity_registration.xml" value="0.12727272727272726" />
         <entry key="..\:/Users/jsm44/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/fragment_choice_with_picture.xml" value="0.67" />
         <entry key="..\:/Users/jsm44/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/fragment_mutiple_choice.xml" value="0.358695652173913" />
         <entry key="..\:/Users/jsm44/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/fragment_sequence_choice.xml" value="0.358695652173913" />
         <entry key="..\:/Users/jsm44/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/fragment_short_answer.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/jsm44/AndroidStudioProjects/Ddobagi/app/src/main/res/layout/spinner_item.xml" value="0.1" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi/app/src/main/res/layout/activity_main.xml" value="0.9" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_game_test.xml" value="0.2692502532928065" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_login.xml" value="0.25" />

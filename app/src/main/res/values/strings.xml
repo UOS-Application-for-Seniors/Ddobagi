@@ -2,4 +2,12 @@
     <string name="app_name">Ddobagi</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="education_array">
+        <item>비문해</item>
+        <item>문해</item>
+        <item>초등학교 졸업</item>
+        <item>중학교 졸업</item>
+        <item>고등학교 졸업</item>
+        <item>대학교 졸업</item>
+    </string-array>
 </resources>
