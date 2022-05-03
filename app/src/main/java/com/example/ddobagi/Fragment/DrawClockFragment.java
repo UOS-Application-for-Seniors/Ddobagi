@@ -8,7 +8,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DrawClockFragment extends GameFragment{
     public void commit(){

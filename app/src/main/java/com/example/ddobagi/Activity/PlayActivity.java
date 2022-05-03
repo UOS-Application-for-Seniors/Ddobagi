@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.ddobagi.Fragment.ChoiceWithPictureFragment;
 import com.example.ddobagi.Fragment.DrawClockFragment;
 import com.example.ddobagi.Fragment.GameFragment;
 import com.example.ddobagi.Fragment.MultipleChoiceFragment;
@@ -21,10 +22,11 @@ public class PlayActivity extends AppCompatActivity {
     LineConnectionFragment lineConnectionFragment;
     DrawClockFragment drawClockFragment;
     SequenceChoiceFragment sequenceChoiceFragment;
+    ChoiceWithPictureFragment choiceWithPictureFragment;
 
 
     int fragmentIndex = 0;
-    int fragmentNum = 5;
+    int fragmentNum = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,8 @@ public class PlayActivity extends AppCompatActivity {
         shortAnswerFragment = new ShortAnswerFragment();
         lineConnectionFragment = new LineConnectionFragment();
         drawClockFragment = new DrawClockFragment();
+        sequenceChoiceFragment = new SequenceChoiceFragment();
+        choiceWithPictureFragment = new ChoiceWithPictureFragment();
 
         Button commitBtn = findViewById(R.id.commit_btn);
         commitBtn.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +98,9 @@ public class PlayActivity extends AppCompatActivity {
                 break;
             case 4:
                 curGameFragment = sequenceChoiceFragment;
+                break;
+            case 5:
+                curGameFragment = choiceWithPictureFragment;
                 break;
             default:
                 curGameFragment = multipleChoiceFragment;
