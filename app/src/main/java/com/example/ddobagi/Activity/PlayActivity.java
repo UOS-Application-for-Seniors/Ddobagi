@@ -10,6 +10,7 @@ import com.example.ddobagi.Fragment.DrawClockFragment;
 import com.example.ddobagi.Fragment.GameFragment;
 import com.example.ddobagi.Fragment.MultipleChoiceFragment;
 import com.example.ddobagi.Fragment.LineConnectionFragment;
+import com.example.ddobagi.Fragment.SequenceChoiceFragment;
 import com.example.ddobagi.Fragment.ShortAnswerFragment;
 import com.example.ddobagi.R;
 
@@ -19,10 +20,11 @@ public class PlayActivity extends AppCompatActivity {
     ShortAnswerFragment shortAnswerFragment;
     LineConnectionFragment lineConnectionFragment;
     DrawClockFragment drawClockFragment;
+    SequenceChoiceFragment sequenceChoiceFragment;
 
 
     int fragmentIndex = 0;
-    int fragmentNum = 4;
+    int fragmentNum = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class PlayActivity extends AppCompatActivity {
             public void onClick(View view) {
                 fragmentIndex--;
                 if(fragmentIndex < 0){
-                    fragmentIndex += 4;
+                    fragmentIndex += fragmentNum;
                 }
                 fragmentChange();
             }
@@ -68,7 +70,7 @@ public class PlayActivity extends AppCompatActivity {
         rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragmentIndex = (fragmentIndex + 1) % 4;
+                fragmentIndex = (fragmentIndex + 1) % fragmentNum;
                 fragmentChange();
             }
         });
@@ -89,6 +91,9 @@ public class PlayActivity extends AppCompatActivity {
                 break;
             case 3:
                 curGameFragment = drawClockFragment;
+                break;
+            case 4:
+                curGameFragment = sequenceChoiceFragment;
                 break;
             default:
                 curGameFragment = multipleChoiceFragment;
