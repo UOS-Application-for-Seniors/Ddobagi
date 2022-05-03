@@ -18,9 +18,9 @@ public abstract class GameFragment extends Fragment {
     Bitmap pictures[];
     String helpdata;
 
-    abstract void commit();
+    abstract public void commit();
     abstract void onHelp();
     abstract void loadGame();
     abstract void getGameData();
-    abstract void onGetGameDataResponse();
+    abstract public void onGetGameDataResponse(String response);
 }

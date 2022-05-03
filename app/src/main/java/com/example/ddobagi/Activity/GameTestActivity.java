@@ -1,15 +1,9 @@
 package com.example.ddobagi.Activity;
 
-import android.Manifest;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -35,7 +28,6 @@ import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,22 +37,12 @@ public class GameTestActivity extends AppCompatActivity {
     Button[] choiceBtn = new Button[4];
     TextView quizDetail;
 
-    Intent intent;
-    SpeechRecognizer mRecognizer;
-    Button sttBtn;
-    TextView textView;
-
-    int voiceAnswer;
-    TextView voiceanscheck;
-    String voiceString;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_test);
 
-//        makeRequest();
+        makeRequest();
         //downloadImage();
 
         Button exitBtn = findViewById(R.id.exit_btn);
@@ -71,21 +53,8 @@ public class GameTestActivity extends AppCompatActivity {
             }
         });
 
-        voiceanscheck = (TextView) findViewById(R.id.sttResult2);
-
-        textView = (TextView) findViewById(R.id.sttResult);
-        sttBtn = (Button) findViewById(R.id.sttStart);
-        intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
-        sttBtn.setOnClickListener(v -> {
-            mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-            mRecognizer.setRecognitionListener(listener);
-            mRecognizer.startListening(intent);
-        });
-
         choiceBtn[0] = findViewById(R.id.selectBtn1);
-        choiceBtn[1] = findViewById(R.id.selectBtn2);
+        choiceBtn[1] = findViewById(R.id.draw_clock_view);
         choiceBtn[2] = findViewById(R.id.selectBtn3);
         choiceBtn[3] = findViewById(R.id.selectBtn4);
 
@@ -99,21 +68,6 @@ public class GameTestActivity extends AppCompatActivity {
         }
 
         quizDetail = findViewById(R.id.quizDetail);
-    }
-
-/*
-
-    public void handleVolleyError(VolleyError error){
-        NetworkResponse response = error.networkResponse;
-        if(error instanceof ServerError && response != null){
-            try{
-                String res = new String(response.data, HttpHeaderParser.parseCharset(response.headers,"utf-8"));
-                println(res);
-            }catch (UnsupportedEncodingException e1){
-                e1.printStackTrace();
-            }
-        }
-        println("onErrorResponse: " + String.valueOf(error));
     }
 
 
@@ -133,7 +87,7 @@ public class GameTestActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        handleVolleyError(error);
+                        Communication.handleVolleyError(error);
                     }
                 }
         ){
@@ -209,97 +163,4 @@ public class GameTestActivity extends AppCompatActivity {
     public void println(String data){
         Log.d("GameTestActivity", data);
     }
-*/
-    private RecognitionListener listener = new RecognitionListener() {
-        @Override
-        public void onReadyForSpeech(Bundle bundle) {
-            Toast.makeText(getApplicationContext(), "음성인식을 시작합니다", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onBeginningOfSpeech() {
-
-        }
-
-        @Override
-        public void onRmsChanged(float v) {
-
-        }
-
-        @Override
-        public void onBufferReceived(byte[] bytes) {
-
-        }
-
-        @Override
-        public void onEndOfSpeech() {
-
-        }
-
-        @Override
-        public void onError(int error) {
-            String message;
-
-            switch (error) {
-                case SpeechRecognizer.ERROR_AUDIO:
-                    message = "오디오 에러";
-                    break;
-                case SpeechRecognizer.ERROR_CLIENT:
-                    message = "클라이언트 에러";
-                    break;
-                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
-                    message = "퍼미션 없음";
-                    break;
-                case SpeechRecognizer.ERROR_NETWORK:
-                    message = "네트워크 에러";
-                    break;
-                case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
-                    message = "네트워크 타임아웃";
-                    break;
-                case SpeechRecognizer.ERROR_NO_MATCH:
-                    message = "찾을 수 없음";
-                    break;
-                case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
-                    message = "RECOGNIZER가 바쁨";
-                    break;
-                case SpeechRecognizer.ERROR_SERVER:
-                    message = "말하는 시간 초과";
-                    break;
-                default:
-                    message = "알 수 없는 오류";
-                    break;
-            }
-
-            Toast.makeText(getApplicationContext(), "에러가 발생하였습니다. : " + message, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onResults(Bundle bundle) {
-            ArrayList<String> matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            for (int i = 0; i < matches.size(); i++) {
-                textView.setText(matches.get(i));
-
-//            String key = "";
-//            key = SpeechRecognizer.RESULTS_RECOGNITION;
-//            ArrayList<String> mResult = bundle.getStringArrayList(key);
-//            String[] rs = new String[mResult.size()];
-//            mResult.toArray(rs);
-//            for(int i = 0; i < mResult.size(); i++) {
-//                textView.setText(mResult.get(i));
-//            }
-            }
-            voiceString = matches.toString();
-            voiceanscheck.setText(voiceString);
-        }
-
-        @Override
-        public void onPartialResults(Bundle bundle) {
-
-        }
-
-        @Override
-        public void onEvent(int i, Bundle bundle) {
-
-        }
-    };
 }

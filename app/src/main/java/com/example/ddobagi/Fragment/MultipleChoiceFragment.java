@@ -15,7 +15,7 @@ import com.example.ddobagi.R;
 public class MultipleChoiceFragment extends GameFragment{
     ProgressDialog dialog;
 
-    void commit(){
+    public void commit(){
 
     }
 
@@ -24,17 +24,17 @@ public class MultipleChoiceFragment extends GameFragment{
     }
 
     void loadGame(){
-        dialog = new ProgressDialog(getContext());
+        /*dialog = new ProgressDialog(getContext());
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("데이터를 확인하는 중입니다.");
-        dialog.show();
+        dialog.show();*/
     }
 
     void getGameData(){
 
     }
 
-    void onGetGameDataResponse(){
+    public void onGetGameDataResponse(String response){
 
     }
 
