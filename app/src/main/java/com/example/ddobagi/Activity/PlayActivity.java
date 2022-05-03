@@ -40,15 +40,15 @@ public class PlayActivity extends AppCompatActivity {
         sequenceChoiceFragment = new SequenceChoiceFragment();
         choiceWithPictureFragment = new ChoiceWithPictureFragment();
 
-        Button commitBtn = findViewById(R.id.commit_btn);
-        commitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(curGameFragment != null){
-                    curGameFragment.commit();
-                }
-            }
-        });
+//        Button commitBtn = findViewById(R.id.commit_btn);
+//        commitBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(curGameFragment != null){
+//                    curGameFragment.commit();
+//                }
+//            }
+//        });
 
         Button exitBtn = findViewById(R.id.exit_btn);
         exitBtn.setOnClickListener(new View.OnClickListener() {
