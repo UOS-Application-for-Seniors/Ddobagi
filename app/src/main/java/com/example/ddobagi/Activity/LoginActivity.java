@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button buttonRegistration, buttonLogin, buttonBack;
+    Button buttonRegistration, buttonLogin, buttonExit;
     EditText UserID, Password;
     SharedPreferences share;
     SharedPreferences.Editor edit;
@@ -38,7 +38,13 @@ public class LoginActivity extends AppCompatActivity {
         UserID = findViewById(R.id.input_id);
         Password = findViewById(R.id.input_password);
         buttonRegistration = findViewById(R.id.btn_registrarion);
-        buttonBack = findViewById(R.id.btn_back);
+        buttonExit = findViewById(R.id.login_exit_btn);
+        buttonExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
