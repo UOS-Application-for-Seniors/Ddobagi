@@ -3,6 +3,7 @@
     package="com.example.ddobagi">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ddobagi"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Activity.RegistrationActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.LoginActivity"
+            android:exported="false" />
         <activity
             android:name=".Activity.PlayActivity"
             android:exported="false" />

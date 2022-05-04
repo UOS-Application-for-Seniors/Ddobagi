@@ -66,7 +66,6 @@ public class PlayActivity extends AppCompatActivity {
                 }
             }
         });
-
         Button exitBtn = findViewById(R.id.exit_btn);
         exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
