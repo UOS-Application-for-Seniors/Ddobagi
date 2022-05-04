@@ -44,7 +44,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -54,7 +54,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -64,7 +64,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -74,7 +74,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -97,7 +97,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -107,7 +107,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -117,7 +117,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="20sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -127,7 +127,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="20sp" />
             </LinearLayout>
         </LinearLayout>

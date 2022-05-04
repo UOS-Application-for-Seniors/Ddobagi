@@ -53,7 +53,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/green_btn"
+                android:background="@drawable/light_green_btn"
                 android:ems="10"
                 android:gravity="center"
                 android:hint="이곳을 터치해 정답을 입력하세요"

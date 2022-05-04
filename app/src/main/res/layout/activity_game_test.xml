@@ -80,7 +80,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:drawableTop="@drawable/ic_launcher_foreground"
                     android:textSize="30sp" />
 
@@ -90,7 +90,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="30sp" />
             </LinearLayout>
 
@@ -106,7 +106,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="30sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -115,7 +115,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
+                    android:background="@drawable/light_green_btn"
                     android:textSize="30sp" />
 
             </LinearLayout>

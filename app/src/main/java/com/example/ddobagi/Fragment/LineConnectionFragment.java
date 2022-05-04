@@ -123,6 +123,9 @@ public class LineConnectionFragment extends GameFragment{
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
 
+        if(quiz == null){
+            return;
+        }
         quizdatapathUrl = url + quiz.quizdatapath + "/";
 
         quizDetail.setText(quiz.quizdetail);

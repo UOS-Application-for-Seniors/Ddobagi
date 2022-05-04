@@ -93,10 +93,15 @@ public class ChoiceWithPictureFragment extends GameFragment {
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
 
+        if(quiz == null){
+            return;
+        }
+
         quizdatapathUrl = url + quiz.quizdatapath + "/";
 
         quizDetail.setText(quiz.quizdetail);
         quizAnswer = quiz.quizanswer;
+
 
         String[] splitString = quiz.quizchoicesdetail.split(",");
 

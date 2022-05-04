@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
         //통신 requestQueue 초기화
         Communication.init(this);
 
+        setButton();
+    }
+
+    private void setButton(){
         Button nextBtn  = findViewById(R.id.commit_btn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,24 +46,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button testBtn = findViewById(R.id.test_btn);
+        Button testBtn = findViewById(R.id.main_test_btn);
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GameTestActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TestPlayActivity.class);
                 startActivity(intent);
             }
         });
 
-        Button playBtn = findViewById(R.id.play_btn);
-        playBtn.setOnClickListener(new View.OnClickListener() {
+        Button recommendPlayBtn = findViewById(R.id.main_recommend_play_btn);
+        recommendPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+                intent.putExtra("type", "recommend");
                 startActivity(intent);
             }
         });
 
+        Button selectPlayBtn = findViewById(R.id.main_select_play_btn);{
+            selectPlayBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+                    intent.putExtra("type", "select");
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     public void makeRequest(){

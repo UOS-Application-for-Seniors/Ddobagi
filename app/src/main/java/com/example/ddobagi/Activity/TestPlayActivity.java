@@ -1,23 +1,22 @@
 package com.example.ddobagi.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.ddobagi.Fragment.ChoiceWithPictureFragment;
 import com.example.ddobagi.Fragment.DrawClockFragment;
 import com.example.ddobagi.Fragment.GameFragment;
-import com.example.ddobagi.Fragment.MultipleChoiceFragment;
 import com.example.ddobagi.Fragment.LineConnectionFragment;
+import com.example.ddobagi.Fragment.MultipleChoiceFragment;
 import com.example.ddobagi.Fragment.SequenceChoiceFragment;
 import com.example.ddobagi.Fragment.ShortAnswerFragment;
 import com.example.ddobagi.Fragment.TraceShapeFragment;
 import com.example.ddobagi.R;
 
-public class PlayActivity extends AppCompatActivity {
+public class TestPlayActivity extends AppCompatActivity {
     GameFragment curGameFragment;
 
     MultipleChoiceFragment multipleChoiceFragment;
@@ -27,6 +26,7 @@ public class PlayActivity extends AppCompatActivity {
     SequenceChoiceFragment sequenceChoiceFragment;
     ChoiceWithPictureFragment choiceWithPictureFragment;
     TraceShapeFragment traceShapeFragment;
+
 
     int fragmentIndex = 0;
     int fragmentNum = 7;
@@ -44,19 +44,6 @@ public class PlayActivity extends AppCompatActivity {
         choiceWithPictureFragment = new ChoiceWithPictureFragment();
         traceShapeFragment = new TraceShapeFragment();
 
-        setButton();
-
-        Intent intent = getIntent();
-        String type = intent.getStringExtra("type");
-        if(type == "select"){
-
-        }
-        else if(type == "choose"){
-            //게임 선택하는 창 띄우기
-        }
-    }
-
-    private void setButton(){
         Button commitBtn = findViewById(R.id.commit_btn);
         commitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
