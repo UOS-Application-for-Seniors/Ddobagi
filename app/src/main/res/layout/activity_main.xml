@@ -72,25 +72,25 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/play_btn"
+                    android:id="@+id/main_recommend_play_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/green_btn"
                     android:fontFamily="@font/batang"
-                    android:text="놀이"
+                    android:text="추천 놀이"
                     android:textSize="60sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/setting_btn"
+                    android:id="@+id/main_select_play_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/yellow_btn"
                     android:fontFamily="@font/batang"
-                    android:text="설정"
+                    android:text="선택 놀이"
                     android:textSize="60sp" />
             </LinearLayout>
 
@@ -101,7 +101,7 @@
                 android:orientation="vertical" >
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/test_btn"
+                    android:id="@+id/main_test_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -112,14 +112,14 @@
                     android:textSize="60sp" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/finish_btn"
+                    android:id="@+id/main_setting_btn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/red_btn"
                     android:fontFamily="@font/batang"
-                    android:text="나가기"
+                    android:text="설정"
                     android:textSize="60sp" />
             </LinearLayout>
         </LinearLayout>

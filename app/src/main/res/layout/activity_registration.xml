@@ -20,7 +20,7 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_back"
+                android:id="@+id/login_exit_btn"
                 android:layout_width="200dp"
                 android:layout_height="60dp"
 

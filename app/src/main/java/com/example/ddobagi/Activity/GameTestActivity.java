@@ -18,12 +18,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.LoadImage;
@@ -31,7 +28,6 @@ import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,10 +80,10 @@ public class GameTestActivity extends AppCompatActivity {
 
         sttSubmit = (Button) findViewById(R.id.sttSubmit);
 
-        choiceBtn[0] = findViewById(R.id.selectBtn1);
-        choiceBtn[1] = findViewById(R.id.draw_clock_view);
-        choiceBtn[2] = findViewById(R.id.selectBtn3);
-        choiceBtn[3] = findViewById(R.id.selectBtn4);
+        choiceBtn[0] = findViewById(R.id.choice_with_pic_select_btn1);
+        choiceBtn[1] = findViewById(R.id.short_img_btn);
+        choiceBtn[2] = findViewById(R.id.choice_with_pic_select_Btn3);
+        choiceBtn[3] = findViewById(R.id.choice_with_pic_select_Btn4);
 
         for (int i = 0; i < 4; i++) {
             choiceBtn[i].setOnClickListener(new View.OnClickListener() {
@@ -100,7 +96,6 @@ public class GameTestActivity extends AppCompatActivity {
 
         quizDetail = findViewById(R.id.quizDetail);
     }
-
 
     public void makeRequest() {
         String url = "http://121.164.170.67:3000/quiz/0";

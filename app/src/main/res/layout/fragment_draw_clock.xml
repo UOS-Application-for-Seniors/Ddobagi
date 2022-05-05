@@ -26,14 +26,16 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:background="#FFFFFF"
             android:gravity="center"
             android:orientation="vertical">
 
             <com.example.ddobagi.View.DrawClockView
-                android:id="@+id/draw_clock_view"
+                android:id="@+id/short_img_btn"
                 android:layout_width="400dp"
                 android:layout_height="400dp"
                 android:layout_gravity="center"

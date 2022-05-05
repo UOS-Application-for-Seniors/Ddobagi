@@ -33,21 +33,21 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/selectBtn1"
+                android:id="@+id/choice_with_pic_select_btn1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/green_btn"
+                android:background="@drawable/light_green_btn"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/selectBtn2"
+                android:id="@+id/choice_with_pic_select_btn2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/green_btn"
+                android:background="@drawable/light_green_btn"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -58,21 +58,21 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/selectBtn3"
+                android:id="@+id/choice_with_pic_select_Btn3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/green_btn"
+                android:background="@drawable/light_green_btn"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/selectBtn4"
+                android:id="@+id/choice_with_pic_select_Btn4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/green_btn"
+                android:background="@drawable/light_green_btn"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/green_btn"
+                android:background="@drawable/light_green_btn"
                 android:fontFamily="@font/batang"
                 android:gravity="center"
                 android:padding="10dp"
@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/green_btn"
+                android:background="@drawable/light_green_btn"
                 android:fontFamily="@font/batang"
                 android:gravity="center"
                 android:padding="10dp"
@@ -131,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/green_btn"
+                android:background="@drawable/light_green_btn"
                 android:fontFamily="@font/batang"
                 android:gravity="center"
                 android:padding="10dp"
@@ -151,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/green_btn"
+                android:background="@drawable/light_green_btn"
                 android:fontFamily="@font/batang"
                 android:gravity="center"
                 android:padding="10dp"

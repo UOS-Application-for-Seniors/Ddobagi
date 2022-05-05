@@ -2,11 +2,13 @@ package com.example.ddobagi.Activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -29,6 +31,8 @@ import com.example.ddobagi.Class.*;
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_MAIN = 101;
     final int PERMISSION = 1;
+    SharedPreferences share;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,32 +46,39 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO}, PERMISSION);
         }
 
-        Button nextBtn  = findViewById(R.id.login_btn);
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                makeRequest();
-            }
-        });
+        setButton();
+    }
 
-        Button testBtn = findViewById(R.id.test_btn);
+    private void setButton(){
+        Button testBtn = findViewById(R.id.main_test_btn);
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GameTestActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TestPlayActivity.class);
                 startActivity(intent);
             }
         });
 
-        Button playBtn = findViewById(R.id.play_btn);
-        playBtn.setOnClickListener(new View.OnClickListener() {
+        Button recommendPlayBtn = findViewById(R.id.main_recommend_play_btn);
+        recommendPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+                intent.putExtra("type", "recommend");
                 startActivity(intent);
             }
         });
 
+        Button selectPlayBtn = findViewById(R.id.main_select_play_btn);{
+            selectPlayBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+                    intent.putExtra("type", "select");
+                    startActivity(intent);
+                }
+            });
+        }
         Button loginBtn = findViewById(R.id.login_btn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     public void makeRequest(){
