@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,8 +14,6 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.QuizInfoSummary;
@@ -29,9 +28,6 @@ import com.example.ddobagi.Fragment.TraceShapeFragment;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +43,10 @@ public class PlayActivity extends AppCompatActivity {
     TraceShapeFragment traceShapeFragment;
 
     SharedPreferences share;
+
+    QuizInfoSummary[] quizList;
+    int[] quizScore;
+    int quizIndex = 0;
 
     int fragmentIndex = 0;
     int fragmentNum = 7;
@@ -116,7 +116,44 @@ public class PlayActivity extends AppCompatActivity {
 
     public void onGetRecommandationListResponse(String response){
         Gson gson = new Gson();
-        //ArrayList<QuizInfoSummary> quizList = gson.fromJson(response);
+        quizList = gson.fromJson(response, QuizInfoSummary[].class);
+        if(quizList == null){
+            Log.d("warning","quizList is null");
+            return;
+        }
+        quizScore = new int[quizList.length];
+
+
+        loadGame();
+        Log.d("gameID", Integer.toString(quizList[0].gameid));
+    }
+
+    private void loadGame(){
+        String usingFragment = quizList[quizIndex].usingfragment;
+        switch(usingFragment){
+            case "choiceWithPicture":
+                curGameFragment = choiceWithPictureFragment;
+                break;
+            case "multipleChoice":
+                curGameFragment = multipleChoiceFragment;
+                break;
+            case "lineConnection":
+                curGameFragment = lineConnectionFragment;
+                break;
+            case "sequenceChoice":
+                curGameFragment = sequenceChoiceFragment;
+                break;
+            case "shortAnswer":
+                curGameFragment = shortAnswerFragment;
+                break;
+            default:
+                curGameFragment = null;
+        }
+        if(curGameFragment != null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, curGameFragment).commit();
+            curGameFragment.loadGame(quizList[quizIndex].gameid, 0);
+            Log.d("gameID", Integer.toString(quizList[quizIndex].gameid));
+        }
     }
 
     private void setButton(){
@@ -125,7 +162,19 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(curGameFragment != null){
-                    curGameFragment.commit();
+                    int result = curGameFragment.commit();
+                    quizScore[quizIndex] = result;
+                    quizIndex++;
+                    if(quizIndex < quizList.length){
+                        loadGame();
+                    }
+                    else{
+                        //결과 출력 및 서버로 결과 보내기
+                        for(int i=0;i<quizScore.length; i++){
+                            Log.d("quizScore", Integer.toString(i) + ": " + Integer.toString(quizScore[i]));
+                        }
+                        curGameFragment = null;
+                    }
                 }
             }
         });
@@ -137,7 +186,7 @@ public class PlayActivity extends AppCompatActivity {
             }
         });
 
-        Button leftBtn = findViewById(R.id.left_btn);
+        /*Button leftBtn = findViewById(R.id.left_btn);
         leftBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,7 +207,7 @@ public class PlayActivity extends AppCompatActivity {
             }
         });
 
-        fragmentChange();
+        fragmentChange();*/
     }
 
     private void fragmentChange(){

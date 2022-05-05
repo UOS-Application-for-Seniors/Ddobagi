@@ -1,9 +1,6 @@
 package com.example.ddobagi.Fragment;
 
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Line;
-import com.example.ddobagi.Class.LoadImage;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.example.ddobagi.View.LineConnectionView;
@@ -38,9 +34,11 @@ public class LineConnectionFragment extends GameFragment{
     int choiceNum = 8;
     Button[] choiceBtn = new Button[choiceNum];
     String quizAnswer;
+    final int buttonImgBound = 120;
 
-    public void commit(){
+    public int commit(){
         ArrayList<Line> lineList = lineConnectionView.getLineList();
+        int result = 0;
 
         String[] linePair = quizAnswer.split(",");
         //Log.d("linePair", linePair[0] + linePair[2]);
@@ -68,57 +66,27 @@ public class LineConnectionFragment extends GameFragment{
         }
         if(resultCnt == linePair.length){
             Toast.makeText(getActivity(), "정답입니다", Toast.LENGTH_LONG).show();
+            result = 1;
         }
         else{
             Toast.makeText(getActivity(), "정답이 아닙니다", Toast.LENGTH_LONG).show();
+            result = 0;
         }
+        return result;
     }
 
     void onHelp(){
 
     }
 
-    void loadGame(){
+    public void loadGame(int gameID, int quizID){
+        this.gameID = gameID;
+        this.quizID = quizID;
         getGameData();
     }
 
-    void getGameData(){
-        String url = "http://121.164.170.67:3000/quiz/1";
-        StringRequest request = new StringRequest(
-                Request.Method.GET,
-                url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Communication.println("응답 --> " + response);
-                        onGetGameDataResponse(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Communication.handleVolleyError(error);
-                    }
-                }
-        ){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-//                params.put("path", "/file/asd/test.png");
-//                params.put("name", "1");
-//                params.put("fn", "test.jpg");
-
-                return params;
-            }
-        };
-        request.setShouldCache(false);
-        Communication.requestQueue.add(request);
-        Communication.println("요청 보냄.");
-    }
-
     public void onGetGameDataResponse(String response){
-        String url = "http://121.164.170.67:3000/file/";
-        String quizdatapathUrl;
+        String url = "http://121.164.170.67:3000/file/" + gameID + "/" + quizID + "/";
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -126,7 +94,6 @@ public class LineConnectionFragment extends GameFragment{
         if(quiz == null){
             return;
         }
-        quizdatapathUrl = url + quiz.quizdatapath + "/";
 
         quizDetail.setText(quiz.quizdetail);
         quizAnswer = quiz.quizanswer;
@@ -134,24 +101,11 @@ public class LineConnectionFragment extends GameFragment{
         String[] splitString = quiz.quizchoicesdetail.split(",");
 
         for(int i=0;i<choiceNum;i++){
-            String tmp = quizdatapathUrl;
+            String tmp = url;
             tmp = tmp + Integer.toString(i) + ".jfif";
-            setImage(tmp, choiceBtn[i]);
+            setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
             choiceBtn[i].setText(splitString[i]);
         }
-    }
-
-    private void setImage(String url, Button button){
-        LoadImage loadImage = new LoadImage((bitmap) -> {
-            Drawable drawable;
-
-            drawable = new BitmapDrawable(bitmap);
-            if(drawable != null){
-                drawable.setBounds( 0, 0, 120, 120);
-                button.setCompoundDrawables(null, drawable, null, null);
-            }
-        });
-        loadImage.execute(url);
     }
 
     @Nullable
@@ -174,6 +128,5 @@ public class LineConnectionFragment extends GameFragment{
     @Override
     public void onStart() {
         super.onStart();
-        loadGame();
     }
 }

@@ -23,9 +23,11 @@ public class TraceShapeFragment extends GameFragment{
 
     ArrayList<Line> exampleLineList;
 
-    public void commit(){
+    public int commit(){
         ArrayList<ExtendedLine> practiceLineList = practice.getLineList();
+        int result = 0;
         int resultCnt = 0;
+
         for(Line practiceLine: practiceLineList){
             for(Line exampleLine: exampleLineList){
                 int start = exampleLine.start;
@@ -41,25 +43,27 @@ public class TraceShapeFragment extends GameFragment{
                 }
             }
         }
-        if(resultCnt == exampleLineList.size()){
+        if(resultCnt == exampleLineList.size() && resultCnt == practiceLineList.size()){
             Toast.makeText(getActivity(), "정답입니다", Toast.LENGTH_LONG).show();
+            result = 1;
         }
         else{
             Toast.makeText(getActivity(), "정답이 아닙니다", Toast.LENGTH_LONG).show();
+            result = 0;
         }
+        return result;
     }
 
     void onHelp(){
 
     }
 
-    void loadGame(){
-
+    public void loadGame(int gameID, int quizID){
+        this.gameID = gameID;
+        this.quizID = quizID;
+        getGameData();
     }
 
-    void getGameData(){
-
-    }
 
     public void onGetGameDataResponse(String response){
 
@@ -69,7 +73,7 @@ public class TraceShapeFragment extends GameFragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_trace_shape, container, false);
-        example = rootView.findViewById(R.id.trace_shape_example);
+        example = rootView.findViewById(R.id.short_img_btn);
         practice = rootView.findViewById(R.id.trace_shape_practice);
 
         exampleLineList = new ArrayList<>();

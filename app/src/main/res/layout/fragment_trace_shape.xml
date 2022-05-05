@@ -32,7 +32,7 @@
             android:orientation="horizontal">
 
             <com.example.ddobagi.View.TraceShapeExample
-                android:id="@+id/trace_shape_example"
+                android:id="@+id/short_img_btn"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_gravity="center"

@@ -20,19 +20,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DrawClockFragment extends GameFragment{
-    public void commit(){
-
+    public int commit(){
+        int result = 0;
+        return result;
     }
-
     void onHelp(){
 
     }
 
-    void loadGame(){
-
-    }
-
-    void getGameData(){
+    public void loadGame(int gameID, int quizID){
 
     }
 
