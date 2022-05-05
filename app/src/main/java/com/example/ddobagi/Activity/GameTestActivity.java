@@ -49,7 +49,7 @@ public class GameTestActivity extends AppCompatActivity {
     TextView textView;
 
     Vector<Integer> vAnsChoice = new Vector<Integer>();
-    Vector<String> vAnsShort = new Vector<String>();
+    String[] vAnsShort = null;
     String vResultString = "";
     char[] vResultChar;
     Button sttSubmit;
@@ -276,12 +276,16 @@ public class GameTestActivity extends AppCompatActivity {
                 Log.e("MainActivity" ,"" + matches.get(i));
                 textView.setText(matches.get(i));
             }
-//            Log.e("MainActivity" ,"" + matches.get(0));
-            vResultString = matches.toString();
-//            Log.e("MainActivity" ,"" + voiceanscheck);
-            vResultChar = vResultString.toCharArray();
-//            Log.e("MainActivity", "" + voiceansset[1]);
 
+            //주관식 문제에 대한 답안 가공
+            vAnsShort = matches.get(0).split(" ");
+            for (int i = 0; i < vAnsShort.length; i++) {
+                System.out.println("주관식 답안["+ (i + 1) + "] : " + vAnsShort[i]);
+            }
+
+            //객관식 문제에 대한 답안 가공
+            vResultString = matches.toString();
+            vResultChar = vResultString.toCharArray();
             vAnsChoice.clear();
 
             for(int i = 0; i < vResultChar.length; i++) {
