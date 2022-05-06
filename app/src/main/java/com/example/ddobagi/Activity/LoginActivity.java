@@ -18,6 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.R;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,14 +55,31 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String s) {
 
-                        String[] tmp = s.split(":");
-                        String tmp2 = tmp[1].substring(1, tmp[1].length()-2);
-                        Toast.makeText(LoginActivity.this, tmp2 , Toast.LENGTH_LONG).show();
+                        //{"Access_token":"a","Access_token_expiration":"b","Refresh_token":"c","Refresh_token_expiration":"d"}
+
+                        String[] tmp = s.split(",");
+                        String[] access_tmp = tmp[0].split(":");
+                        String access_token = access_tmp[1].substring(1, access_tmp[1].length()-1);
+                        access_tmp = tmp[1].split(":");
+                        String access_token_expiration = access_tmp[1].substring(1, access_tmp[1].length()-1);
+                        String[] refresh_tmp = tmp[2].split(":");
+                        String refresh_token = refresh_tmp[1].substring(1, refresh_tmp[1].length()-1);
+                        refresh_tmp = tmp[3].split(":");
+                        String refresh_token_expiration = refresh_tmp[1].substring(1, refresh_tmp[1].length()-2);
+
+                        Communication.println("응답 --> " + access_token + " " + access_token_expiration + " " + refresh_token + " " + refresh_token_expiration);
 
                         share = getSharedPreferences("PREF", MODE_PRIVATE);
 
+                        Date date = new Date();
+
                         edit = share.edit();
-                        edit.putString("Access_token", tmp2);
+                        edit.putString("Access_token", access_token);
+                        edit.putLong("Access_token_expiration", Integer.parseInt(access_token_expiration));
+                        edit.putLong("Access_token_time", date.getTime());
+                        edit.putString("Refresh_token", refresh_token);
+                        edit.putLong("Refresh_token_expiration", Integer.parseInt(refresh_token_expiration));
+                        edit.putLong("Refresh_token_time", date.getTime());
                         edit.commit();
 
                     }

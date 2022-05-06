@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,6 +29,7 @@ import com.example.ddobagi.Fragment.TraceShapeFragment;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +43,7 @@ public class PlayActivity extends AppCompatActivity {
     SequenceChoiceFragment sequenceChoiceFragment;
     ChoiceWithPictureFragment choiceWithPictureFragment;
     TraceShapeFragment traceShapeFragment;
+    Date date;
 
     SharedPreferences share;
 
@@ -77,11 +80,20 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
+
     private void getRecommandationList(){
         share = getSharedPreferences("PREF", MODE_PRIVATE);
         if((share != null) && (share.contains("Access_token"))){
             Toast.makeText(getApplicationContext(), share.getString("Access_token", ""), Toast.LENGTH_LONG).show();
+            date = new Date();
+            Communication.println(String.valueOf(date.getTime()) + " " + String.valueOf(share.getLong("Access_token_time", 0)
+            ) );
+            if(date.getTime() - share.getLong("Access_token_time", 0) > 100000) {
+                Communication.refreshToken(getApplicationContext());
+                Communication.println("Refreshed");
+            }
         }
+
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
@@ -96,7 +108,12 @@ public class PlayActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Communication.handleVolleyError(error);
+                        if(error.networkResponse.statusCode==401) {
+                            //Communication.refreshToken(getApplicationContext());
+                        }
+                        else{
+                            Communication.handleVolleyError(error);
+                        }
                     }
                 }
         ) {
@@ -110,6 +127,10 @@ public class PlayActivity extends AppCompatActivity {
         };
         request.setShouldCache(false);
         Communication.requestQueue.add(request);
+
+
+
+
         Communication.println("요청 보냄.");
 
     }
