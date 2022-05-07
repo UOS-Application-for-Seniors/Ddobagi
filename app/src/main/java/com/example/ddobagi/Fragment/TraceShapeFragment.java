@@ -23,6 +23,14 @@ public class TraceShapeFragment extends GameFragment{
 
     ArrayList<Line> exampleLineList;
 
+    public TraceShapeFragment(){
+        isSTTAble = false;
+    }
+
+    public void receiveSTTResult(String voice){
+
+    }
+
     public int commit(){
         ArrayList<ExtendedLine> practiceLineList = practice.getLineList();
         int result = 0;

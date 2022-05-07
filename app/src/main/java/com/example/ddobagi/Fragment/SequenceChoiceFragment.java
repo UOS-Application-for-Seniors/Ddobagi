@@ -33,6 +33,14 @@ public class SequenceChoiceFragment extends GameFragment{
     int array = 0;
     final int buttonImgBound = 150;
 
+    public SequenceChoiceFragment(){
+        isSTTAble = true;
+    }
+
+    public void receiveSTTResult(String voice){
+
+    }
+
     public int commit(){
         int result = 0;
         String resultStr = "";
@@ -75,7 +83,8 @@ public class SequenceChoiceFragment extends GameFragment{
 
         quizdataUrl = url + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
 
-        quizDetail.setText(quiz.quizdetail);
+        detail = quiz.quizdetail;
+        quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
 
         String[] splitString = quiz.quizchoicesdetail.split(",");

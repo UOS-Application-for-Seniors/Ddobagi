@@ -36,6 +36,14 @@ public class LineConnectionFragment extends GameFragment{
     String quizAnswer;
     final int buttonImgBound = 120;
 
+    public LineConnectionFragment(){
+        isSTTAble = false;
+    }
+
+    public void receiveSTTResult(String voice){
+
+    }
+
     public int commit(){
         ArrayList<Line> lineList = lineConnectionView.getLineList();
         int result = 0;
@@ -95,7 +103,8 @@ public class LineConnectionFragment extends GameFragment{
             return;
         }
 
-        quizDetail.setText(quiz.quizdetail);
+        detail = quiz.quizdetail;
+        quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
 
         String[] splitString = quiz.quizchoicesdetail.split(",");

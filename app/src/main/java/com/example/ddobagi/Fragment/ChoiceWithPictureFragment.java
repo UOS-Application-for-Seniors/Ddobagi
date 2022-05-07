@@ -23,8 +23,10 @@ import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 public class ChoiceWithPictureFragment extends GameFragment {
     TextView quizDetail;
@@ -34,6 +36,43 @@ public class ChoiceWithPictureFragment extends GameFragment {
     String quizAnswer;
     final int buttonImgBound = 120, exampleImgBound = 150;
     String curAnswer = "0";
+
+    public ChoiceWithPictureFragment(){
+        isSTTAble = true;
+    }
+
+
+    public void receiveSTTResult(String voice){
+        int vAnsChoice = 0;
+        String vResultString = "";
+        char[] vResultChar;
+
+        vResultString = voice.toString();
+        vResultChar = vResultString.toCharArray();
+
+        for(int i = 0; i < vResultChar.length; i++) {
+            switch (vResultChar[i]) {
+                case '1' :
+                    vAnsChoice = 1;
+                    break;
+                case '2' :
+                    vAnsChoice = 2;
+                    break;
+                case '3' :
+                    vAnsChoice = 3;
+                    break;
+                case '4' :
+                    vAnsChoice = 4;
+                    break;
+            }
+        }
+        if(vAnsChoice == 0){
+            return;
+        }
+
+        onButtonTouch(Integer.toString(vAnsChoice - 1));
+    }
+
 
     public int commit(){
         int result = 0;
@@ -65,8 +104,8 @@ public class ChoiceWithPictureFragment extends GameFragment {
             return;
         }
 
-
-        quizDetail.setText(quiz.quizdetail);
+        detail = quiz.quizdetail;
+        quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
 
 
@@ -115,13 +154,23 @@ public class ChoiceWithPictureFragment extends GameFragment {
             choiceBtn[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    choiceBtn[Integer.parseInt(curAnswer)].setBackground(getResources().getDrawable(R.drawable.light_green_btn));
+                    onButtonTouch(Integer.toString(inmutable_index));
+                    /*choiceBtn[Integer.parseInt(curAnswer)].setBackground(getResources().getDrawable(R.drawable.light_green_btn));
                     curAnswer = Integer.toString(inmutable_index);
-                    choiceBtn[inmutable_index].setBackground(getResources().getDrawable(R.drawable.green_btn));
+                    choiceBtn[inmutable_index].setBackground(getResources().getDrawable(R.drawable.green_btn));*/
                 }
             });
         }
         return rootView;
+    }
+
+    private void onButtonTouch(String newAnswer){
+        Button curSelectButton = choiceBtn[Integer.parseInt(curAnswer)];
+        Button newTouchButton = choiceBtn[Integer.parseInt(newAnswer)];
+
+        curSelectButton.setBackground(getResources().getDrawable(R.drawable.light_green_btn));
+        this.curAnswer = newAnswer;
+        newTouchButton.setBackground(getResources().getDrawable(R.drawable.green_btn));
     }
 
     @Override
