@@ -133,10 +133,10 @@ public class MultipleChoiceFragment extends GameFragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_mutiple_choice, container, false);
         quizDetail = rootView.findViewById(R.id.quizDetail);
-        choiceBtn[0] = rootView.findViewById(R.id.choice_with_pic_select_btn1);
-        choiceBtn[1] = rootView.findViewById(R.id.choice_with_pic_select_btn2);
-        choiceBtn[2] = rootView.findViewById(R.id.choice_with_pic_select_btn3);
-        choiceBtn[3] = rootView.findViewById(R.id.choice_with_pic_select_btn4);
+        choiceBtn[0] = rootView.findViewById(R.id.multiple_btn1);
+        choiceBtn[1] = rootView.findViewById(R.id.multiple_btn2);
+        choiceBtn[2] = rootView.findViewById(R.id.multiple_btn3);
+        choiceBtn[3] = rootView.findViewById(R.id.multiple_btn4);
 
         for(int i=0; i<choiceNum; i++){
             final int inmutable_index = i;

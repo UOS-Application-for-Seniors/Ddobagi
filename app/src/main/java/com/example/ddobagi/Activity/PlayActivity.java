@@ -90,6 +90,7 @@ public class PlayActivity extends AppCompatActivity {
         choiceWithPictureFragment = new ChoiceWithPictureFragment();
         traceShapeFragment = new TraceShapeFragment();
 
+
         setButton();
 
         Intent intent = getIntent();

@@ -33,7 +33,7 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/choice_with_pic_select_btn1"
+                android:id="@+id/sequnce_choice_btn1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -42,7 +42,7 @@
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/choice_with_pic_select_btn2"
+                android:id="@+id/sequnce_choice_btn2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -58,7 +58,7 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/choice_with_pic_select_Btn3"
+                android:id="@+id/sequnce_choice_btn3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -67,7 +67,7 @@
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/choice_with_pic_select_Btn4"
+                android:id="@+id/sequnce_choice_btn4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
