@@ -93,14 +93,14 @@ public class PlayActivity extends AppCompatActivity {
         setButton();
 
         Intent intent = getIntent();
-        getRecommandationList();
+        //getRecommandationList();
         String type = intent.getStringExtra("type");
-        if(type == "recommend"){
-            getRecommandationList();
-        }
-        else if(type == "select"){
-            //게임 선택하는 창 띄우기
-        }
+//        if(type == "recommend"){
+//            getRecommandationList();
+//        }
+//        else if(type == "select"){
+//            //게임 선택하는 창 띄우기
+//        }
 
         //=============================음성인식=============================
         textView = (TextView) findViewById(R.id.sttResult);
