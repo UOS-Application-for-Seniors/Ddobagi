@@ -36,6 +36,7 @@ public class SequenceChoiceFragment extends GameFragment{
 
     public SequenceChoiceFragment(){
         isSTTAble = true;
+
     }
 
     public void receiveSTTResult(String voice){
@@ -45,6 +46,11 @@ public class SequenceChoiceFragment extends GameFragment{
 
         vResultString = voice.toString();
         vResultChar = vResultString.toCharArray();
+
+        for (int i = 0; i < choiceNum; i++){
+            curAnswer[i] = -1;
+        }
+        index = 0;
 
         for(int i = 0; i < vResultChar.length; i++) {
             switch (vResultChar[i]) {
@@ -129,11 +135,11 @@ public class SequenceChoiceFragment extends GameFragment{
     }
 
     private void onButtonTouch(int newAnswer){
-        for(int i = 0; i< index + 1; i++){
+        for(int i = 0; i < choiceNum; i++){
             if(curAnswer[i] == newAnswer){
-                for(int j = 0; j<index; j++){
+                for(int j = 0; j < choiceNum; j++){
                     curAnswer[j] = -1;
-                    sequenceView[j].setText(" ");
+                    sequenceView[j].setText("");
                 }
                 index = 0;
                 return;
@@ -175,5 +181,10 @@ public class SequenceChoiceFragment extends GameFragment{
     @Override
     public void onStart() {
         super.onStart();
+
+        for (int i = 0; i < choiceNum; i++){
+            curAnswer[i] = -1;
+        }
+        index = 0;
     }
 }
