@@ -52,7 +52,7 @@ public abstract class GameFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Communication.handleVolleyError(error);
+                            Communication.handleVolleyError(error);
                     }
                 }
         ){

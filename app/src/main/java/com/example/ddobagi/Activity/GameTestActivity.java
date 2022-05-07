@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -140,7 +141,12 @@ public class GameTestActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Communication.handleVolleyError(error);
+                        if(error.networkResponse.statusCode==401) {
+                            Communication.refreshToken(getApplicationContext());
+                        }
+                        else{
+                            Communication.handleVolleyError(error);
+                        }
                     }
                 }
         ) {
@@ -155,6 +161,8 @@ public class GameTestActivity extends AppCompatActivity {
             }
         };
         request.setShouldCache(false);
+        request.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Communication.requestQueue.add(request);
         println("요청 보냄.");
     }
