@@ -37,8 +37,37 @@ public class MultipleChoiceFragment extends GameFragment{
     }
 
     public void receiveSTTResult(String voice){
+        int vAnsChoice = 0;
+        String vResultString = "";
+        char[] vResultChar;
 
+        vResultString = voice.toString();
+        vResultChar = vResultString.toCharArray();
+
+        for(int i = 0; i < vResultChar.length; i++) {
+            switch (vResultChar[i]) {
+                case '1' :
+                    vAnsChoice = 1;
+                    break;
+                case '2' :
+                    vAnsChoice = 2;
+                    break;
+                case '3' :
+                    vAnsChoice = 3;
+                    break;
+                case '4' :
+                    vAnsChoice = 4;
+                    break;
+            }
+        }
+
+        if(vAnsChoice == 0){
+            return;
+        }
+
+        onButtonTouch(Integer.toString(vAnsChoice - 1));
     }
+
 
     public int commit(){
         int result = 0;
@@ -105,24 +134,32 @@ public class MultipleChoiceFragment extends GameFragment{
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_mutiple_choice, container, false);
         quizDetail = rootView.findViewById(R.id.quizDetail);
         choiceBtn[0] = rootView.findViewById(R.id.choice_with_pic_select_btn1);
-        choiceBtn[1] = rootView.findViewById(R.id.short_img_btn);
-        choiceBtn[2] = rootView.findViewById(R.id.choice_with_pic_select_Btn3);
-        choiceBtn[3] = rootView.findViewById(R.id.choice_with_pic_select_Btn4);
+        choiceBtn[1] = rootView.findViewById(R.id.choice_with_pic_select_btn2);
+        choiceBtn[2] = rootView.findViewById(R.id.choice_with_pic_select_btn3);
+        choiceBtn[3] = rootView.findViewById(R.id.choice_with_pic_select_btn4);
 
         for(int i=0; i<choiceNum; i++){
             final int inmutable_index = i;
             choiceBtn[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    choiceBtn[Integer.parseInt(curAnswer)].setBackground(getResources().getDrawable(R.drawable.light_green_btn));
-                    curAnswer = Integer.toString(inmutable_index);
-                    choiceBtn[inmutable_index].setBackground(getResources().getDrawable(R.drawable.green_btn));
+                    onButtonTouch(Integer.toString(inmutable_index));
                 }
             });
         }
 
         return rootView;
     }
+
+    private void onButtonTouch(String newAnswer){
+        Button curSelectButton = choiceBtn[Integer.parseInt(curAnswer)];
+        Button newTouchButton = choiceBtn[Integer.parseInt(newAnswer)];
+
+        curSelectButton.setBackground(getResources().getDrawable(R.drawable.light_green_btn));
+        this.curAnswer = newAnswer;
+        newTouchButton.setBackground(getResources().getDrawable(R.drawable.green_btn));
+    }
+
 
     @Override
     public void onStart() {

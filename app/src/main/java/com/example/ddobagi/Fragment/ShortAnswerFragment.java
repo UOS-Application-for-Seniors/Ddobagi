@@ -37,7 +37,7 @@ public class ShortAnswerFragment extends GameFragment{
     }
 
     public void receiveSTTResult(String voice){
-
+        editText.setText(voice);
     }
 
     public int commit(){

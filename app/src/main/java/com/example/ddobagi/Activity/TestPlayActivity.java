@@ -126,6 +126,7 @@ public class TestPlayActivity extends AppCompatActivity {
         sttIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         sttIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
         sttIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
+
         sttBtn.setOnClickListener(v -> {
             mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
             mRecognizer.setRecognitionListener(listener);
@@ -134,7 +135,6 @@ public class TestPlayActivity extends AppCompatActivity {
 
         //음성인식 답안 제출
         sttSubmit = (Button) findViewById(R.id.sttSubmit);
-
 
         ttsBtn = (Button) findViewById(R.id.ttsStart);
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -145,6 +145,7 @@ public class TestPlayActivity extends AppCompatActivity {
                 }
             }
         });
+
         ttsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
