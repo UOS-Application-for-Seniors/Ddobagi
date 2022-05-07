@@ -1,13 +1,20 @@
 package com.example.ddobagi.Activity;
 
+import static android.speech.tts.TextToSpeech.ERROR;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -28,8 +35,11 @@ import com.example.ddobagi.Fragment.TraceShapeFragment;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Vector;
 
 public class PlayActivity extends AppCompatActivity {
     GameFragment curGameFragment;
@@ -50,6 +60,20 @@ public class PlayActivity extends AppCompatActivity {
 
     int fragmentIndex = 0;
     int fragmentNum = 7;
+
+    Intent sttIntent;
+    SpeechRecognizer mRecognizer;
+    Button sttBtn;
+    TextView textView;
+
+    Vector<Integer> vAnsChoice = new Vector<Integer>();
+    String[] vAnsShort = null;
+    String vResultString = "";
+    char[] vResultChar;
+    Button sttSubmit;
+
+    TextToSpeech tts;
+    Button ttsBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +99,43 @@ public class PlayActivity extends AppCompatActivity {
         else if(type == "select"){
             //게임 선택하는 창 띄우기
         }
+
+        //=============================음성인식=============================
+        textView = (TextView) findViewById(R.id.sttResult);
+        sttBtn = (Button) findViewById(R.id.sttStart);
+        sttIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        sttIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
+        sttIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
+        sttBtn.setOnClickListener(v -> {
+            mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+            mRecognizer.setRecognitionListener(listener);
+            mRecognizer.startListening(sttIntent);
+        });
+
+        //음성인식 답안 제출
+        sttSubmit = (Button) findViewById(R.id.sttSubmit);
+
+        //tts
+        CharSequence ttsText = "이곳은 읽을 문장을 입력하는 곳입니다";
+        ttsBtn = (Button) findViewById(R.id.ttsStart);
+        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != ERROR) {
+                    tts.setLanguage(Locale.KOREAN);
+                }
+            }
+        });
+        ttsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tts.setPitch(1.0f);         // 음성 톤 설정 (n배)
+                tts.setSpeechRate(1.0f);    // 읽는 속도 설정 (n배)
+                tts.speak(ttsText.toString(), TextToSpeech.QUEUE_FLUSH, null);
+            }
+        });
     }
+    //=================================================================
 
     private void getRecommandationList(){
         share = getSharedPreferences("PREF", MODE_PRIVATE);
@@ -239,5 +299,148 @@ public class PlayActivity extends AppCompatActivity {
 
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.container, curGameFragment).commit();
+    }
+
+    //=============================음성인식 listener=============================
+    private RecognitionListener listener = new RecognitionListener() {
+        @Override
+        public void onReadyForSpeech(Bundle bundle) {
+            Toast.makeText(getApplicationContext(), "음성인식을 시작합니다", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+
+        }
+
+        @Override
+        public void onRmsChanged(float v) {
+
+        }
+
+        @Override
+        public void onBufferReceived(byte[] bytes) {
+
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+
+        }
+
+        @Override
+        public void onError(int error) {
+            String message;
+
+            switch (error) {
+                case SpeechRecognizer.ERROR_AUDIO:
+                    message = "오디오 에러";
+                    break;
+                case SpeechRecognizer.ERROR_CLIENT:
+                    message = "클라이언트 에러";
+                    break;
+                case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                    message = "퍼미션 없음";
+                    break;
+                case SpeechRecognizer.ERROR_NETWORK:
+                    message = "네트워크 에러";
+                    break;
+                case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                    message = "네트워크 타임아웃";
+                    break;
+                case SpeechRecognizer.ERROR_NO_MATCH:
+                    message = "찾을 수 없음";
+                    break;
+                case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                    message = "RECOGNIZER가 바쁨";
+                    break;
+                case SpeechRecognizer.ERROR_SERVER:
+                    message = "말하는 시간 초과";
+                    break;
+                default:
+                    message = "알 수 없는 오류";
+                    break;
+            }
+
+            Toast.makeText(getApplicationContext(), "에러가 발생하였습니다. : " + message, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onResults(Bundle bundle) {
+            ArrayList<String> matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            for (int i = 0; i < matches.size(); i++) {
+                Log.e("MainActivity" ,"" + matches.get(i));
+                textView.setText(matches.get(i));
+            }
+
+            //주관식 문제에 대한 답안 가공
+            vAnsShort = matches.get(0).split(" ");
+            for (int i = 0; i < vAnsShort.length; i++) {
+                System.out.println("주관식 답안["+ (i + 1) + "] : " + vAnsShort[i]);
+            }
+
+            //객관식 문제에 대한 답안 가공
+            vResultString = matches.toString();
+            vResultChar = vResultString.toCharArray();
+            vAnsChoice.clear();
+
+            for(int i = 0; i < vResultChar.length; i++) {
+                switch (vResultChar[i]) {
+                    case '1' :
+                        vAnsChoice.add(1);
+                        break;
+                    case '2' :
+                        vAnsChoice.add(2);
+                        break;
+                    case '3' :
+                        vAnsChoice.add(3);
+                        break;
+                    case '4' :
+                        vAnsChoice.add(4);
+                        break;
+                    case '5' :
+                        vAnsChoice.add(5);
+                        break;
+                    case '6' :
+                        vAnsChoice.add(6);
+                        break;
+                    case '7' :
+                        vAnsChoice.add(7);
+                        break;
+                    case '8' :
+                        vAnsChoice.add(8);
+                        break;
+                    case '9' :
+                        vAnsChoice.add(9);
+                        break;
+                }
+            }
+            for(int i = 0; i < vAnsChoice.size(); i++)
+            {
+                Log.e("MainActivity", "" + vAnsChoice.get(i));
+            }
+
+        }
+
+        @Override
+        public void onPartialResults(Bundle bundle) {
+
+        }
+
+        @Override
+        public void onEvent(int i, Bundle bundle) {
+
+        }
+
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(tts != null) {
+            tts.stop();
+            tts.shutdown();
+            tts = null;
+        }
     }
 }

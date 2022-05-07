@@ -40,41 +40,55 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/sttStart"
+            android:id="@+id/sttStartTemp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="88dp"
             android:background="@drawable/exit_btn"
             android:fontFamily="@font/batang"
             android:text="말하기"
             android:textSize="25sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/sttResult"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/exit_btn"
-            app:layout_constraintVertical_bias="0.024" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/sttSubmit"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="160dp"
             android:background="@drawable/exit_btn"
             android:fontFamily="@font/batang"
             android:text="제출하기"
             android:textSize="25sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/sttResult"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/exit_btn"
-            app:layout_constraintVertical_bias="0.194" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/ttsStarttemp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="232dp"
+            android:background="@drawable/exit_btn"
+            android:fontFamily="@font/batang"
+            android:text="설명듣기"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/sttResult"
+            android:id="@+id/sttResultTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
