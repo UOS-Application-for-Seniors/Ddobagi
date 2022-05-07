@@ -93,14 +93,14 @@ public class PlayActivity extends AppCompatActivity {
         setButton();
 
         Intent intent = getIntent();
-        //getRecommandationList();
+        /*getRecommandationList();
         String type = intent.getStringExtra("type");
-//        if(type == "recommend"){
-//            getRecommandationList();
-//        }
-//        else if(type == "select"){
-//            //게임 선택하는 창 띄우기
-//        }
+        if(type == "recommend"){
+            getRecommandationList();
+        }
+        else if(type == "select"){
+            //게임 선택하는 창 띄우기
+        }*/
 
         //=============================음성인식=============================
         textView = (TextView) findViewById(R.id.sttResult);
@@ -231,6 +231,12 @@ public class PlayActivity extends AppCompatActivity {
         if(curGameFragment != null){
             getSupportFragmentManager().beginTransaction().replace(R.id.container, curGameFragment).commit();
             curGameFragment.loadGame(quizList[quizIndex].gameid, 0);
+            if(curGameFragment.isSTTAble()){
+                sttBtn.setVisibility(View.VISIBLE);
+            }
+            else{
+                sttBtn.setVisibility(View.INVISIBLE);
+            }
             Log.d("gameID", Integer.toString(quizList[quizIndex].gameid));
         }
     }
@@ -391,6 +397,8 @@ public class PlayActivity extends AppCompatActivity {
                 Log.e("MainActivity" ,"" + matches.get(i));
                 textView.setText(matches.get(i));
             }
+
+
 
             //주관식 문제에 대한 답안 가공
             vAnsShort = matches.get(0).split(" ");

@@ -32,6 +32,14 @@ public class MultipleChoiceFragment extends GameFragment{
     String curAnswer = "1";
     final int buttonImgBound = 200;
 
+    public MultipleChoiceFragment(){
+        isSTTAble = true;
+    }
+
+    public void receiveSTTResult(String voice){
+
+    }
+
     public int commit(){
         int result = 0;
         if(quizAnswer.equals(curAnswer)){
@@ -62,8 +70,8 @@ public class MultipleChoiceFragment extends GameFragment{
             return;
         }
 
-
-        quizDetail.setText(quiz.quizdetail);
+        detail = quiz.quizdetail;
+        quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
 
         String[] splitString = quiz.quizchoicesdetail.split(",");

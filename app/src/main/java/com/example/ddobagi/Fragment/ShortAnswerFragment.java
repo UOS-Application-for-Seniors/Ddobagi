@@ -32,6 +32,14 @@ public class ShortAnswerFragment extends GameFragment{
     String quizAnswer;
     final int buttonImgBound = 350;
 
+    public ShortAnswerFragment(){
+        isSTTAble = true;
+    }
+
+    public void receiveSTTResult(String voice){
+
+    }
+
     public int commit(){
         int result = 0;
 
@@ -63,7 +71,8 @@ public class ShortAnswerFragment extends GameFragment{
             return;
         }
 
-        quizDetail.setText(quiz.quizdetail);
+        detail = quiz.quizdetail;
+        quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
 
         setImageOnButton(url, imgBtn, buttonImgBound);

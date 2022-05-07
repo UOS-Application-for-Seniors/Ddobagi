@@ -29,13 +29,19 @@ public abstract class GameFragment extends Fragment {
     int gameID, quizID;
     String gameName;
     String gameField;
-    String detail;
+    String detail = "문제 설명";
     Bitmap pictures[];
     String helpdata;
+    boolean isSTTAble;
 
     abstract public int commit();
     abstract void onHelp();
     abstract public void loadGame(int gameID, int quizID);
+    abstract public void receiveSTTResult(String voice);
+
+    public String getDetail() {
+        return detail;
+    }
 
     void getGameData(){
         String url = "http://121.164.170.67:3000/quiz/" + Integer.toString(gameID) + "/" + Integer.toString(quizID);
@@ -98,5 +104,9 @@ public abstract class GameFragment extends Fragment {
             }
         });
         loadImage.execute(url);
+    }
+
+    public boolean isSTTAble() {
+        return isSTTAble;
     }
 }

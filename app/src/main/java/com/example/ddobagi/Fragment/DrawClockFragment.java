@@ -20,10 +20,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DrawClockFragment extends GameFragment{
+    public DrawClockFragment(){
+        isSTTAble = false;
+    }
     public int commit(){
         int result = 0;
         return result;
     }
+
+
+    public void receiveSTTResult(String voice){
+
+    }
+
     void onHelp(){
 
     }
