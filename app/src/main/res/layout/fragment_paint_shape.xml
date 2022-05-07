@@ -27,38 +27,26 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/short_answer_img_button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/yellow_btn"
-                android:textSize="30sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/editTextTextPersonName"
+            <com.example.ddobagi.View.PaintShapeExample
+                android:id="@+id/paint_shape_example"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:layout_height="600dp"
+                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:background="@drawable/light_green_btn"
-                android:ems="10"
-                android:gravity="center"
-                android:hint="이곳을 터치해 정답을 입력하세요"
-                android:inputType="textPersonName"
-                android:textSize="50sp" />
+                android:textSize="30sp" />
+
+            <com.example.ddobagi.View.PaintShapePractice
+                android:id="@+id/paint_shape_practice"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.8"
+                android:textSize="30sp" />
+
         </LinearLayout>
 
     </LinearLayout>

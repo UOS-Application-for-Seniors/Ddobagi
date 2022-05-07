@@ -36,6 +36,8 @@ public abstract class GameFragment extends Fragment {
     abstract public int commit();
     abstract void onHelp();
     abstract public void loadGame(int gameID, int quizID);
+    abstract public void onGetGameDataResponse(String response);
+
 
     void getGameData(){
         String url = "http://121.164.170.67:3000/quiz/" + Integer.toString(gameID) + "/" + Integer.toString(quizID);
@@ -70,8 +72,6 @@ public abstract class GameFragment extends Fragment {
         Communication.requestQueue.add(request);
         Communication.println("요청 보냄.");
     }
-
-    abstract public void onGetGameDataResponse(String response);
 
     public void setImageOnButton(String url, Button button, int bound) {
         LoadImage loadImage = new LoadImage((bitmap) -> {

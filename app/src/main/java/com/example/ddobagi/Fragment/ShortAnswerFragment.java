@@ -12,18 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ShortAnswerFragment extends GameFragment{
     TextView quizDetail;
@@ -82,7 +73,7 @@ public class ShortAnswerFragment extends GameFragment{
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_short_answer, container, false);
         quizDetail = rootView.findViewById(R.id.quizDetail);
         editText = rootView.findViewById(R.id.editTextTextPersonName);
-        imgBtn = rootView.findViewById(R.id.short_img_btn);
+        imgBtn = rootView.findViewById(R.id.short_answer_img_button);
         return rootView;
     }
 }

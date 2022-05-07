@@ -11,18 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MultipleChoiceFragment extends GameFragment{
     TextView quizDetail;
@@ -96,10 +87,10 @@ public class MultipleChoiceFragment extends GameFragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_mutiple_choice, container, false);
         quizDetail = rootView.findViewById(R.id.quizDetail);
-        choiceBtn[0] = rootView.findViewById(R.id.choice_with_pic_select_btn1);
-        choiceBtn[1] = rootView.findViewById(R.id.short_img_btn);
-        choiceBtn[2] = rootView.findViewById(R.id.choice_with_pic_select_Btn3);
-        choiceBtn[3] = rootView.findViewById(R.id.choice_with_pic_select_Btn4);
+        choiceBtn[0] = rootView.findViewById(R.id.multiple_btn1);
+        choiceBtn[1] = rootView.findViewById(R.id.multiple_btn2);
+        choiceBtn[2] = rootView.findViewById(R.id.multiple_btn3);
+        choiceBtn[3] = rootView.findViewById(R.id.multiple_btn4);
 
         for(int i=0; i<choiceNum; i++){
             final int inmutable_index = i;

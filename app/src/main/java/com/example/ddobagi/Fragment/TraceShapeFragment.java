@@ -73,7 +73,7 @@ public class TraceShapeFragment extends GameFragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_trace_shape, container, false);
-        example = rootView.findViewById(R.id.short_img_btn);
+        example = rootView.findViewById(R.id.trace_shape_example);
         practice = rootView.findViewById(R.id.trace_shape_practice);
 
         exampleLineList = new ArrayList<>();
