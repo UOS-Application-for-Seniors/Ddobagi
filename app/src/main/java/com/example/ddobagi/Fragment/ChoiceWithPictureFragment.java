@@ -80,7 +80,6 @@ public class ChoiceWithPictureFragment extends GameFragment {
         if(quizAnswer.equals(curAnswer)){
             result = 1;
         }
-        Log.d("commit", Integer.toString(result));
         return result;
     }
 
@@ -105,6 +104,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
             return;
         }
 
+        quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
@@ -118,20 +118,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
             tmp = tmp + Integer.toString(i) + ".jfif";
             setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
             // choiceBtn[i].setText(splitString[i]);
-            choiceBtn[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(getActivity(), "정답이 아닙니다", Toast.LENGTH_LONG).show();
-                }
-            });
         }
-
-        choiceBtn[Integer.parseInt(quizAnswer)].setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "정답입니다", Toast.LENGTH_LONG).show();
-            }
-        }));
 
         // Setup Image on Image View
         String tmp = url;
@@ -177,5 +164,13 @@ public class ChoiceWithPictureFragment extends GameFragment {
     @Override
     public void onStart() {
         super.onStart();
+        init();
+    }
+
+    public void init(){
+        for(int i =0; i<choiceNum; i++){
+            choiceBtn[i].setText("");
+            choiceBtn[i].setCompoundDrawables(null, null, null, null);
+        }
     }
 }

@@ -37,7 +37,7 @@ public class ShortAnswerFragment extends GameFragment{
         if(editText.getText().toString().equals(quizAnswer)){
             result = 1;
         }
-        Log.d("commit", Integer.toString(result));
+        //Log.d("commit", Integer.toString(result));
         return result;
     }
 
@@ -62,6 +62,7 @@ public class ShortAnswerFragment extends GameFragment{
             return;
         }
 
+        quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
@@ -84,5 +85,16 @@ public class ShortAnswerFragment extends GameFragment{
         editText = rootView.findViewById(R.id.editTextTextPersonName);
         imgBtn = rootView.findViewById(R.id.short_answer_img_button);
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        init();
+    }
+
+    public void init(){
+        imgBtn.setCompoundDrawables(null, null, null, null);
+        editText.setText("");
     }
 }

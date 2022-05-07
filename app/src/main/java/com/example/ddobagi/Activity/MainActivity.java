@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO}, PERMISSION);
         }
 
+        Communication.refreshToken(this);
         setButton();
     }
 
@@ -54,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), TestPlayActivity.class);
+                Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+                intent.putExtra("type", "test");
                 startActivity(intent);
             }
         });

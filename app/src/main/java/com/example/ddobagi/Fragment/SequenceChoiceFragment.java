@@ -36,7 +36,6 @@ public class SequenceChoiceFragment extends GameFragment{
 
     public SequenceChoiceFragment(){
         isSTTAble = true;
-
     }
 
     public void receiveSTTResult(String voice){
@@ -120,6 +119,7 @@ public class SequenceChoiceFragment extends GameFragment{
 
         quizdataUrl = url + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
 
+        quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
@@ -181,9 +181,15 @@ public class SequenceChoiceFragment extends GameFragment{
     @Override
     public void onStart() {
         super.onStart();
+        init();
+    }
 
+    public void init(){
         for (int i = 0; i < choiceNum; i++){
             curAnswer[i] = -1;
+            choiceBtn[i].setText("");
+            sequenceView[i].setText("");
+            choiceBtn[i].setCompoundDrawables(null, null, null, null);
         }
         index = 0;
     }

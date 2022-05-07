@@ -163,7 +163,7 @@ public class TestPlayActivity extends AppCompatActivity {
         ttsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CharSequence ttsText = curGameFragment.getDetail();
+                CharSequence ttsText = curGameFragment.getQuizTTS();
                 tts.setPitch(1.0f);         // 음성 톤 설정 (n배)
                 tts.setSpeechRate(1.0f);    // 읽는 속도 설정 (n배)
                 tts.speak(ttsText.toString(), TextToSpeech.QUEUE_FLUSH, null);

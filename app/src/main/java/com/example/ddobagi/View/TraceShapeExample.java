@@ -103,14 +103,17 @@ public class TraceShapeExample extends View {
     }
 
     public void printLineList(){
-        for(Line line: lineList){
-            Log.d("lines", line.start + "-->" + line.end);
+        if(lineList != null){
+            for(Line line: lineList){
+                Log.d("lines", line.start + "-->" + line.end);
+            }
+            Log.d("lines", "-----------");
         }
-        Log.d("lines", "-----------");
     }
 
     public void setLineList(ArrayList<Line> lineList){
         this.lineList = lineList;
+        assignPath();
         invalidate();
     }
 
@@ -130,8 +133,10 @@ public class TraceShapeExample extends View {
     }
 
     private void drawAllLines(Canvas canvas){
-        for(Line line : lineList){
-            canvas.drawPath(line.path, linePaint);
+        if(lineList != null){
+            for(Line line : lineList){
+                canvas.drawPath(line.path, linePaint);
+            }
         }
     }
 }

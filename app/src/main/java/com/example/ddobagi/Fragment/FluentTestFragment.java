@@ -72,6 +72,7 @@ public class FluentTestFragment extends GameFragment{
             return;
         }
 
+        quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
@@ -90,6 +91,9 @@ public class FluentTestFragment extends GameFragment{
             @Override
             public void onClick(View view) {
                 String str = inputText.getText().toString();
+                if(str.equals("")){
+                    return;
+                }
                 curAnswer.add(str);
                 inputProgress.append(str + ", ");
                 inputText.setText("");
@@ -104,6 +108,10 @@ public class FluentTestFragment extends GameFragment{
     @Override
     public void onStart() {
         super.onStart();
+        init();
+    }
+
+    public void init(){
         curAnswer.clear();
         inputProgress.setText("");
     }

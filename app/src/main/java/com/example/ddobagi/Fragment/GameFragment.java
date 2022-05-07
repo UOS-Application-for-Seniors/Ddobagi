@@ -27,21 +27,24 @@ import java.util.Map;
 
 public abstract class GameFragment extends Fragment {
     int gameID, quizID;
+    String quizTTS;
     String gameName;
     String gameField;
     String detail = "문제 설명";
     Bitmap pictures[];
     String helpdata;
+
+    public String getQuizTTS() {
+        return quizTTS;
+    }
+
     boolean isSTTAble;
 
     abstract public int commit();
     abstract void onHelp();
     abstract public void loadGame(int gameID, int quizID);
     abstract public void receiveSTTResult(String voice);
-
-    public String getDetail() {
-        return detail;
-    }
+    abstract public void init();
 
     void getGameData(){
         String url = "http://121.164.170.67:3000/quiz/" + Integer.toString(gameID) + "/" + Integer.toString(quizID);
@@ -81,12 +84,14 @@ public abstract class GameFragment extends Fragment {
 
     public void setImageOnButton(String url, Button button, int bound) {
         LoadImage loadImage = new LoadImage((bitmap) -> {
-            Drawable drawable;
-
-            drawable = new BitmapDrawable(bitmap);
-            if (drawable != null) {
+            if(bitmap != null){
+                Drawable drawable;
+                drawable = new BitmapDrawable(bitmap);
                 drawable.setBounds(0, 0, bound, bound);
                 button.setCompoundDrawables(null, drawable, null, null);
+            }
+            else{
+                button.setTextSize(80.0f);
             }
         });
         loadImage.execute(url);
@@ -95,10 +100,9 @@ public abstract class GameFragment extends Fragment {
     // setImage method works on ImageView
     public void setImageOnImageView(String url, ImageView view, int bound){
         LoadImage loadImage = new LoadImage((bitmap) -> {
-            Drawable drawable;
-
-            drawable = new BitmapDrawable(bitmap);
-            if(drawable != null){
+            if(bitmap!= null){
+                Drawable drawable;
+                drawable = new BitmapDrawable(bitmap);
                 drawable.setBounds( 0, 0, bound, bound);
                 view.setImageDrawable(drawable);
             }

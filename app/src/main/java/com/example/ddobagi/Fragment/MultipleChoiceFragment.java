@@ -29,7 +29,7 @@ public class MultipleChoiceFragment extends GameFragment{
     int choiceNum = 4;
     Button[] choiceBtn = new Button[choiceNum];
     String quizAnswer;
-    String curAnswer = "1";
+    String curAnswer = "";
     final int buttonImgBound = 200;
 
     public MultipleChoiceFragment(){
@@ -74,7 +74,7 @@ public class MultipleChoiceFragment extends GameFragment{
         if(quizAnswer.equals(curAnswer)){
             result = 1;
         }
-        Log.d("commit", Integer.toString(result));
+        //Log.d("commit", Integer.toString(result));
         return result;
     }
 
@@ -99,6 +99,7 @@ public class MultipleChoiceFragment extends GameFragment{
             return;
         }
 
+        quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
@@ -164,5 +165,9 @@ public class MultipleChoiceFragment extends GameFragment{
     @Override
     public void onStart() {
         super.onStart();
+    }
+
+    public void init(){
+
     }
 }

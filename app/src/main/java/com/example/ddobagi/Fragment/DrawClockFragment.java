@@ -51,4 +51,8 @@ public class DrawClockFragment extends GameFragment{
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_draw_clock, container, false);
         return rootView;
     }
+
+    public void init(){
+
+    }
 }

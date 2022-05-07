@@ -6,4 +6,5 @@ public class Quiz {
     public String quizchoicesdetail;
     public String quizdatapath;
     public String quizanswer;
+    public String quizTTS;
 }

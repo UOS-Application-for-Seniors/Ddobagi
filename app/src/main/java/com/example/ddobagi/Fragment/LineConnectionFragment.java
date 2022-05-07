@@ -73,11 +73,11 @@ public class LineConnectionFragment extends GameFragment{
             }
         }
         if(resultCnt == linePair.length){
-            Toast.makeText(getActivity(), "정답입니다", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity(), "정답입니다", Toast.LENGTH_LONG).show();
             result = 1;
         }
         else{
-            Toast.makeText(getActivity(), "정답이 아닙니다", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity(), "정답이 아닙니다", Toast.LENGTH_LONG).show();
             result = 0;
         }
         return result;
@@ -103,6 +103,7 @@ public class LineConnectionFragment extends GameFragment{
             return;
         }
 
+        quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
@@ -137,5 +138,9 @@ public class LineConnectionFragment extends GameFragment{
     @Override
     public void onStart() {
         super.onStart();
+    }
+
+    public void init(){
+
     }
 }

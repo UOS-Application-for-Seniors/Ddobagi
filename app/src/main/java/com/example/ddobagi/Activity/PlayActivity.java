@@ -24,8 +24,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.QuizInfoSummary;
+import com.example.ddobagi.Fragment.BeatFragment;
 import com.example.ddobagi.Fragment.ChoiceWithPictureFragment;
 import com.example.ddobagi.Fragment.DrawClockFragment;
+import com.example.ddobagi.Fragment.FluentTestFragment;
 import com.example.ddobagi.Fragment.GameFragment;
 import com.example.ddobagi.Fragment.MultipleChoiceFragment;
 import com.example.ddobagi.Fragment.LineConnectionFragment;
@@ -54,6 +56,9 @@ public class PlayActivity extends AppCompatActivity {
     ChoiceWithPictureFragment choiceWithPictureFragment;
     TraceShapeFragment traceShapeFragment;
     PaintShapeFragment paintShapeFragment;
+    BeatFragment beatFragment;
+    FluentTestFragment fluentTestFragment;
+
     Date date;
 
     SharedPreferences share;
@@ -63,7 +68,7 @@ public class PlayActivity extends AppCompatActivity {
     int quizIndex = 0;
 
     int fragmentIndex = 0;
-    int fragmentNum = 8;
+    int fragmentNum = 10;
 
     Intent sttIntent;
     SpeechRecognizer mRecognizer;
@@ -92,6 +97,8 @@ public class PlayActivity extends AppCompatActivity {
         choiceWithPictureFragment = new ChoiceWithPictureFragment();
         traceShapeFragment = new TraceShapeFragment();
         paintShapeFragment = new PaintShapeFragment();
+        beatFragment = new BeatFragment();
+        fluentTestFragment = new FluentTestFragment();
 
         setButton();
 
@@ -104,7 +111,7 @@ public class PlayActivity extends AppCompatActivity {
             //게임 선택하는 창 띄우기
         }
         else if(type.equals("test")){
-            //치매 검사
+            getDementiaTestList();
         }
 
         //=============================음성인식=============================
@@ -113,6 +120,7 @@ public class PlayActivity extends AppCompatActivity {
         sttIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         sttIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
         sttIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
+
         sttBtn.setOnClickListener(v -> {
             mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
             mRecognizer.setRecognitionListener(listener);
@@ -122,8 +130,6 @@ public class PlayActivity extends AppCompatActivity {
         //음성인식 답안 제출
         sttSubmit = (Button) findViewById(R.id.sttSubmit);
 
-        //tts
-        CharSequence ttsText = "이곳은 읽을 문장을 입력하는 곳입니다";
         ttsBtn = (Button) findViewById(R.id.ttsStart);
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -133,16 +139,69 @@ public class PlayActivity extends AppCompatActivity {
                 }
             }
         });
+
         ttsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CharSequence ttsText = curGameFragment.getQuizTTS();
                 tts.setPitch(1.0f);         // 음성 톤 설정 (n배)
                 tts.setSpeechRate(1.0f);    // 읽는 속도 설정 (n배)
                 tts.speak(ttsText.toString(), TextToSpeech.QUEUE_FLUSH, null);
             }
         });
+
+        fragmentChange();
     }
     //=================================================================
+
+    private void getDementiaTestList(){
+        share = getSharedPreferences("PREF", MODE_PRIVATE);
+        if((share != null) && (share.contains("Access_token"))){
+            Toast.makeText(getApplicationContext(), share.getString("Access_token", ""), Toast.LENGTH_LONG).show();
+            date = new Date();
+            Communication.println(String.valueOf(date.getTime()) + " " + String.valueOf(share.getLong("Access_token_time", 0)
+            ) );
+            if(date.getTime() - share.getLong("Access_token_time", 0) > 100000) {
+                Communication.refreshToken(getApplicationContext());
+                Communication.println("Refreshed");
+            }
+        }
+
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                Communication.testListUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Communication.println("응답 --> " + response);
+                        onGetRecommandationListResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if(error.networkResponse.statusCode==401) {
+                            //Communication.refreshToken(getApplicationContext());
+                        }
+                        else{
+                            Communication.handleVolleyError(error);
+                        }
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + share.getString("Access_token", ""));
+
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        Communication.requestQueue.add(request);
+
+        Communication.println("요청 보냄.");
+    }
 
     private void getRecommandationList(){
         share = getSharedPreferences("PREF", MODE_PRIVATE);
@@ -205,7 +264,7 @@ public class PlayActivity extends AppCompatActivity {
 
 
         loadGame();
-        Log.d("gameID", Integer.toString(quizList[0].gameid));
+        //Log.d("gameID", Integer.toString(quizList[0].gameid));
     }
 
     private void loadGame(){
@@ -226,6 +285,15 @@ public class PlayActivity extends AppCompatActivity {
             case "shortAnswer":
                 curGameFragment = shortAnswerFragment;
                 break;
+            case "traceShape":
+                curGameFragment = traceShapeFragment;
+                break;
+            case "beat":
+                curGameFragment = beatFragment;
+                break;
+            case "fluentTest":
+                curGameFragment = fluentTestFragment;
+                break;
             default:
                 curGameFragment = null;
         }
@@ -238,7 +306,7 @@ public class PlayActivity extends AppCompatActivity {
             else{
                 sttBtn.setVisibility(View.INVISIBLE);
             }
-            Log.d("gameID", Integer.toString(quizList[quizIndex].gameid));
+            //Log.d("gameID", Integer.toString(quizList[quizIndex].gameid));
         }
     }
 
@@ -248,7 +316,9 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(curGameFragment != null){
+                    curGameFragment.init();
                     int result = curGameFragment.commit();
+                    Log.d("score", Integer.toString(quizIndex) + ": " + Integer.toString(result));
                     quizScore[quizIndex] = result;
                     quizIndex++;
                     if(quizIndex < quizList.length){
@@ -399,8 +469,12 @@ public class PlayActivity extends AppCompatActivity {
                 textView.setText(matches.get(i));
             }
 
+            //matches[0]: "봄 여름 가을 겨울" String
+            //vAnsShort[0]: "봄"
+            //vAnsShort[1]: "여름"......
+            curGameFragment.receiveSTTResult(matches.get(0));
 
-
+            /*
             //주관식 문제에 대한 답안 가공
             vAnsShort = matches.get(0).split(" ");
             for (int i = 0; i < vAnsShort.length; i++) {
@@ -446,7 +520,7 @@ public class PlayActivity extends AppCompatActivity {
             for(int i = 0; i < vAnsChoice.size(); i++)
             {
                 Log.e("MainActivity", "" + vAnsChoice.get(i));
-            }
+            }*/
 
         }
 

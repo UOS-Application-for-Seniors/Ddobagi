@@ -56,4 +56,8 @@ public class PaintShapeFragment extends GameFragment{
 
         return rootView;
     }
+
+    public void init(){
+
+    }
 }

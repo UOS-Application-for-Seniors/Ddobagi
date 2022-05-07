@@ -33,14 +33,15 @@ public class BeatFragment extends GameFragment{
         char[] vResultChar;
 
         vResultChar = voice.toCharArray();
-        final char btn1 = choiceBtn[0].getText().charAt(0);
+        char btn1 = choiceBtn[0].getText().charAt(0);
+        char btn2 = choiceBtn[1].getText().charAt(1);
 
 
         for(int i = 0; i < vResultChar.length; i++) {
             if(vResultChar[i] == btn1){
                 onButtonTouch(0);
             }
-            else{
+            else if(vResultChar[i] == btn2){
                 onButtonTouch(1);
             }
         }
@@ -81,6 +82,7 @@ public class BeatFragment extends GameFragment{
 
         quizdataUrl = url + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
 
+        quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
@@ -113,8 +115,7 @@ public class BeatFragment extends GameFragment{
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                curAnswer.clear();
-                inputProgress.setText("");
+                init();
             }
         });
 
@@ -135,6 +136,10 @@ public class BeatFragment extends GameFragment{
     @Override
     public void onStart() {
         super.onStart();
+        init();
+    }
+
+    public void init(){
         curAnswer.clear();
         inputProgress.setText("");
     }
