@@ -66,6 +66,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
                     break;
             }
         }
+
         if(vAnsChoice == 0){
             return;
         }

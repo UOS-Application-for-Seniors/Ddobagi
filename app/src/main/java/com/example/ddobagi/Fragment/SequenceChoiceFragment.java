@@ -1,6 +1,7 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +25,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SequenceChoiceFragment extends GameFragment{
-
     TextView quizDetail;
     int choiceNum = 4;
     TextView[] sequenceView = new TextView[choiceNum];
     Button[] choiceBtn = new Button[choiceNum];
     String quizAnswer;
-    int array = 0;
+    int[] curAnswer = new int[4];
+    int index = 0;
     final int buttonImgBound = 150;
 
     public SequenceChoiceFragment(){
@@ -38,7 +39,37 @@ public class SequenceChoiceFragment extends GameFragment{
     }
 
     public void receiveSTTResult(String voice){
+        int vAnsChoice = 0;
+        String vResultString = "";
+        char[] vResultChar;
 
+        vResultString = voice.toString();
+        vResultChar = vResultString.toCharArray();
+
+        for(int i = 0; i < vResultChar.length; i++) {
+            switch (vResultChar[i]) {
+                case '1' :
+                    vAnsChoice = 1;
+                    onButtonTouch(vAnsChoice - 1);
+                    break;
+                case '2' :
+                    vAnsChoice = 2;
+                    onButtonTouch(vAnsChoice - 1);
+                    break;
+                case '3' :
+                    vAnsChoice = 3;
+                    onButtonTouch(vAnsChoice - 1);
+                    break;
+                case '4' :
+                    vAnsChoice = 4;
+                    onButtonTouch(vAnsChoice - 1);
+                    break;
+            }
+        }
+
+        if(vAnsChoice == 0){
+            return;
+        }
     }
 
     public int commit(){
@@ -90,23 +121,27 @@ public class SequenceChoiceFragment extends GameFragment{
         String[] splitString = quiz.quizchoicesdetail.split(",");
 
         for(;i<choiceNum;i++){
-            final int inmutable_index = i;
             String tmp = quizdataUrl;
             tmp = tmp + Integer.toString(i) + ".jfif";
             setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
             choiceBtn[i].setText(splitString[i]);
-            choiceBtn[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String tmp = choiceBtn[inmutable_index].getText().toString().substring(0,1);
-                    sequenceView[array].setText(tmp);
-                    array++;
-                    if(array>3) {
-                        array = 0;
-                    }
-                }
-            });
         }
+    }
+
+    private void onButtonTouch(int newAnswer){
+        for(int i = 0; i< index + 1; i++){
+            if(curAnswer[i] == newAnswer){
+                for(int j = 0; j<index; j++){
+                    curAnswer[j] = -1;
+                    sequenceView[j].setText(" ");
+                }
+                index = 0;
+                return;
+            }
+        }
+        curAnswer[index] = newAnswer;
+        sequenceView[index].setText(Integer.toString(newAnswer + 1));
+        index++;
     }
 
     @Nullable
@@ -122,6 +157,18 @@ public class SequenceChoiceFragment extends GameFragment{
         sequenceView[1] = rootView.findViewById(R.id.sequenceView2);
         sequenceView[2] = rootView.findViewById(R.id.sequenceView3);
         sequenceView[3] = rootView.findViewById(R.id.sequenceView4);
+
+        index = 0;
+
+        for(int i=0; i<choiceNum; i++){
+            final int inmutable_index = i;
+            choiceBtn[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onButtonTouch(inmutable_index);
+                }
+            });
+        }
         return rootView;
     }
 
