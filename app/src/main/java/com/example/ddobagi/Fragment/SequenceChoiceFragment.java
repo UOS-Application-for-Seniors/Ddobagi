@@ -155,10 +155,10 @@ public class SequenceChoiceFragment extends GameFragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_sequence_choice, container, false);
         quizDetail = rootView.findViewById(R.id.quizDetail);
-        choiceBtn[0] = rootView.findViewById(R.id.choice_with_pic_select_btn1);
-        choiceBtn[1] = rootView.findViewById(R.id.choice_with_pic_select_btn2);
-        choiceBtn[2] = rootView.findViewById(R.id.choice_with_pic_select_Btn3);
-        choiceBtn[3] = rootView.findViewById(R.id.choice_with_pic_select_Btn4);
+        choiceBtn[0] = rootView.findViewById(R.id.sequnce_choice_btn1);
+        choiceBtn[1] = rootView.findViewById(R.id.sequnce_choice_btn2);
+        choiceBtn[2] = rootView.findViewById(R.id.sequnce_choice_btn3);
+        choiceBtn[3] = rootView.findViewById(R.id.sequnce_choice_btn4);
         sequenceView[0] = rootView.findViewById(R.id.sequenceView1);
         sequenceView[1] = rootView.findViewById(R.id.sequenceView2);
         sequenceView[2] = rootView.findViewById(R.id.sequenceView3);

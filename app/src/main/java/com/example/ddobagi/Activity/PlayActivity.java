@@ -29,6 +29,7 @@ import com.example.ddobagi.Fragment.DrawClockFragment;
 import com.example.ddobagi.Fragment.GameFragment;
 import com.example.ddobagi.Fragment.MultipleChoiceFragment;
 import com.example.ddobagi.Fragment.LineConnectionFragment;
+import com.example.ddobagi.Fragment.PaintShapeFragment;
 import com.example.ddobagi.Fragment.SequenceChoiceFragment;
 import com.example.ddobagi.Fragment.ShortAnswerFragment;
 import com.example.ddobagi.Fragment.TraceShapeFragment;
@@ -52,6 +53,7 @@ public class PlayActivity extends AppCompatActivity {
     SequenceChoiceFragment sequenceChoiceFragment;
     ChoiceWithPictureFragment choiceWithPictureFragment;
     TraceShapeFragment traceShapeFragment;
+    PaintShapeFragment paintShapeFragment;
     Date date;
 
     SharedPreferences share;
@@ -61,7 +63,7 @@ public class PlayActivity extends AppCompatActivity {
     int quizIndex = 0;
 
     int fragmentIndex = 0;
-    int fragmentNum = 7;
+    int fragmentNum = 8;
 
     Intent sttIntent;
     SpeechRecognizer mRecognizer;
@@ -89,19 +91,21 @@ public class PlayActivity extends AppCompatActivity {
         sequenceChoiceFragment = new SequenceChoiceFragment();
         choiceWithPictureFragment = new ChoiceWithPictureFragment();
         traceShapeFragment = new TraceShapeFragment();
-
+        paintShapeFragment = new PaintShapeFragment();
 
         setButton();
 
         Intent intent = getIntent();
-        /*getRecommandationList();
         String type = intent.getStringExtra("type");
-        if(type == "recommend"){
+        if(type.equals("recommend")){
             getRecommandationList();
         }
-        else if(type == "select"){
+        else if(type.equals("select")){
             //게임 선택하는 창 띄우기
-        }*/
+        }
+        else if(type.equals("test")){
+            //치매 검사
+        }
 
         //=============================음성인식=============================
         textView = (TextView) findViewById(R.id.sttResult);
@@ -187,11 +191,7 @@ public class PlayActivity extends AppCompatActivity {
         request.setShouldCache(false);
         Communication.requestQueue.add(request);
 
-
-
-
         Communication.println("요청 보냄.");
-
     }
 
     public void onGetRecommandationListResponse(String response){

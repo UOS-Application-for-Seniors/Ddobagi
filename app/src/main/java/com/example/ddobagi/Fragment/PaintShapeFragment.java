@@ -17,8 +17,16 @@ public class PaintShapeFragment extends GameFragment{
     PaintShapeExample example;
     PaintShapePractice practice;
 
+    public PaintShapeFragment(){
+        isSTTAble = false;
+    }
+
     public int commit(){
         return example.commit();
+    }
+
+    public void receiveSTTResult(String voice){
+
     }
 
     void onHelp(){
