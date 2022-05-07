@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
+import java.util.Date;
 
 public class PlayActivity extends AppCompatActivity {
     GameFragment curGameFragment;
@@ -51,6 +52,7 @@ public class PlayActivity extends AppCompatActivity {
     SequenceChoiceFragment sequenceChoiceFragment;
     ChoiceWithPictureFragment choiceWithPictureFragment;
     TraceShapeFragment traceShapeFragment;
+    Date date;
 
     SharedPreferences share;
 
@@ -141,7 +143,15 @@ public class PlayActivity extends AppCompatActivity {
         share = getSharedPreferences("PREF", MODE_PRIVATE);
         if((share != null) && (share.contains("Access_token"))){
             Toast.makeText(getApplicationContext(), share.getString("Access_token", ""), Toast.LENGTH_LONG).show();
+            date = new Date();
+            Communication.println(String.valueOf(date.getTime()) + " " + String.valueOf(share.getLong("Access_token_time", 0)
+            ) );
+            if(date.getTime() - share.getLong("Access_token_time", 0) > 100000) {
+                Communication.refreshToken(getApplicationContext());
+                Communication.println("Refreshed");
+            }
         }
+
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
@@ -156,7 +166,12 @@ public class PlayActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Communication.handleVolleyError(error);
+                        if(error.networkResponse.statusCode==401) {
+                            //Communication.refreshToken(getApplicationContext());
+                        }
+                        else{
+                            Communication.handleVolleyError(error);
+                        }
                     }
                 }
         ) {
@@ -170,6 +185,10 @@ public class PlayActivity extends AppCompatActivity {
         };
         request.setShouldCache(false);
         Communication.requestQueue.add(request);
+
+
+
+
         Communication.println("요청 보냄.");
 
     }
