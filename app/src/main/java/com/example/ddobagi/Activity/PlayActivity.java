@@ -36,6 +36,7 @@ import com.example.ddobagi.Fragment.MemorizationFragment;
 import com.example.ddobagi.Fragment.MultipleChoiceFragment;
 import com.example.ddobagi.Fragment.LineConnectionFragment;
 import com.example.ddobagi.Fragment.PaintShapeFragment;
+import com.example.ddobagi.Fragment.PlayResultFragment;
 import com.example.ddobagi.Fragment.SequenceChoiceFragment;
 import com.example.ddobagi.Fragment.ShortAnswerFragment;
 import com.example.ddobagi.Fragment.TraceShapeFragment;
@@ -64,6 +65,8 @@ public class PlayActivity extends AppCompatActivity {
     FluentTestFragment fluentTestFragment;
     ListenAndSolveFragment listenAndSolveFragment;
     MemorizationFragment memorizationFragment;
+
+    PlayResultFragment playResultFragment;
 
     Date date;
 
@@ -112,6 +115,8 @@ public class PlayActivity extends AppCompatActivity {
         fluentTestFragment = new FluentTestFragment();
         listenAndSolveFragment = new ListenAndSolveFragment();
         memorizationFragment = new MemorizationFragment();
+
+        playResultFragment = new PlayResultFragment();
 
         setComponent();
 
@@ -318,7 +323,8 @@ public class PlayActivity extends AppCompatActivity {
                         loadGame();
                     }
                     else{
-                        //결과 출력 및 서버로 결과 보내기
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, playResultFragment).commit();
+                        playResultFragment.setResult(quizList, quizScore);
                         for(int i=0;i<quizScore.length; i++){
                             Log.d("quizScore", Integer.toString(i) + ": " + Integer.toString(quizScore[i]));
                         }

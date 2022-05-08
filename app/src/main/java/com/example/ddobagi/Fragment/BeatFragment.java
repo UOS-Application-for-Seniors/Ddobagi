@@ -48,10 +48,15 @@ public class BeatFragment extends GameFragment{
     }
 
     public int commit(){
+        if(quizAnswer == null){
+            return 0;
+        }
+
         String curAnswerStr = "";
         for(String str: curAnswer){
-            curAnswerStr += str;
+            curAnswerStr += str + ",";
         }
+        curAnswerStr = curAnswerStr.substring(0, curAnswerStr.length() - 1);
         if(curAnswerStr.equals(quizAnswer)){
             return 1;
         }

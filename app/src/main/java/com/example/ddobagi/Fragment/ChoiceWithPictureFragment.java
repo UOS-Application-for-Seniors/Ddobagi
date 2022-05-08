@@ -34,7 +34,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
     int choiceNum = 4;
     Button[] choiceBtn = new Button[choiceNum];
     String quizAnswer;
-    final int buttonImgBound = 120, exampleImgBound = 150;
+    final int buttonImgBound = 130, exampleImgBound = 150;
     String curAnswer = "0";
 
     public ChoiceWithPictureFragment(){

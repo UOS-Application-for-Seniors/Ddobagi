@@ -34,7 +34,7 @@ public class LineConnectionFragment extends GameFragment{
     int choiceNum = 8;
     Button[] choiceBtn = new Button[choiceNum];
     String quizAnswer;
-    final int buttonImgBound = 120;
+    final int buttonImgBound = 110;
 
     public LineConnectionFragment(){
         isSTTAble = false;

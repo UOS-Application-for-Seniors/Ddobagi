@@ -170,6 +170,10 @@ public class MultipleChoiceFragment extends GameFragment{
     }
 
     public void init(){
-
+        for(int i=0; i<choiceNum; i++){
+            choiceBtn[i].setBackground(getResources().getDrawable(R.drawable.light_green_btn));
+        }
+        curAnswer = "";
+        quizAnswer = "";
     }
 }
