@@ -324,7 +324,6 @@ public class PlayActivity extends AppCompatActivity {
                     }
                     else{
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, playResultFragment).commit();
-                        playResultFragment.setResult(quizList, quizScore);
                         for(int i=0;i<quizScore.length; i++){
                             Log.d("quizScore", Integer.toString(i) + ": " + Integer.toString(quizScore[i]));
                         }
@@ -625,5 +624,13 @@ public class PlayActivity extends AppCompatActivity {
             tts.shutdown();
             tts = null;
         }
+    }
+
+    public QuizInfoSummary[] getQuizList() {
+        return quizList;
+    }
+
+    public int[] getQuizScore() {
+        return quizScore;
     }
 }

@@ -35,7 +35,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
     Button[] choiceBtn = new Button[choiceNum];
     String quizAnswer;
     final int buttonImgBound = 130, exampleImgBound = 150;
-    String curAnswer = "0";
+    String curAnswer;
 
     public ChoiceWithPictureFragment(){
         isSTTAble = true;
@@ -77,8 +77,10 @@ public class ChoiceWithPictureFragment extends GameFragment {
 
     public int commit(){
         int result = 0;
-        if(quizAnswer.equals(curAnswer)){
-            result = 1;
+        if(quizAnswer != null){
+            if(quizAnswer.equals(curAnswer)){
+                result = 1;
+            }
         }
         return result;
     }
@@ -153,10 +155,12 @@ public class ChoiceWithPictureFragment extends GameFragment {
     }
 
     private void onButtonTouch(String newAnswer){
-        Button curSelectButton = choiceBtn[Integer.parseInt(curAnswer)];
-        Button newTouchButton = choiceBtn[Integer.parseInt(newAnswer)];
+        if(curAnswer != ""){
+            Button curSelectButton = choiceBtn[Integer.parseInt(curAnswer)];
+            curSelectButton.setBackground(getResources().getDrawable(R.drawable.light_green_btn));
+        }
 
-        curSelectButton.setBackground(getResources().getDrawable(R.drawable.light_green_btn));
+        Button newTouchButton = choiceBtn[Integer.parseInt(newAnswer)];
         this.curAnswer = newAnswer;
         newTouchButton.setBackground(getResources().getDrawable(R.drawable.green_btn));
     }
@@ -172,5 +176,6 @@ public class ChoiceWithPictureFragment extends GameFragment {
             choiceBtn[i].setText("");
             choiceBtn[i].setCompoundDrawables(null, null, null, null);
         }
+        curAnswer = "";
     }
 }

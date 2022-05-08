@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.ddobagi.Activity.PlayActivity;
 import com.example.ddobagi.Class.QuizInfoSummary;
 import com.example.ddobagi.R;
 
@@ -49,7 +50,14 @@ public class PlayResultFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_play_result, container, false);
 
-        starCntTextView = rootView.findViewById(R.id.play_result_star_count_textView);
+        starCntTextView = rootView.findViewById(R.id.play_result_star_count);
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        PlayActivity playActivity = (PlayActivity) getActivity();
+        setResult(playActivity.getQuizList(), playActivity.getQuizScore());
     }
 }

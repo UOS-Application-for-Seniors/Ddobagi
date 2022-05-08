@@ -28,13 +28,13 @@
                 app:srcCompat="@drawable/yellow_star" />
 
             <TextView
-                android:id="@+id/play_result_star_count_textView"
+                android:id="@+id/play_result_star_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
                 android:layout_weight="0"
                 android:text="X ~~개 획득!!"
-                android:textSize="80sp" />
+                android:textSize="100sp" />
         </LinearLayout>
     </LinearLayout>
 

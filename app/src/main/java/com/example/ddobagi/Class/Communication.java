@@ -52,7 +52,9 @@ public class Communication {
     }
 
     public static void println(String data){
-        Log.d("communication", data);
+        if(data != null){
+            Log.d("communication", data);
+        }
     }
 
     public static void refreshToken(Context context) {

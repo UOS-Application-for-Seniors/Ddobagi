@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO}, PERMISSION);
         }
 
-        Communication.refreshToken(this);
+        //Communication.refreshToken(this);
         setButton();
     }
 
@@ -77,16 +77,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button selectPlayBtn = findViewById(R.id.main_select_play_btn);{
-            selectPlayBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
-                    intent.putExtra("type", "select");
-                    startActivity(intent);
-                }
-            });
-        }
+        Button selectPlayBtn = findViewById(R.id.main_select_play_btn);
+        selectPlayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+                intent.putExtra("type", "select");
+                startActivity(intent);
+            }
+
+        });
+
+        Button leftBtn = findViewById(R.id.left_btn);
+        leftBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TestPlayActivity.class);
+                startActivity(intent);
+            }
+        });
+
         loginBtn = findViewById(R.id.login_btn);
         loginManagement();
     }
