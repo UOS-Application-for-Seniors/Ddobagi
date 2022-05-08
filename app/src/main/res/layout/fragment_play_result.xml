@@ -36,6 +36,11 @@
                 android:text="X ~~개 획득!!"
                 android:textSize="100sp" />
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/play_result_recylerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </LinearLayout>

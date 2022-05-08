@@ -48,7 +48,7 @@ public class BeatFragment extends GameFragment{
     }
 
     public int commit(){
-        if(quizAnswer == null){
+        if(quizAnswer == null || curAnswer.size() == 0){
             return 0;
         }
 

@@ -24,6 +24,8 @@ import com.example.ddobagi.Fragment.DrawClockFragment;
 import com.example.ddobagi.Fragment.FluentTestFragment;
 import com.example.ddobagi.Fragment.GameFragment;
 import com.example.ddobagi.Fragment.LineConnectionFragment;
+import com.example.ddobagi.Fragment.ListenAndSolveFragment;
+import com.example.ddobagi.Fragment.MemorizationFragment;
 import com.example.ddobagi.Fragment.MultipleChoiceFragment;
 import com.example.ddobagi.Fragment.PaintShapeFragment;
 import com.example.ddobagi.Fragment.SequenceChoiceFragment;
@@ -49,6 +51,8 @@ public class TestPlayActivity extends AppCompatActivity {
     PaintShapeFragment paintShapeFragment;
     BeatFragment beatFragment;
     FluentTestFragment fluentTestFragment;
+    ListenAndSolveFragment listenAndSolveFragment;
+    MemorizationFragment memorizationFragment;
 
     SharedPreferences share;
 
@@ -57,7 +61,7 @@ public class TestPlayActivity extends AppCompatActivity {
     int quizIndex = 0;
 
     int fragmentIndex = 0;
-    int fragmentNum = 10;
+    int fragmentNum = 12;
 
     Intent sttIntent;
     SpeechRecognizer mRecognizer;
@@ -88,6 +92,8 @@ public class TestPlayActivity extends AppCompatActivity {
         paintShapeFragment = new PaintShapeFragment();
         beatFragment = new BeatFragment();
         fluentTestFragment = new FluentTestFragment();
+        listenAndSolveFragment = new ListenAndSolveFragment();
+        memorizationFragment = new MemorizationFragment();
 
 
         Button commitBtn = findViewById(R.id.commit_btn);
@@ -205,6 +211,12 @@ public class TestPlayActivity extends AppCompatActivity {
                 break;
             case 9:
                 curGameFragment = fluentTestFragment;
+                break;
+            case 10:
+                curGameFragment = listenAndSolveFragment;
+                break;
+            case 11:
+                curGameFragment = memorizationFragment;
                 break;
             default:
                 curGameFragment = multipleChoiceFragment;

@@ -271,8 +271,14 @@ public class PlayActivity extends AppCompatActivity {
             case "shortAnswer":
                 curGameFragment = shortAnswerFragment;
                 break;
+            case "drawClock":
+                curGameFragment = drawClockFragment;
+                break;
             case "traceShape":
                 curGameFragment = traceShapeFragment;
+                break;
+            case "paintShape":
+                curGameFragment = paintShapeFragment;
                 break;
             case "beat":
                 curGameFragment = beatFragment;
