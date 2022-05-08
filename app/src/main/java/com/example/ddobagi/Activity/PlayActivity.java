@@ -280,11 +280,17 @@ public class PlayActivity extends AppCompatActivity {
             case "fluentTest":
                 curGameFragment = fluentTestFragment;
                 break;
+            case "paintShape":
+                curGameFragment = paintShapeFragment;
+                break;
             case "listenAndSolve":
                 curGameFragment = listenAndSolveFragment;
                 break;
             case "memorization":
                 curGameFragment = memorizationFragment;
+                break;
+            case "drawClock":
+                curGameFragment = drawClockFragment;
                 break;
             default:
                 curGameFragment = null;
