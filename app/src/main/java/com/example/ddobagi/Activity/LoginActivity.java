@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
+    public static final int RESULT_LOGIN = 111;
 
     Button buttonRegistration, buttonLogin, buttonExit;
     EditText UserID, Password;
@@ -82,11 +83,13 @@ public class LoginActivity extends AppCompatActivity {
                         edit.putLong("Refresh_token_time", date.getTime());
                         edit.commit();
 
+                        setResult(RESULT_LOGIN);
+                        finish();
                     }
                 }, new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(LoginActivity.this, "Some error occurred -> "+volleyError, Toast.LENGTH_LONG).show();;
+                        Toast.makeText(LoginActivity.this, "Some error occurred -> "+ volleyError, Toast.LENGTH_LONG).show();
                     }
                 }) {
                     @Override

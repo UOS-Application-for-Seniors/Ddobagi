@@ -58,10 +58,79 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
-        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.3">
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/result_per_quiz_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="invisible">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/result_per_quiz_btn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="150dp"
+                android:layout_marginRight="100dp"
+                android:layout_marginBottom="150dp"
+                android:background="@drawable/light_green_btn"
+                android:fontFamily="@font/batang"
+                android:gravity="bottom|center_horizontal"
+                android:padding="80dp"
+                android:text="잘하고 계십니다"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/small_star_left"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@drawable/yellow_star"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
+                app:layout_constraintEnd_toStartOf="@+id/small_star_center"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/result_per_quiz_btn"
+                app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/small_star_right"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@drawable/yellow_star"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
+                app:layout_constraintEnd_toEndOf="@+id/result_per_quiz_btn"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/small_star_center"
+                app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/small_star_center"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:background="@drawable/yellow_star"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
+                app:layout_constraintEnd_toEndOf="@+id/result_per_quiz_btn"
+                app:layout_constraintStart_toStartOf="@+id/result_per_quiz_btn"
+                app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn"
+                app:layout_constraintVertical_bias="0.2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
 

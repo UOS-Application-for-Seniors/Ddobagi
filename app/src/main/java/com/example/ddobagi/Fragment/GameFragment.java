@@ -91,7 +91,7 @@ public abstract class GameFragment extends Fragment {
                 button.setCompoundDrawables(null, drawable, null, null);
             }
             else{
-                button.setTextSize(80.0f);
+                button.setTextSize(50.0f);
             }
         });
         loadImage.execute(url);

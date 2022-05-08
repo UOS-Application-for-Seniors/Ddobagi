@@ -153,10 +153,12 @@ public class MultipleChoiceFragment extends GameFragment{
     }
 
     private void onButtonTouch(String newAnswer){
-        Button curSelectButton = choiceBtn[Integer.parseInt(curAnswer)];
-        Button newTouchButton = choiceBtn[Integer.parseInt(newAnswer)];
+        if(!curAnswer.equals("")){
+            Button curSelectButton = choiceBtn[Integer.parseInt(curAnswer)];
+            curSelectButton.setBackground(getResources().getDrawable(R.drawable.light_green_btn));
+        }
 
-        curSelectButton.setBackground(getResources().getDrawable(R.drawable.light_green_btn));
+        Button newTouchButton = choiceBtn[Integer.parseInt(newAnswer)];
         this.curAnswer = newAnswer;
         newTouchButton.setBackground(getResources().getDrawable(R.drawable.green_btn));
     }

@@ -23,7 +23,7 @@ public class BeatFragment extends GameFragment{
     String quizAnswer;
     ArrayList<String> curAnswer = new ArrayList<>();
     int index = 0;
-    final int buttonImgBound = 150;
+    final int buttonImgBound = 120;
 
     public BeatFragment(){
         isSTTAble = true;
@@ -73,29 +73,29 @@ public class BeatFragment extends GameFragment{
         String url = "http://121.164.170.67:3000/file/";
         String quizdataUrl;
 
-        Gson gson = new Gson();
-        Quiz quiz = gson.fromJson(response, Quiz.class);
+    Gson gson = new Gson();
+    Quiz quiz = gson.fromJson(response, Quiz.class);
 
         if(quiz == null){
-            return;
-        }
+        return;
+    }
 
-        quizdataUrl = url + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
+    quizdataUrl = url + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
 
-        quizTTS = quiz.quizTTS;
-        detail = quiz.quizdetail;
+    quizTTS = quiz.quizTTS;
+    detail = quiz.quizdetail;
         quizDetail.setText(detail);
-        quizAnswer = quiz.quizanswer;
+    quizAnswer = quiz.quizanswer;
 
-        String[] splitString = quiz.quizchoicesdetail.split(",");
+    String[] splitString = quiz.quizchoicesdetail.split(",");
 
         for(;i<choiceNum;i++){
-            String tmp = quizdataUrl;
-            tmp = tmp + Integer.toString(i) + ".jfif";
-            setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
-            choiceBtn[i].setText(splitString[i]);
-        }
+        String tmp = quizdataUrl;
+        tmp = tmp + Integer.toString(i) + ".jfif";
+        setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
+        choiceBtn[i].setText(splitString[i]);
     }
+}
 
     private void onButtonTouch(int newAnswer){
         String str = choiceBtn[newAnswer].getText().toString();

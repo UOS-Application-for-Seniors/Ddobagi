@@ -3,6 +3,7 @@ package com.example.ddobagi.Activity;
 import static android.speech.tts.TextToSpeech.ERROR;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +23,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.QuizInfoSummary;
 import com.example.ddobagi.Fragment.BeatFragment;
@@ -29,6 +31,8 @@ import com.example.ddobagi.Fragment.ChoiceWithPictureFragment;
 import com.example.ddobagi.Fragment.DrawClockFragment;
 import com.example.ddobagi.Fragment.FluentTestFragment;
 import com.example.ddobagi.Fragment.GameFragment;
+import com.example.ddobagi.Fragment.ListenAndSolveFragment;
+import com.example.ddobagi.Fragment.MemorizationFragment;
 import com.example.ddobagi.Fragment.MultipleChoiceFragment;
 import com.example.ddobagi.Fragment.LineConnectionFragment;
 import com.example.ddobagi.Fragment.PaintShapeFragment;
@@ -58,6 +62,8 @@ public class PlayActivity extends AppCompatActivity {
     PaintShapeFragment paintShapeFragment;
     BeatFragment beatFragment;
     FluentTestFragment fluentTestFragment;
+    ListenAndSolveFragment listenAndSolveFragment;
+    MemorizationFragment memorizationFragment;
 
     Date date;
 
@@ -68,12 +74,12 @@ public class PlayActivity extends AppCompatActivity {
     int quizIndex = 0;
 
     int fragmentIndex = 0;
-    int fragmentNum = 10;
+    int fragmentNum = 12;
 
     Intent sttIntent;
     SpeechRecognizer mRecognizer;
     Button sttBtn;
-    TextView textView;
+    TextView sttResultView;
 
     Vector<Integer> vAnsChoice = new Vector<Integer>();
     String[] vAnsShort = null;
@@ -83,6 +89,11 @@ public class PlayActivity extends AppCompatActivity {
 
     TextToSpeech tts;
     Button ttsBtn;
+
+    ConstraintLayout resultPerQuizLayout;
+    Button resultPerQuizBtn, leftStar, rightStar, centerStar;
+
+    boolean isTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,23 +110,267 @@ public class PlayActivity extends AppCompatActivity {
         paintShapeFragment = new PaintShapeFragment();
         beatFragment = new BeatFragment();
         fluentTestFragment = new FluentTestFragment();
+        listenAndSolveFragment = new ListenAndSolveFragment();
+        memorizationFragment = new MemorizationFragment();
 
-        setButton();
+        setComponent();
 
         Intent intent = getIntent();
         String type = intent.getStringExtra("type");
-        if(type.equals("recommend")){
-            getRecommandationList();
-        }
-        else if(type.equals("select")){
+
+        if(type.equals("select")){
             //게임 선택하는 창 띄우기
         }
-        else if(type.equals("test")){
-            getDementiaTestList();
+        else{
+            getSuggestionQuizList(type);
         }
 
+        if(type.equals("test")){
+            isTest = true;
+        }
+
+        setComponent();
+        fragmentChange();
+    }
+
+    private void getSuggestionQuizList(String type){
+        String url;
+        if(type.equals("recommend")){
+            url = Communication.gameListUrl;
+        }
+        else if (type.equals("test")){
+            url = Communication.testListUrl;
+        }
+        else{
+            return;
+        }
+
+        share = getSharedPreferences("PREF", MODE_PRIVATE);
+        if((share != null) && (share.contains("Access_token"))){
+            Toast.makeText(getApplicationContext(), share.getString("Access_token", ""), Toast.LENGTH_LONG).show();
+            date = new Date();
+            Communication.println(String.valueOf(date.getTime()) + " " + String.valueOf(share.getLong("Access_token_time", 0)
+            ) );
+            if(date.getTime() - share.getLong("Access_token_time", 0) > 100000) {
+                Communication.refreshToken(getApplicationContext());
+                Communication.println("Refreshed");
+            }
+        }
+
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Communication.println("응답 --> " + response);
+                        onGetQuizListResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if(!String.valueOf(error).equals("com.android.volley.TimeoutError")){
+                            if(error.networkResponse.statusCode==401) {
+                                Communication.refreshToken(getApplicationContext());
+                            }
+                        }
+                        else{
+                        Communication.handleVolleyError(error);
+                        }
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + share.getString("Access_token", ""));
+
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        Communication.requestQueue.add(request);
+        Communication.println("gameList 요청 보냄");
+    }
+
+    public void onGetQuizListResponse(String response){
+        Gson gson = new Gson();
+        quizList = gson.fromJson(response, QuizInfoSummary[].class);
+        if(quizList == null){
+            Log.d("warning","quizList is null");
+            return;
+        }
+        quizScore = new int[quizList.length];
+
+        loadGame();
+    }
+
+    void sendGameScore(int gameID, int score){
+        String url = "http://121.164.170.67:3000";
+        if(isTest){
+            url += "/quiz/CISTADDResult";
+        }
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Communication.println("응답 --> " + response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Communication.handleVolleyError(error);
+                    }
+                }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Authorization", "Bearer " + share.getString("Access_token", ""));
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("gameID", Integer.toString(gameID));
+                params.put("score", Integer.toString(score));
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        Communication.requestQueue.add(request);
+        Communication.println("gameScore 전송--> " + Integer.toString(gameID) + " : " + Integer.toString(score));
+    }
+
+
+    private void loadGame(){
+        String usingFragment = quizList[quizIndex].usingfragment;
+        switch(usingFragment){
+            case "choiceWithPicture":
+                curGameFragment = choiceWithPictureFragment;
+                break;
+            case "multipleChoice":
+                curGameFragment = multipleChoiceFragment;
+                break;
+            case "lineConnection":
+                curGameFragment = lineConnectionFragment;
+                break;
+            case "sequenceChoice":
+                curGameFragment = sequenceChoiceFragment;
+                break;
+            case "shortAnswer":
+                curGameFragment = shortAnswerFragment;
+                break;
+            case "traceShape":
+                curGameFragment = traceShapeFragment;
+                break;
+            case "beat":
+                curGameFragment = beatFragment;
+                break;
+            case "fluentTest":
+                curGameFragment = fluentTestFragment;
+                break;
+            case "listenAndSolve":
+                curGameFragment = listenAndSolveFragment;
+                break;
+            case "memorization":
+                curGameFragment = memorizationFragment;
+                break;
+            default:
+                curGameFragment = null;
+        }
+        if(curGameFragment != null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, curGameFragment).commit();
+            curGameFragment.loadGame(quizList[quizIndex].gameid, 0);
+            if(curGameFragment.isSTTAble()){
+                sttBtn.setVisibility(View.VISIBLE);
+            }
+            else{
+                sttBtn.setVisibility(View.INVISIBLE);
+            }
+            //Log.d("gameID", Integer.toString(quizList[quizIndex].gameid));
+        }
+    }
+
+    private void setComponent(){
+        Button commitBtn = findViewById(R.id.commit_btn);
+        commitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(curGameFragment != null){
+                    int result = curGameFragment.commit();
+                    Log.d("score", Integer.toString(quizIndex) + ": " + Integer.toString(result));
+                    curGameFragment.init();
+
+                    if(!isTest){
+                        resultPerQuizControl(result);
+                    }
+
+                    quizScore[quizIndex] = result;
+                    sendGameScore(quizList[quizIndex].gameid, result);
+                    quizIndex++;
+                    if(quizIndex < quizList.length){
+                        loadGame();
+                    }
+                    else{
+                        //결과 출력 및 서버로 결과 보내기
+                        for(int i=0;i<quizScore.length; i++){
+                            Log.d("quizScore", Integer.toString(i) + ": " + Integer.toString(quizScore[i]));
+                        }
+                        curGameFragment = null;
+                    }
+                }
+            }
+        });
+
+        Button exitBtn = findViewById(R.id.exit_btn);
+        exitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
+        resultPerQuizLayout = findViewById(R.id.result_per_quiz_layout);
+        resultPerQuizBtn = findViewById(R.id.result_per_quiz_btn);
+        resultPerQuizBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resultPerQuizControl(-1);
+            }
+        });
+
+        leftStar = findViewById(R.id.small_star_left);
+        rightStar = findViewById(R.id.small_star_right);
+        centerStar = findViewById(R.id.small_star_center);
+        leftStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resultPerQuizControl(-1);
+            }
+        });
+        rightStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resultPerQuizControl(-1);
+            }
+        });
+        centerStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                resultPerQuizControl(-1);
+            }
+        });
+
+
         //=============================음성인식=============================
-        textView = (TextView) findViewById(R.id.sttResult);
+        sttResultView = findViewById(R.id.sttResult);
         sttBtn = (Button) findViewById(R.id.sttStart);
         sttIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         sttIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
@@ -149,221 +404,41 @@ public class PlayActivity extends AppCompatActivity {
                 tts.speak(ttsText.toString(), TextToSpeech.QUEUE_FLUSH, null);
             }
         });
-
-        fragmentChange();
-    }
-    //=================================================================
-
-    private void getDementiaTestList(){
-        share = getSharedPreferences("PREF", MODE_PRIVATE);
-        if((share != null) && (share.contains("Access_token"))){
-            Toast.makeText(getApplicationContext(), share.getString("Access_token", ""), Toast.LENGTH_LONG).show();
-            date = new Date();
-            Communication.println(String.valueOf(date.getTime()) + " " + String.valueOf(share.getLong("Access_token_time", 0)
-            ) );
-            if(date.getTime() - share.getLong("Access_token_time", 0) > 100000) {
-                Communication.refreshToken(getApplicationContext());
-                Communication.println("Refreshed");
-            }
-        }
-
-        StringRequest request = new StringRequest(
-                Request.Method.GET,
-                Communication.testListUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Communication.println("응답 --> " + response);
-                        onGetRecommandationListResponse(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if(error.networkResponse.statusCode==401) {
-                            //Communication.refreshToken(getApplicationContext());
-                        }
-                        else{
-                            Communication.handleVolleyError(error);
-                        }
-                    }
-                }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Bearer " + share.getString("Access_token", ""));
-
-                return params;
-            }
-        };
-        request.setShouldCache(false);
-        Communication.requestQueue.add(request);
-
-        Communication.println("요청 보냄.");
+        //=================================================================
     }
 
-    private void getRecommandationList(){
-        share = getSharedPreferences("PREF", MODE_PRIVATE);
-        if((share != null) && (share.contains("Access_token"))){
-            Toast.makeText(getApplicationContext(), share.getString("Access_token", ""), Toast.LENGTH_LONG).show();
-            date = new Date();
-            Communication.println(String.valueOf(date.getTime()) + " " + String.valueOf(share.getLong("Access_token_time", 0)
-            ) );
-            if(date.getTime() - share.getLong("Access_token_time", 0) > 100000) {
-                Communication.refreshToken(getApplicationContext());
-                Communication.println("Refreshed");
-            }
-        }
-
-
-        StringRequest request = new StringRequest(
-                Request.Method.GET,
-                Communication.gameListUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Communication.println("응답 --> " + response);
-                        onGetRecommandationListResponse(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if(error.networkResponse.statusCode==401) {
-                            //Communication.refreshToken(getApplicationContext());
-                        }
-                        else{
-                            Communication.handleVolleyError(error);
-                        }
-                    }
-                }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Bearer " + share.getString("Access_token", ""));
-
-                return params;
-            }
-        };
-        request.setShouldCache(false);
-        Communication.requestQueue.add(request);
-
-        Communication.println("요청 보냄.");
-    }
-
-    public void onGetRecommandationListResponse(String response){
-        Gson gson = new Gson();
-        quizList = gson.fromJson(response, QuizInfoSummary[].class);
-        if(quizList == null){
-            Log.d("warning","quizList is null");
-            return;
-        }
-        quizScore = new int[quizList.length];
-
-
-        loadGame();
-        //Log.d("gameID", Integer.toString(quizList[0].gameid));
-    }
-
-    private void loadGame(){
-        String usingFragment = quizList[quizIndex].usingfragment;
-        switch(usingFragment){
-            case "choiceWithPicture":
-                curGameFragment = choiceWithPictureFragment;
+    private void resultPerQuizControl(int result){
+        switch (result){
+            case -1: //결과창 끄기
+                leftStar.setVisibility(View.INVISIBLE);
+                rightStar.setVisibility(View.INVISIBLE);
+                centerStar.setVisibility(View.INVISIBLE);
+                resultPerQuizBtn.setText("");
+                resultPerQuizLayout.setVisibility(View.INVISIBLE);
                 break;
-            case "multipleChoice":
-                curGameFragment = multipleChoiceFragment;
+            case 0: //오답시 중앙 별만 출력
+                centerStar.setVisibility(View.VISIBLE);
+                resultPerQuizBtn.setText("잘하고 계십니다");
+                resultPerQuizLayout.setVisibility(View.VISIBLE);
                 break;
-            case "lineConnection":
-                curGameFragment = lineConnectionFragment;
+            case 1: //정답시 모든 별 출력
+                leftStar.setVisibility(View.VISIBLE);
+                rightStar.setVisibility(View.VISIBLE);
+                centerStar.setVisibility(View.VISIBLE);
+                resultPerQuizBtn.setText("완벽합니다!");
+                resultPerQuizLayout.setVisibility(View.VISIBLE);
                 break;
-            case "sequenceChoice":
-                curGameFragment = sequenceChoiceFragment;
+            case 2: //부분 정답시 왼쪽, 오른쪽 별만 출력
+                leftStar.setVisibility(View.VISIBLE);
+                rightStar.setVisibility(View.VISIBLE);
+                resultPerQuizBtn.setText("훌륭하세요");
+                resultPerQuizLayout.setVisibility(View.VISIBLE);
                 break;
-            case "shortAnswer":
-                curGameFragment = shortAnswerFragment;
-                break;
-            case "traceShape":
-                curGameFragment = traceShapeFragment;
-                break;
-            case "beat":
-                curGameFragment = beatFragment;
-                break;
-            case "fluentTest":
-                curGameFragment = fluentTestFragment;
+            case 3: //MemorizationFragment에서 호출. 별이 따로 없음
                 break;
             default:
-                curGameFragment = null;
+                break;
         }
-        if(curGameFragment != null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, curGameFragment).commit();
-            curGameFragment.loadGame(quizList[quizIndex].gameid, 0);
-            if(curGameFragment.isSTTAble()){
-                sttBtn.setVisibility(View.VISIBLE);
-            }
-            else{
-                sttBtn.setVisibility(View.INVISIBLE);
-            }
-            //Log.d("gameID", Integer.toString(quizList[quizIndex].gameid));
-        }
-    }
-
-    private void setButton(){
-        Button commitBtn = findViewById(R.id.commit_btn);
-        commitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(curGameFragment != null){
-                    curGameFragment.init();
-                    int result = curGameFragment.commit();
-                    Log.d("score", Integer.toString(quizIndex) + ": " + Integer.toString(result));
-                    quizScore[quizIndex] = result;
-                    quizIndex++;
-                    if(quizIndex < quizList.length){
-                        loadGame();
-                    }
-                    else{
-                        //결과 출력 및 서버로 결과 보내기
-                        for(int i=0;i<quizScore.length; i++){
-                            Log.d("quizScore", Integer.toString(i) + ": " + Integer.toString(quizScore[i]));
-                        }
-                        curGameFragment = null;
-                    }
-                }
-            }
-        });
-        Button exitBtn = findViewById(R.id.exit_btn);
-        exitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
-        /*Button leftBtn = findViewById(R.id.left_btn);
-        leftBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentIndex--;
-                if(fragmentIndex < 0){
-                    fragmentIndex += fragmentNum;
-                }
-                fragmentChange();
-            }
-        });
-
-        Button rightBtn = findViewById(R.id.right_btn);
-        rightBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentIndex = (fragmentIndex + 1) % fragmentNum;
-                fragmentChange();
-            }
-        });
-
-        fragmentChange();*/
     }
 
     private void fragmentChange(){
@@ -466,7 +541,7 @@ public class PlayActivity extends AppCompatActivity {
             ArrayList<String> matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             for (int i = 0; i < matches.size(); i++) {
                 Log.e("MainActivity" ,"" + matches.get(i));
-                textView.setText(matches.get(i));
+                sttResultView.setText(matches.get(i));
             }
 
             //matches[0]: "봄 여름 가을 겨울" String

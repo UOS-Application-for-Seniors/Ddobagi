@@ -97,7 +97,6 @@ public class Communication {
             request.setShouldCache(false);
             Communication.requestQueue.add(request);
         }
-
     }
 }
 

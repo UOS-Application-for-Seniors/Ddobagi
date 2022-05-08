@@ -1,6 +1,7 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +12,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.ddobagi.Class.Communication;
+import com.example.ddobagi.Class.DictResult;
 import com.example.ddobagi.Class.Quiz;
+import com.example.ddobagi.Class.QuizInfoSummary;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FluentTestFragment extends GameFragment{
     TextView quizDetail, inputProgress;
-    int choiceNum = 2;
     EditText inputText;
     String quizAnswer;
     ArrayList<String> curAnswer = new ArrayList<>();
-    int index = 0;
-    final int buttonImgBound = 150;
+    int correctWordCnt = 0;
 
     public FluentTestFragment(){
         isSTTAble = true;
@@ -35,23 +44,61 @@ public class FluentTestFragment extends GameFragment{
         vAnsShort = voice.split(" ");
         for (int i = 0; i < vAnsShort.length; i++) {
             curAnswer.add(vAnsShort[i]);
+            wordValidation(vAnsShort[i]);
             inputProgress.append(vAnsShort[i] + ", ");
         }
     }
 
     public int commit(){
-        String curAnswerStr = "";
-        for(String str: curAnswer){
-            curAnswerStr += str;
-        }
-        if(curAnswerStr.equals(quizAnswer)){
+        if(correctWordCnt > 5){
             return 1;
         }
-        return 0;
+        else{
+            return 0;
+        }
     }
 
     void onHelp(){
 
+    }
+
+    void wordValidation(String word){
+        String url = "http://121.164.170.67:3000/quiz/DICTQuiz";
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Communication.println("wordValidation 응답 --> " + response);
+                        Gson gson = new Gson();
+
+                        DictResult dictResult = gson.fromJson(response, DictResult.class);
+                        if(dictResult == null){
+                            Log.d("warning","dictResult is null");
+                            return;
+                        }
+                        correctWordCnt += dictResult.score;
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Communication.handleVolleyError(error);
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("result", word);
+
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        Communication.requestQueue.add(request);
+        Communication.println("요청 보냄.");
     }
 
     public void loadGame(int gameID, int quizID){
@@ -90,17 +137,16 @@ public class FluentTestFragment extends GameFragment{
         inputBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String str = inputText.getText().toString();
+                String str = inputText.getText().toString().trim();
                 if(str.equals("")){
                     return;
                 }
                 curAnswer.add(str);
                 inputProgress.append(str + ", ");
                 inputText.setText("");
+                wordValidation(str);
             }
         });
-
-        index = 0;
 
         return rootView;
     }

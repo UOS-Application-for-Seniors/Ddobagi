@@ -1,7 +1,6 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,29 +15,19 @@ import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
-public class ShortAnswerFragment extends GameFragment{
-    TextView quizDetail;
+public class MemorizationFragment extends GameFragment{
     Button imgBtn;
-    EditText editText;
-    String quizAnswer;
     final int buttonImgBound = 350;
 
-    public ShortAnswerFragment(){
-        isSTTAble = true;
+    public MemorizationFragment(){
+        isSTTAble = false;
     }
 
     public void receiveSTTResult(String voice){
-        editText.setText(voice);
     }
 
     public int commit(){
-        int result = 0;
-
-        if(editText.getText().toString().trim().equals(quizAnswer)){
-            result = 1;
-        }
-        //Log.d("commit", Integer.toString(result));
-        return result;
+        return 3;
     }
 
     void onHelp(){
@@ -64,37 +53,26 @@ public class ShortAnswerFragment extends GameFragment{
 
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
-        quizDetail.setText(detail);
-        quizAnswer = quiz.quizanswer;
-
+        imgBtn.setText(quiz.quizdetail);
         setImageOnButton(url, imgBtn, buttonImgBound);
-
-//        choiceBtn[Integer.parseInt(quizAnswer)].setOnClickListener((new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(getActivity(), "정답입니다", Toast.LENGTH_LONG).show();
-//            }
-//        }));
     }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_short_answer, container, false);
-        quizDetail = rootView.findViewById(R.id.quizDetail);
-        editText = rootView.findViewById(R.id.editTextTextPersonName);
-        imgBtn = rootView.findViewById(R.id.short_answer_img_button);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_memorization, container, false);
+        imgBtn = rootView.findViewById(R.id.memorization_img_btn);
+
         return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        init();
+        //init();
     }
 
     public void init(){
         imgBtn.setCompoundDrawables(null, null, null, null);
-        editText.setText("");
+        imgBtn.setText("");
     }
 }

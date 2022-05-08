@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -30,9 +31,14 @@ import com.example.ddobagi.Class.*;
 
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_MAIN = 101;
+    public static final int RESULT_LOGIN = 111;
+
     final int PERMISSION = 1;
     SharedPreferences share;
     SharedPreferences.Editor editor;
+
+    boolean isLogin = false;
+    Button loginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,60 +87,58 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        Button loginBtn = findViewById(R.id.login_btn);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+        loginBtn = findViewById(R.id.login_btn);
+        loginManagement();
     }
 
-    public void makeRequest(){
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                Communication.url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        println("응답 --> " + response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        NetworkResponse response = error.networkResponse;
-                        if(error instanceof ServerError && response != null){
-                            try{
-                                String res = new String(response.data, HttpHeaderParser.parseCharset(response.headers,"utf-8"));
-                                println(res);
-                            }catch (UnsupportedEncodingException e1){
-                                e1.printStackTrace();
-                            }
-                        }
-                        println("onErrorResponse: " + String.valueOf(error));
-                    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CODE_MAIN){
+            if(resultCode == RESULT_LOGIN){
+                Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_LONG).show();
+                isLogin = true;
+                loginManagement();
+            }
+        }
+    }
+
+    private void loginManagement(){
+        if(isLogin){
+            loginBtn.setText("로그아웃");
+            loginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    loginTokenRemove();
+                    Toast.makeText(getApplicationContext(), "로그아웃 되었습니다", Toast.LENGTH_LONG).show();
+                    isLogin = false;
+                    loginManagement();
                 }
-        ){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError{// id, name, email, password, token
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("ID", "testID");
-                params.put("name", "testName");
-                params.put("email", "testEmail");
-                params.put("password", "testPwd");
-                params.put("token", "testToken");
-
-                return params;
-            }
-        };
-        request.setShouldCache(false);
-        Communication.requestQueue.add(request);
-        println("요청 보냄.");
+            });
+        }
+        else{
+            loginBtn.setText("로그인");
+            loginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_MAIN);
+                }
+            });
+        }
     }
 
-    public void println(String data){
-        Log.d("MainActivity", data);
+    private void loginTokenRemove(){
+        SharedPreferences pref = getSharedPreferences("PREF", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove("Access_token");
+        editor.commit();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

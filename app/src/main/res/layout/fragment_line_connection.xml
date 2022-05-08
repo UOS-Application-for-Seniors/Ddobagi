@@ -20,7 +20,7 @@
             android:background="@drawable/quiz_bar"
             android:fontFamily="@font/batang"
             android:gravity="center_horizontal"
-            android:padding="10dp"
+            android:padding="30dp"
             android:text="문제 설명 들어갈 곳"
             android:textSize="30sp"
             android:textStyle="bold" />
