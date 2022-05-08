@@ -89,13 +89,13 @@ public class PaintShapeFragment extends GameFragment{
         practice = rootView.findViewById(R.id.paint_shape_practice);
         quizDetail = rootView.findViewById(R.id.quizDetail);
 
+        example.setPaintShapePractice(practice);
 
         //example.addShape(200, 300, 200, 100, "triangle", "yellow", 1);
         //example.addShape(200, 383, 170, 100, "rectangle", "green", 1);
         //example.addShape(100, 100, 50, 0, "circle", "red", 1);
         //example.addShape(160, 373, 40, 40, "rectangle", "blue", 0);
         //example.addShape(240, 373, 40, 40, "rectangle", "blue", 0);
-        //example.setPaintShapePractice(practice);
 
 
         return rootView;
