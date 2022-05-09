@@ -38,6 +38,10 @@ public class DrawClockView extends View {
 
     ArrayList<Line> lineList = new ArrayList<>();
 
+    public ArrayList<Line> getLineList() {
+        return lineList;
+    }
+
     public DrawClockView(Context context) {
         super(context);
         init(context);

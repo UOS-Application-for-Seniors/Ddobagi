@@ -19,6 +19,8 @@ import com.example.ddobagi.Class.QuizInfoSummary;
 import com.example.ddobagi.Class.QuizResult;
 import com.example.ddobagi.R;
 
+import java.util.ArrayList;
+
 public class PlayResultFragment extends Fragment {
     TextView starCntTextView;
     RecyclerView recyclerView;
@@ -27,7 +29,7 @@ public class PlayResultFragment extends Fragment {
 
     }
 
-    public void setResult(QuizInfoSummary[] quizList, int[] quizScore){
+    public void setResult(ArrayList<QuizInfoSummary> quizList, ArrayList<Integer> quizScore){
         int count = 0;
         for(int score: quizScore){
             switch (score){
@@ -53,11 +55,11 @@ public class PlayResultFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         PlayResultAdapter adapter = new PlayResultAdapter();
 
-        for(int i = 0; i<quizList.length;i++){
-            if(quizScore[i] == 3){
+        for(int i = 0; i<quizList.size();i++){
+            if(quizScore.get(i) == 3){
                 continue;
             }
-            adapter.addItem(new QuizResult(i+1, quizList[i].usingfragment, quizScore[i]));
+            adapter.addItem(new QuizResult(i+1, quizList.get(i).usingfragment, quizScore.get(i)));
         }
         recyclerView.setAdapter(adapter);
     }

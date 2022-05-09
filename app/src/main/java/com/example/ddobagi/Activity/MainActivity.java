@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     boolean isLogin = false;
     Button loginBtn;
 
+    public void setLogin(boolean login) {
+        isLogin = login;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO}, PERMISSION);
         }
 
-        //Communication.refreshToken(this);
+        share = getSharedPreferences("PREF", MODE_PRIVATE);
+
+        if(share.getString("Refresh_token", null) != null){
+            Communication.refreshToken(this);
+        }
         setButton();
     }
 
@@ -88,19 +96,34 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        Button leftBtn = findViewById(R.id.left_btn);
-        leftBtn.setOnClickListener(new View.OnClickListener() {
+//        Button leftBtn = findViewById(R.id.left_btn);
+//        leftBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getApplicationContext(), TestPlayActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+
+        Button exitBtn = findViewById(R.id.exit_btn);
+        exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), TestPlayActivity.class);
+                finish();
+            }
+        });
+        loginBtn = findViewById(R.id.login_btn);
+        loginManagement();
+
+        Button userInfoBtn = findViewById(R.id.main_user_info_btn);
+        userInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
                 startActivity(intent);
             }
         });
-
-        loginBtn = findViewById(R.id.login_btn);
-        loginManagement();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -115,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loginManagement(){
+    public void loginManagement(){
         if(isLogin){
             loginBtn.setText("로그아웃");
             loginBtn.setOnClickListener(new View.OnClickListener() {

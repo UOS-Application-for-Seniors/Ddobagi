@@ -47,7 +47,7 @@ public abstract class GameFragment extends Fragment {
     abstract public void init();
 
     void getGameData(){
-        String url = "http://121.164.170.67:3000/quiz/" + Integer.toString(gameID) + "/" + Integer.toString(quizID);
+        String url = Communication.getQuizUrl + Integer.toString(gameID) + "/" + Integer.toString(quizID);
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 url,

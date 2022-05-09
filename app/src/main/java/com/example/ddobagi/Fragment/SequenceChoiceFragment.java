@@ -107,7 +107,7 @@ public class SequenceChoiceFragment extends GameFragment{
 
     public void onGetGameDataResponse(String response){
         int i = 0;
-        String url = "http://121.164.170.67:3000/file/";
+        String url = Communication.getQuizDataUrl;
         String quizdataUrl;
 
         Gson gson = new Gson();

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
@@ -23,7 +24,7 @@ public class BeatFragment extends GameFragment{
     String quizAnswer;
     ArrayList<String> curAnswer = new ArrayList<>();
     int index = 0;
-    final int buttonImgBound = 120;
+    final int buttonImgBound = 100;
 
     public BeatFragment(){
         isSTTAble = true;
@@ -34,7 +35,7 @@ public class BeatFragment extends GameFragment{
 
         vResultChar = voice.toCharArray();
         char btn1 = choiceBtn[0].getText().charAt(0);
-        char btn2 = choiceBtn[1].getText().charAt(1);
+        char btn2 = choiceBtn[1].getText().charAt(0);
 
 
         for(int i = 0; i < vResultChar.length; i++) {
@@ -75,32 +76,32 @@ public class BeatFragment extends GameFragment{
 
     public void onGetGameDataResponse(String response){
         int i = 0;
-        String url = "http://121.164.170.67:3000/file/";
+        String url = Communication.getQuizDataUrl;
         String quizdataUrl;
 
-    Gson gson = new Gson();
-    Quiz quiz = gson.fromJson(response, Quiz.class);
+        Gson gson = new Gson();
+        Quiz quiz = gson.fromJson(response, Quiz.class);
 
         if(quiz == null){
-        return;
+            return;
+        }
+
+        quizdataUrl = url + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
+
+        quizTTS = quiz.quizTTS;
+        detail = quiz.quizdetail;
+            quizDetail.setText(detail);
+        quizAnswer = quiz.quizanswer;
+
+        String[] splitString = quiz.quizchoicesdetail.split(",");
+
+            for(;i<choiceNum;i++){
+            String tmp = quizdataUrl;
+            tmp = tmp + Integer.toString(i) + ".jfif";
+            setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
+            choiceBtn[i].setText(splitString[i]);
+        }
     }
-
-    quizdataUrl = url + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
-
-    quizTTS = quiz.quizTTS;
-    detail = quiz.quizdetail;
-        quizDetail.setText(detail);
-    quizAnswer = quiz.quizanswer;
-
-    String[] splitString = quiz.quizchoicesdetail.split(",");
-
-        for(;i<choiceNum;i++){
-        String tmp = quizdataUrl;
-        tmp = tmp + Integer.toString(i) + ".jfif";
-        setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
-        choiceBtn[i].setText(splitString[i]);
-    }
-}
 
     private void onButtonTouch(int newAnswer){
         String str = choiceBtn[newAnswer].getText().toString();

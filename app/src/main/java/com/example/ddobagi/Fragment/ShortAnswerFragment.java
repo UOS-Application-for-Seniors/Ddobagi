@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
@@ -20,7 +21,7 @@ public class ShortAnswerFragment extends GameFragment{
     TextView quizDetail;
     Button imgBtn;
     EditText editText;
-    String quizAnswer;
+    String[] quizAnswer;
     final int buttonImgBound = 350;
 
     public ShortAnswerFragment(){
@@ -33,11 +34,13 @@ public class ShortAnswerFragment extends GameFragment{
 
     public int commit(){
         int result = 0;
-
-        if(editText.getText().toString().trim().equals(quizAnswer)){
-            result = 1;
+        String inputText = editText.getText().toString();
+        for(String str: quizAnswer){
+            if(inputText.contains(str)){
+                result = 1;
+                break;
+            }
         }
-        //Log.d("commit", Integer.toString(result));
         return result;
     }
 
@@ -53,7 +56,7 @@ public class ShortAnswerFragment extends GameFragment{
 
     public void onGetGameDataResponse(String response){
         int i = 0;
-        String url = "http://121.164.170.67:3000/file/" + gameID + "/" +quizID + "/0.jfif";
+        String url = Communication.getQuizDataUrl + gameID + "/" +quizID + "/0.jfif";
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -65,7 +68,8 @@ public class ShortAnswerFragment extends GameFragment{
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
-        quizAnswer = quiz.quizanswer;
+        String tmpAnswer = quiz.quizanswer;
+        quizAnswer = tmpAnswer.split(",");
 
         setImageOnButton(url, imgBtn, buttonImgBound);
 

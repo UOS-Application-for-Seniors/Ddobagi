@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.ExtendedLine;
 import com.example.ddobagi.Class.Line;
 import com.example.ddobagi.Class.Quiz;
@@ -78,7 +79,7 @@ public class TraceShapeFragment extends GameFragment{
 
 
     public void onGetGameDataResponse(String response){
-        String url = "http://121.164.170.67:3000/file/" + gameID + "/" + quizID + "/";
+        String url = Communication.getQuizDataUrl + gameID + "/" + quizID + "/";
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);

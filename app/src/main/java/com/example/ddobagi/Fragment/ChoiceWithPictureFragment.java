@@ -34,7 +34,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
     int choiceNum = 4;
     Button[] choiceBtn = new Button[choiceNum];
     String quizAnswer;
-    final int buttonImgBound = 130, exampleImgBound = 150;
+    final int buttonImgBound = 120, exampleImgBound = 150;
     String curAnswer;
 
     public ChoiceWithPictureFragment(){
@@ -97,7 +97,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
 
     public void onGetGameDataResponse(String response){
         int i = 0;
-        String url = "http://121.164.170.67:3000/file/" + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
+        String url = Communication.getQuizDataUrl + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -174,6 +174,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
     public void init(){
         for(int i =0; i<choiceNum; i++){
             choiceBtn[i].setText("");
+            choiceBtn[i].setBackground(getResources().getDrawable(R.drawable.light_green_btn));
             choiceBtn[i].setCompoundDrawables(null, null, null, null);
         }
         curAnswer = "";

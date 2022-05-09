@@ -16,6 +16,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ddobagi.Activity.LoginActivity;
+import com.example.ddobagi.Activity.MainActivity;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -23,19 +24,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Communication {
-    public static String url = "http://121.164.170.67:3000/users";
-    public static String loginUrl = "http://121.164.170.67:3000/auth/login";
-    public static String refreshUrl = "http://121.164.170.67:3000/refresh";
-    public static String gameListUrl = "http://121.164.170.67:3000/quiz/games";
-    public static String testListUrl = "http://121.164.170.67:3000/quiz/CIST";
+    public static String url = "https://ddobagi-backend.herokuapp.com";
+    public static String loginUrl = url + "/auth/login";
+    public static String registerUrl = url + "/auth/register";
+    public static String refreshUrl = url + "/refresh";
+    public static String gameListUrl = url + "/quiz/games";
+    public static String testListUrl = url + "/quiz/CIST";
+    public static String sendTestResultUrl = url + "/quiz/CISTADDResult";
+    public static String idCheckUrl = url + "/users/check";
+    public static String getQuizUrl = url + "/quiz/";
+    public static String getQuizDataUrl = url + "/file/";
+    public static String dictQuizUrl = url + "/quiz/DICTQuiz";
+    public static String recordUrl = url + "/users/getUserResult";
     public static RequestQueue requestQueue;
     public static SharedPreferences share;
     public static SharedPreferences.Editor edit;
+
+    static MainActivity main;
 
     public static void init(Context context){
         if(requestQueue == null){
             requestQueue = Volley.newRequestQueue(context);
         }
+        main = (MainActivity) context;
     }
 
     public static void handleVolleyError(VolleyError error){
@@ -81,6 +92,9 @@ public class Communication {
                     edit.putLong("Access_token_expiration", Integer.parseInt(access_token_expiration));
                     edit.putLong("Access_token_time", date.getTime());
                     edit.commit();
+
+                    main.setLogin(true);
+                    main.loginManagement();
                 }
             }, new Response.ErrorListener(){
                 @Override

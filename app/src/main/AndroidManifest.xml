@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="preferExternal"
-    package="com.example.ddobagi">
+    package="com.example.ddobagi"
+    android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -15,9 +15,15 @@
         android:theme="@style/Theme.Ddobagi"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".Activity.RegistrationActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:name=".Activity.UserInfoActivity"
             android:exported="false" />
+        <activity
+            android:name=".Activity.RecordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.RegistrationActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.LoginActivity"
             android:exported="false" />
@@ -29,7 +35,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.TestPlayActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Activity.MainActivity"
             android:exported="true">

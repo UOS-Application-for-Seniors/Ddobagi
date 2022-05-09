@@ -41,7 +41,7 @@ public class MultipleChoiceFragment extends GameFragment{
         String vResultString = "";
         char[] vResultChar;
 
-        vResultString = voice.toString();
+        vResultString = voice;
         vResultChar = vResultString.toCharArray();
 
         for(int i = 0; i < vResultChar.length; i++) {
@@ -58,6 +58,21 @@ public class MultipleChoiceFragment extends GameFragment{
                 case '4' :
                     vAnsChoice = 4;
                     break;
+            }
+        }
+
+        String[] vAnsShort = voice.split(" ");
+        String[] buttonText = new String[choiceNum];
+        if(!choiceBtn[0].getText().toString().equals("")){
+            for(int i = 0 ; i<choiceNum; i++){
+                buttonText[i] = choiceBtn[i].getText().toString();
+            }
+        }
+        for (int i = 0; i < vAnsShort.length; i++) {
+            for(int j =0;j<choiceNum;j++){
+                if(buttonText[j].contains(vAnsShort[i])){
+                    vAnsChoice = j + 1;
+                }
             }
         }
 
@@ -90,7 +105,7 @@ public class MultipleChoiceFragment extends GameFragment{
 
     public void onGetGameDataResponse(String response){
         int i = 0;
-        String url = "http://121.164.170.67:3000/file/" + gameID + "/" +quizID + "/";
+        String url = Communication.getQuizDataUrl + gameID + "/" +quizID + "/";
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);

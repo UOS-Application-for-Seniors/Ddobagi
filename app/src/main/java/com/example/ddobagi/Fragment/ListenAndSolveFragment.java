@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
@@ -30,8 +31,15 @@ public class ListenAndSolveFragment extends GameFragment{
 
     public int commit(){
         int result = 0;
+        String inputText = inputBox.getText().toString();
+        inputText.replace(",", "");
+        inputText.replace("-", "");
+        inputText.replace(" ", "");
+        inputText.replace("_", "");
+        inputText.replace("/", "");
+        inputText.replace(".", "");
 
-        if(inputBox.getText().toString().trim().equals(quizAnswer)){
+        if(inputText.equals(quizAnswer)){
             result = 1;
         }
         return result;
@@ -50,7 +58,7 @@ public class ListenAndSolveFragment extends GameFragment{
 
     public void onGetGameDataResponse(String response){
         int i = 0;
-        String url = "http://121.164.170.67:3000/file/" + gameID + "/" +quizID + "/0.jfif";
+        String url = Communication.getQuizDataUrl + gameID + "/" +quizID + "/0.jfif";
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);

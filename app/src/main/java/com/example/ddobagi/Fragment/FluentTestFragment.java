@@ -43,9 +43,7 @@ public class FluentTestFragment extends GameFragment{
         String[] vAnsShort;
         vAnsShort = voice.split(" ");
         for (int i = 0; i < vAnsShort.length; i++) {
-            curAnswer.add(vAnsShort[i]);
-            wordValidation(vAnsShort[i]);
-            inputProgress.append(vAnsShort[i] + ", ");
+            putNewWord(vAnsShort[i]);
         }
     }
 
@@ -63,7 +61,7 @@ public class FluentTestFragment extends GameFragment{
     }
 
     void wordValidation(String word){
-        String url = "http://121.164.170.67:3000/quiz/DICTQuiz";
+        String url = Communication.dictQuizUrl;
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 url,
@@ -108,9 +106,9 @@ public class FluentTestFragment extends GameFragment{
     }
 
     public void onGetGameDataResponse(String response){
-        int i = 0;
-        String url = "http://121.164.170.67:3000/file/";
-        String quizdataUrl;
+//        int i = 0;
+//        String url = Communication.getQuizDataUrl;
+//        String quizdataUrl;
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -141,14 +139,20 @@ public class FluentTestFragment extends GameFragment{
                 if(str.equals("")){
                     return;
                 }
-                curAnswer.add(str);
-                inputProgress.append(str + ", ");
-                inputText.setText("");
-                wordValidation(str);
+                putNewWord(str);
             }
         });
 
         return rootView;
+    }
+
+    private void putNewWord(String str){
+        if(!curAnswer.contains(str)){
+            curAnswer.add(str);
+            inputProgress.append(str + ", ");
+            inputText.setText("");
+            wordValidation(str);
+        }
     }
 
     @Override

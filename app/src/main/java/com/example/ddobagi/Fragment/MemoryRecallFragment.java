@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,20 +15,31 @@ import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
-public class MemorizationFragment extends GameFragment{
+import java.util.ArrayList;
+
+public class MemoryRecallFragment extends GameFragment{
     Button imgBtn;
+    TextView inputBox;
+    String[] quizAnswer;
     final int buttonImgBound = 350;
 
-    public MemorizationFragment(){
-        isSTTAble = false;
+    public MemoryRecallFragment(){
+        isSTTAble = true;
     }
 
     public void receiveSTTResult(String voice){
+        inputBox.setText(voice);
     }
 
     public int commit(){
-        return 3;
+        int result = 0;
+
+        for(String ans: quizAnswer){
+
+        }
+        return result;
     }
+
 
     void onHelp(){
 
@@ -56,24 +66,28 @@ public class MemorizationFragment extends GameFragment{
         detail = quiz.quizdetail;
         imgBtn.setText(quiz.quizdetail);
         setImageOnButton(url, imgBtn, buttonImgBound);
+
+        quizAnswer = quiz.quizanswer.split(",");
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_memorization, container, false);
-        imgBtn = rootView.findViewById(R.id.memorization_img_btn);
-
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_listen_and_solve, container, false);
+        inputBox = rootView.findViewById(R.id.listen_editText);
+        imgBtn = rootView.findViewById(R.id.listen_img_btn);
         return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        //init();
+        init();
     }
 
     public void init(){
         imgBtn.setCompoundDrawables(null, null, null, null);
         imgBtn.setText("");
+        inputBox.setText("");
     }
 }

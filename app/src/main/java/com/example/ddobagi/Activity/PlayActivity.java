@@ -13,6 +13,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,12 +34,14 @@ import com.example.ddobagi.Fragment.FluentTestFragment;
 import com.example.ddobagi.Fragment.GameFragment;
 import com.example.ddobagi.Fragment.ListenAndSolveFragment;
 import com.example.ddobagi.Fragment.MemorizationFragment;
+import com.example.ddobagi.Fragment.MemoryRecallFragment;
 import com.example.ddobagi.Fragment.MultipleChoiceFragment;
 import com.example.ddobagi.Fragment.LineConnectionFragment;
 import com.example.ddobagi.Fragment.PaintShapeFragment;
 import com.example.ddobagi.Fragment.PlayResultFragment;
 import com.example.ddobagi.Fragment.SequenceChoiceFragment;
 import com.example.ddobagi.Fragment.ShortAnswerFragment;
+import com.example.ddobagi.Fragment.TestResultFragment;
 import com.example.ddobagi.Fragment.TraceShapeFragment;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
@@ -65,15 +68,17 @@ public class PlayActivity extends AppCompatActivity {
     FluentTestFragment fluentTestFragment;
     ListenAndSolveFragment listenAndSolveFragment;
     MemorizationFragment memorizationFragment;
+    MemoryRecallFragment memoryRecallFragment;
 
     PlayResultFragment playResultFragment;
+    TestResultFragment testResultFragment;
 
     Date date;
 
     SharedPreferences share;
 
-    QuizInfoSummary[] quizList;
-    int[] quizScore;
+    ArrayList<QuizInfoSummary> quizList;
+    ArrayList<Integer> quizScore;
     int quizIndex = 0;
 
     int fragmentIndex = 0;
@@ -95,6 +100,7 @@ public class PlayActivity extends AppCompatActivity {
 
     ConstraintLayout resultPerQuizLayout;
     Button resultPerQuizBtn, leftStar, rightStar, centerStar;
+    Button commitBtn, listenBtn;
 
     boolean isTest;
 
@@ -102,6 +108,9 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        quizList = new ArrayList<>();
+        quizScore = new ArrayList<>();
 
         multipleChoiceFragment = new MultipleChoiceFragment();
         shortAnswerFragment = new ShortAnswerFragment();
@@ -115,8 +124,10 @@ public class PlayActivity extends AppCompatActivity {
         fluentTestFragment = new FluentTestFragment();
         listenAndSolveFragment = new ListenAndSolveFragment();
         memorizationFragment = new MemorizationFragment();
+        memoryRecallFragment = new MemoryRecallFragment();
 
         playResultFragment = new PlayResultFragment();
+        testResultFragment = new TestResultFragment();
 
         setComponent();
 
@@ -135,6 +146,7 @@ public class PlayActivity extends AppCompatActivity {
         }
 
         setComponent();
+        resultPerQuizControl(4);
         fragmentChange();
     }
 
@@ -201,20 +213,28 @@ public class PlayActivity extends AppCompatActivity {
 
     public void onGetQuizListResponse(String response){
         Gson gson = new Gson();
-        quizList = gson.fromJson(response, QuizInfoSummary[].class);
-        if(quizList == null){
+        QuizInfoSummary[] tmp = gson.fromJson(response, QuizInfoSummary[].class);
+        if(tmp == null){
             Log.d("warning","quizList is null");
             return;
         }
-        quizScore = new int[quizList.length];
+
+        for(int i=0;i<tmp.length;i++){
+            quizList.add(tmp[i]);
+        }
+
+        quizScore = new ArrayList<>(quizList.size());
 
         loadGame();
     }
 
     void sendGameScore(int gameID, int score){
-        String url = "http://121.164.170.67:3000";
+        String url;
         if(isTest){
-            url += "/quiz/CISTADDResult";
+            url = Communication.sendTestResultUrl;
+        }
+        else{
+            url = Communication.url;
         }
         StringRequest request = new StringRequest(
                 Request.Method.POST,
@@ -254,7 +274,7 @@ public class PlayActivity extends AppCompatActivity {
 
 
     private void loadGame(){
-        String usingFragment = quizList[quizIndex].usingfragment;
+        String usingFragment = quizList.get(quizIndex).usingfragment;
         switch(usingFragment){
             case "choiceWithPicture":
                 curGameFragment = choiceWithPictureFragment;
@@ -292,12 +312,14 @@ public class PlayActivity extends AppCompatActivity {
             case "memorization":
                 curGameFragment = memorizationFragment;
                 break;
+            case "memoryRecall":
+                curGameFragment = memoryRecallFragment;
             default:
                 curGameFragment = null;
         }
         if(curGameFragment != null){
             getSupportFragmentManager().beginTransaction().replace(R.id.container, curGameFragment).commit();
-            curGameFragment.loadGame(quizList[quizIndex].gameid, 0);
+            curGameFragment.loadGame(quizList.get(quizIndex).gameid, 0);
             if(curGameFragment.isSTTAble()){
                 sttBtn.setVisibility(View.VISIBLE);
             }
@@ -309,7 +331,7 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void setComponent(){
-        Button commitBtn = findViewById(R.id.commit_btn);
+        commitBtn = findViewById(R.id.commit_btn);
         commitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -318,20 +340,31 @@ public class PlayActivity extends AppCompatActivity {
                     Log.d("score", Integer.toString(quizIndex) + ": " + Integer.toString(result));
                     curGameFragment.init();
 
-                    if(!isTest){
+                    if(isTest){
+                        resultPerQuizControl(5);
+                    }
+                    else{
                         resultPerQuizControl(result);
                     }
 
-                    quizScore[quizIndex] = result;
-                    sendGameScore(quizList[quizIndex].gameid, result);
+                    quizScore.add(quizIndex, result);
+                    sendGameScore(quizList.get(quizIndex).gameid, result);
                     quizIndex++;
-                    if(quizIndex < quizList.length){
+                    if(quizIndex < quizList.size()){
                         loadGame();
                     }
                     else{
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, playResultFragment).commit();
-                        for(int i=0;i<quizScore.length; i++){
-                            Log.d("quizScore", Integer.toString(i) + ": " + Integer.toString(quizScore[i]));
+                        ttsBtn.setVisibility(View.INVISIBLE);
+                        commitBtn.setVisibility(View.INVISIBLE);
+                        sttBtn.setVisibility(View.INVISIBLE);
+                        if(isTest){
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, testResultFragment).commit();
+                        }
+                        else{
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, playResultFragment).commit();
+                        }
+                        for(int i=0;i<quizScore.size(); i++){
+                            Log.d("quizScore", Integer.toString(i) + ": " + Integer.toString(quizScore.get(i)));
                         }
                         curGameFragment = null;
                     }
@@ -409,16 +442,27 @@ public class PlayActivity extends AppCompatActivity {
         ttsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CharSequence ttsText = curGameFragment.getQuizTTS();
-                tts.setPitch(1.0f);         // 음성 톤 설정 (n배)
-                tts.setSpeechRate(1.0f);    // 읽는 속도 설정 (n배)
-                tts.speak(ttsText.toString(), TextToSpeech.QUEUE_FLUSH, null);
+                if(curGameFragment != null){
+                    CharSequence ttsText = curGameFragment.getQuizTTS();
+                    if (ttsText != null) {
+                        tts.setPitch(1.0f);         // 음성 톤 설정 (n배)
+                        tts.setSpeechRate(0.5f);    // 읽는 속도 설정 (n배)
+                        tts.speak(ttsText.toString(), TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                }
             }
         });
         //=================================================================
     }
 
     private void resultPerQuizControl(int result){
+        resultPerQuizBtn.setTextSize(30.0f);
+        leftStar.setVisibility(View.INVISIBLE);
+        rightStar.setVisibility(View.INVISIBLE);
+        centerStar.setVisibility(View.INVISIBLE);
+        resultPerQuizBtn.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL);
+        resultPerQuizBtn.setText("");
+        String baseMsg = "\n여기를 눌러 계속 진행하세요.", msg;
         switch (result){
             case -1: //결과창 끄기
                 leftStar.setVisibility(View.INVISIBLE);
@@ -426,28 +470,56 @@ public class PlayActivity extends AppCompatActivity {
                 centerStar.setVisibility(View.INVISIBLE);
                 resultPerQuizBtn.setText("");
                 resultPerQuizLayout.setVisibility(View.INVISIBLE);
+                ttsBtn.callOnClick();
                 break;
             case 0: //오답시 중앙 별만 출력
                 centerStar.setVisibility(View.VISIBLE);
-                resultPerQuizBtn.setText("잘하고 계십니다");
+                msg = "잘하고 계십니다";
+                msg += baseMsg;
+                resultPerQuizBtn.setText(msg);
                 resultPerQuizLayout.setVisibility(View.VISIBLE);
                 break;
             case 1: //정답시 모든 별 출력
                 leftStar.setVisibility(View.VISIBLE);
                 rightStar.setVisibility(View.VISIBLE);
                 centerStar.setVisibility(View.VISIBLE);
-                resultPerQuizBtn.setText("완벽합니다!");
+                msg = "완벽합니다";
+                msg += baseMsg;
+                resultPerQuizBtn.setText(msg);
                 resultPerQuizLayout.setVisibility(View.VISIBLE);
                 break;
             case 2: //부분 정답시 왼쪽, 오른쪽 별만 출력
                 leftStar.setVisibility(View.VISIBLE);
                 rightStar.setVisibility(View.VISIBLE);
-                resultPerQuizBtn.setText("훌륭하세요");
+                msg = "훌륭합니다";
+                msg += baseMsg;
+                resultPerQuizBtn.setText(msg);
                 resultPerQuizLayout.setVisibility(View.VISIBLE);
                 break;
             case 3: //MemorizationFragment에서 호출. 별이 따로 없음
+                resultPerQuizLayout.setVisibility(View.INVISIBLE);
+                break;
+            case 4: //처음 게임 로딩할 때 호출
+                if(isTest){
+                    resultPerQuizBtn.setText("지금부터 인지 선별 검사를 진행합니다. \n알맞은 답을 고르고 우측 상단의 \"다음\" 버튼을 눌러주세요.");
+                }
+                else{
+                    resultPerQuizBtn.setText("지금부터 놀이를 진행합니다. \n알맞은 답을 고르고 우측 상단의 \"다음\" 버튼을 눌러주세요.");
+                }
+                resultPerQuizBtn.setTextSize(40.0f);
+                resultPerQuizBtn.setGravity(Gravity.CENTER);
+                resultPerQuizLayout.setVisibility(View.VISIBLE);
+                break;
+            case 5: //인지 선별 검사 문제
+                msg = "결과가 저장되었습니다.";
+                msg += baseMsg;
+                resultPerQuizBtn.setText(msg);
+                resultPerQuizBtn.setTextSize(40.0f);
+                resultPerQuizBtn.setGravity(Gravity.CENTER);
+                resultPerQuizLayout.setVisibility(View.VISIBLE);
                 break;
             default:
+                Log.d("resultPerQuizControl", "올바르지 않은 result 값");
                 break;
         }
     }
@@ -632,11 +704,11 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    public QuizInfoSummary[] getQuizList() {
+    public ArrayList<QuizInfoSummary> getQuizList() {
         return quizList;
     }
 
-    public int[] getQuizScore() {
+    public ArrayList<Integer> getQuizScore() {
         return quizScore;
     }
 }

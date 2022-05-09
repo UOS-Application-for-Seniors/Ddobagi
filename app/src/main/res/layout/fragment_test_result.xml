@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/play_result_layout"
+        android:id="@+id/test_result_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="50dp"
@@ -16,33 +16,22 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/play_result_star"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_weight="0"
-                app:srcCompat="@drawable/yellow_star" />
-
             <TextView
-                android:id="@+id/play_result_star_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:id="@+id/test_result_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="0"
                 android:fontFamily="@font/font_batang"
-                android:text="X ~~개 획득!!"
-                android:textSize="80sp"
+                android:gravity="center"
+                android:text="검사가 종료되었습니다. \n수고하셨습니다. \n\n검사 결과 [쿵짝쿵짝놀이]를 해보시는 것을\n 추천드립니다."
+                android:textSize="60sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/play_result_recylerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </LinearLayout>
 
 </LinearLayout>

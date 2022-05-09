@@ -79,7 +79,7 @@ public class RegistrationActivity extends AppCompatActivity {
         duplicate_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StringRequest request = new StringRequest(Request.Method.POST, "http://121.164.170.67:3000/users/check", new Response.Listener<String>(){
+                StringRequest request = new StringRequest(Request.Method.POST, Communication.idCheckUrl, new Response.Listener<String>(){
                     @Override
                     public void onResponse(String s) {
                         if(Integer.parseInt(s) != 0){
@@ -130,7 +130,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     Log.i("jsonString", jsonObject.toString());
                 }catch(Exception e){
                 }
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, "http://121.164.170.67:3000/auth/register", jsonObject,
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Communication.registerUrl, jsonObject,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
