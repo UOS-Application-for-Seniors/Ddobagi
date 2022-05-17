@@ -87,11 +87,6 @@ public class LineConnectionFragment extends GameFragment{
 
     }
 
-    public void loadGame(int gameID, int quizID){
-        this.gameID = gameID;
-        this.quizID = quizID;
-        getGameData();
-    }
 
     public void onGetGameDataResponse(String response){
         String url = Communication.getQuizDataUrl + gameID + "/" + quizID + "/";
@@ -141,6 +136,6 @@ public class LineConnectionFragment extends GameFragment{
     }
 
     public void init(){
-
+        quizTTS = "";
     }
 }

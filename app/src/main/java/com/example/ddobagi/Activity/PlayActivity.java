@@ -24,14 +24,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.QuizInfoSummary;
 import com.example.ddobagi.Fragment.BeatFragment;
+import com.example.ddobagi.Fragment.CIST10Fragment;
 import com.example.ddobagi.Fragment.ChoiceWithPictureFragment;
 import com.example.ddobagi.Fragment.DrawClockFragment;
 import com.example.ddobagi.Fragment.FluentTestFragment;
 import com.example.ddobagi.Fragment.GameFragment;
+import com.example.ddobagi.Fragment.GameSelectFragment;
 import com.example.ddobagi.Fragment.ListenAndSolveFragment;
 import com.example.ddobagi.Fragment.MemorizationFragment;
 import com.example.ddobagi.Fragment.MemoryRecallFragment;
@@ -69,20 +70,22 @@ public class PlayActivity extends AppCompatActivity {
     ListenAndSolveFragment listenAndSolveFragment;
     MemorizationFragment memorizationFragment;
     MemoryRecallFragment memoryRecallFragment;
+    CIST10Fragment cist10Fragment;
 
     PlayResultFragment playResultFragment;
     TestResultFragment testResultFragment;
+    GameSelectFragment gameSelectFragment;
 
     Date date;
 
     SharedPreferences share;
 
-    ArrayList<QuizInfoSummary> quizList;
-    ArrayList<Integer> quizScore;
+    QuizInfoSummary[] quizList;
+    int[] quizScore;
     int quizIndex = 0;
 
     int fragmentIndex = 0;
-    int fragmentNum = 12;
+    int fragmentNum = 13;
 
     Intent sttIntent;
     SpeechRecognizer mRecognizer;
@@ -109,9 +112,6 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        quizList = new ArrayList<>();
-        quizScore = new ArrayList<>();
-
         multipleChoiceFragment = new MultipleChoiceFragment();
         shortAnswerFragment = new ShortAnswerFragment();
         lineConnectionFragment = new LineConnectionFragment();
@@ -125,6 +125,7 @@ public class PlayActivity extends AppCompatActivity {
         listenAndSolveFragment = new ListenAndSolveFragment();
         memorizationFragment = new MemorizationFragment();
         memoryRecallFragment = new MemoryRecallFragment();
+        cist10Fragment = new CIST10Fragment();
 
         playResultFragment = new PlayResultFragment();
         testResultFragment = new TestResultFragment();
@@ -135,28 +136,26 @@ public class PlayActivity extends AppCompatActivity {
         String type = intent.getStringExtra("type");
 
         if(type.equals("select")){
-            //게임 선택하는 창 띄우기
+            gameSelectFragment = new GameSelectFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, gameSelectFragment).commit();
         }
         else{
-            getSuggestionQuizList(type);
-        }
-
-        if(type.equals("test")){
-            isTest = true;
+            getRecommendQuizList(type);
         }
 
         setComponent();
         resultPerQuizControl(4);
-        fragmentChange();
+        //fragmentChange();
     }
 
-    private void getSuggestionQuizList(String type){
+    private void getRecommendQuizList(String type){
         String url;
         if(type.equals("recommend")){
             url = Communication.gameListUrl;
         }
         else if (type.equals("test")){
             url = Communication.testListUrl;
+            isTest = true;
         }
         else{
             return;
@@ -213,22 +212,18 @@ public class PlayActivity extends AppCompatActivity {
 
     public void onGetQuizListResponse(String response){
         Gson gson = new Gson();
-        QuizInfoSummary[] tmp = gson.fromJson(response, QuizInfoSummary[].class);
-        if(tmp == null){
+        quizList = gson.fromJson(response, QuizInfoSummary[].class);
+        if(quizList == null){
             Log.d("warning","quizList is null");
             return;
         }
 
-        for(int i=0;i<tmp.length;i++){
-            quizList.add(tmp[i]);
-        }
-
-        quizScore = new ArrayList<>(quizList.size());
+        quizScore = new int[quizList.length];
 
         loadGame();
     }
 
-    void sendGameScore(int gameID, int score){
+    void sendGameScore(int gameID, int score, int difficulty){
         String url;
         if(isTest){
             url = Communication.sendTestResultUrl;
@@ -264,6 +259,11 @@ public class PlayActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("gameID", Integer.toString(gameID));
                 params.put("score", Integer.toString(score));
+
+                if(!isTest){
+                    params.put("difficulty", Integer.toString(difficulty));
+                }
+
                 return params;
             }
         };
@@ -274,7 +274,7 @@ public class PlayActivity extends AppCompatActivity {
 
 
     private void loadGame(){
-        String usingFragment = quizList.get(quizIndex).usingfragment;
+        String usingFragment = quizList[quizIndex].usingfragment;
         switch(usingFragment){
             case "choiceWithPicture":
                 curGameFragment = choiceWithPictureFragment;
@@ -314,12 +314,26 @@ public class PlayActivity extends AppCompatActivity {
                 break;
             case "memoryRecall":
                 curGameFragment = memoryRecallFragment;
+                break;
+            case "cist10":
+                curGameFragment = cist10Fragment;
+                break;
+            case "0":
+            case "1":
+            case "2":
+                quizScore[quizIndex] = Integer.parseInt(usingFragment);
+                sendGameScore(quizList[quizIndex].gameid, Integer.parseInt(usingFragment), 0);
+                quizIndex++;
+                if(quizIndex < quizList.length){
+                    loadGame();
+                }
+                return;
             default:
                 curGameFragment = null;
         }
         if(curGameFragment != null){
             getSupportFragmentManager().beginTransaction().replace(R.id.container, curGameFragment).commit();
-            curGameFragment.loadGame(quizList.get(quizIndex).gameid, 0);
+            curGameFragment.loadGame(quizList[quizIndex].gameid, quizList[quizIndex].quizid, quizList[quizIndex].difficulty);
             if(curGameFragment.isSTTAble()){
                 sttBtn.setVisibility(View.VISIBLE);
             }
@@ -335,40 +349,7 @@ public class PlayActivity extends AppCompatActivity {
         commitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(curGameFragment != null){
-                    int result = curGameFragment.commit();
-                    Log.d("score", Integer.toString(quizIndex) + ": " + Integer.toString(result));
-                    curGameFragment.init();
-
-                    if(isTest){
-                        resultPerQuizControl(5);
-                    }
-                    else{
-                        resultPerQuizControl(result);
-                    }
-
-                    quizScore.add(quizIndex, result);
-                    sendGameScore(quizList.get(quizIndex).gameid, result);
-                    quizIndex++;
-                    if(quizIndex < quizList.size()){
-                        loadGame();
-                    }
-                    else{
-                        ttsBtn.setVisibility(View.INVISIBLE);
-                        commitBtn.setVisibility(View.INVISIBLE);
-                        sttBtn.setVisibility(View.INVISIBLE);
-                        if(isTest){
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, testResultFragment).commit();
-                        }
-                        else{
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, playResultFragment).commit();
-                        }
-                        for(int i=0;i<quizScore.size(); i++){
-                            Log.d("quizScore", Integer.toString(i) + ": " + Integer.toString(quizScore.get(i)));
-                        }
-                        curGameFragment = null;
-                    }
-                }
+                onCommit();
             }
         });
 
@@ -453,6 +434,102 @@ public class PlayActivity extends AppCompatActivity {
             }
         });
         //=================================================================
+    }
+
+    private void onCommit(){
+        if(curGameFragment != null){
+            int result = curGameFragment.commit();
+            curGameFragment.init();
+
+            int score;
+            if(isTest){
+                resultPerQuizControl(5);
+                score = calcTestScore(quizList[quizIndex].gameid, result);
+            }
+            else{
+                resultPerQuizControl(result);
+                score = result;
+            }
+
+            quizScore[quizIndex] =  score;
+            Log.d("score", Integer.toString(quizIndex) + ": " + Integer.toString(score));
+            sendGameScore(quizList[quizIndex].gameid, score, 0);
+            quizIndex++;
+            if(quizIndex < quizList.length){
+                loadGame();
+            }
+            else{
+                ttsBtn.setVisibility(View.INVISIBLE);
+                commitBtn.setVisibility(View.INVISIBLE);
+                sttBtn.setVisibility(View.INVISIBLE);
+                if(isTest){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, testResultFragment).commit();
+                }
+                else{
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, playResultFragment).commit();
+                }
+                for(int i=0;i<quizScore.length; i++){
+                    Log.d("quizScore", Integer.toString(i) + ": " + Integer.toString(quizScore[i]));
+                }
+                curGameFragment = null;
+            }
+        }
+    }
+
+    private int calcTestScore(int gameid, int result){
+        int score = 0;
+        switch(gameid){
+            case 30:
+            case 31:
+            case 32:
+            case 33:
+            case 34:
+            case 37:
+            case 38:
+            case 39:
+            case 41:
+            case 42:
+            case 45:
+            case 46:
+            case 47:
+            case 48:
+            case 49:
+            case 50:
+            case 51:
+            case 52:
+            case 53:
+                if(result == 0){
+                    score = 0;
+                }
+                else if(result == 1){
+                    score = 1;
+                }
+                else if(result == 2){
+                    score = 0;
+                }
+                break;
+
+            case 40:
+            case 43:
+            case 54:
+                if(result == 0){
+                    score = 0;
+                }
+                else if(result == 1){
+                    score = 2;
+                }
+                else if(result == 2){
+                    score = 1;
+                }
+                break;
+
+            default:
+                //Log.d("calcTestScore","gameid error: " + gameid);
+                break;
+
+        }
+
+        return score;
     }
 
     private void resultPerQuizControl(int result){
@@ -704,11 +781,18 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    public ArrayList<QuizInfoSummary> getQuizList() {
+    public QuizInfoSummary[] getQuizList() {
         return quizList;
     }
 
-    public ArrayList<Integer> getQuizScore() {
+    public int[] getQuizScore() {
         return quizScore;
+    }
+
+    public void skipNextList(int index, int score){
+        if(index<0){
+            return;
+        }
+        quizList[quizIndex + index].usingfragment = Integer.toString(score);
     }
 }

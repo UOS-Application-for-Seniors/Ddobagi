@@ -83,9 +83,11 @@ public class MultipleChoiceFragment extends GameFragment{
         onButtonTouch(Integer.toString(vAnsChoice - 1));
     }
 
-
     public int commit(){
         int result = 0;
+        if(quizAnswer == null){
+            return 0;
+        }
         if(quizAnswer.equals(curAnswer)){
             result = 1;
         }
@@ -95,12 +97,6 @@ public class MultipleChoiceFragment extends GameFragment{
 
     void onHelp(){
 
-    }
-
-    public void loadGame(int gameID, int quizID){
-        this.gameID = gameID;
-        this.quizID = quizID;
-        getGameData();
     }
 
     public void onGetGameDataResponse(String response){
@@ -185,6 +181,7 @@ public class MultipleChoiceFragment extends GameFragment{
     }
 
     public void init(){
+        quizTTS = "";
         for(int i=0; i<choiceNum; i++){
             choiceBtn[i].setBackground(getResources().getDrawable(R.drawable.light_green_btn));
         }

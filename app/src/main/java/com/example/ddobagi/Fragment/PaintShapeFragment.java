@@ -43,11 +43,6 @@ public class PaintShapeFragment extends GameFragment{
     void onHelp(){
 
     }
-    public void loadGame(int gameID, int quizID){
-        this.gameID = gameID;
-        this.quizID = quizID;
-        getGameData();
-    }
 
     public void onGetGameDataResponse(String response){
         int i = 0;
@@ -106,6 +101,7 @@ public class PaintShapeFragment extends GameFragment{
     }
 
     public void init(){
+        quizTTS = "";
         curAnswer.clear();
     }
 

@@ -33,6 +33,9 @@ public class ShortAnswerFragment extends GameFragment{
     }
 
     public int commit(){
+        if(quizAnswer == null){
+            return 0;
+        }
         int result = 0;
         String inputText = editText.getText().toString();
         for(String str: quizAnswer){
@@ -46,12 +49,6 @@ public class ShortAnswerFragment extends GameFragment{
 
     void onHelp(){
 
-    }
-
-    public void loadGame(int gameID, int quizID){
-        this.gameID = gameID;
-        this.quizID = quizID;
-        getGameData();
     }
 
     public void onGetGameDataResponse(String response){
@@ -98,6 +95,7 @@ public class ShortAnswerFragment extends GameFragment{
     }
 
     public void init(){
+        quizTTS = "";
         imgBtn.setCompoundDrawables(null, null, null, null);
         editText.setText("");
     }

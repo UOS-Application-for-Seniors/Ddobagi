@@ -1,6 +1,7 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
+
+import org.w3c.dom.Text;
 
 public class ListenAndSolveFragment extends GameFragment{
     Button imgBtn;
@@ -32,12 +35,17 @@ public class ListenAndSolveFragment extends GameFragment{
     public int commit(){
         int result = 0;
         String inputText = inputBox.getText().toString();
-        inputText.replace(",", "");
-        inputText.replace("-", "");
-        inputText.replace(" ", "");
-        inputText.replace("_", "");
-        inputText.replace("/", "");
-        inputText.replace(".", "");
+        inputText = inputText.replace(",", "");
+        inputText = inputText.replace("-", "");
+        inputText = inputText.replace(" ", "");
+        inputText = inputText.replace("_", "");
+        inputText = inputText.replace("/", "");
+        inputText = inputText.replace(".", "");
+
+        if(quizAnswer == null){
+            return 0;
+        }
+        quizAnswer = quizAnswer.replace(",", "");
 
         if(inputText.equals(quizAnswer)){
             result = 1;
@@ -48,12 +56,6 @@ public class ListenAndSolveFragment extends GameFragment{
 
     void onHelp(){
 
-    }
-
-    public void loadGame(int gameID, int quizID){
-        this.gameID = gameID;
-        this.quizID = quizID;
-        getGameData();
     }
 
     public void onGetGameDataResponse(String response){
@@ -90,6 +92,7 @@ public class ListenAndSolveFragment extends GameFragment{
     }
 
     public void init(){
+        quizTTS = "";
         imgBtn.setCompoundDrawables(null, null, null, null);
         imgBtn.setText("");
         inputBox.setText("");

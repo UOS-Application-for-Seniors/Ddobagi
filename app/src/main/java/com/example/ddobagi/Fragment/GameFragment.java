@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class GameFragment extends Fragment {
-    int gameID, quizID;
+    int gameID, quizID, difficulty;
     String quizTTS;
     String gameName;
     String gameField;
@@ -42,9 +42,17 @@ public abstract class GameFragment extends Fragment {
 
     abstract public int commit();
     abstract void onHelp();
-    abstract public void loadGame(int gameID, int quizID);
     abstract public void receiveSTTResult(String voice);
-    abstract public void init();
+    public void init(){
+        quizTTS = "";
+    }
+
+    public void loadGame(int gameID, int quizID, int difficulty){
+        this.gameID = gameID;
+        this.quizID = quizID;
+        this.difficulty = difficulty;
+        getGameData();
+    }
 
     void getGameData(){
         String url = Communication.getQuizUrl + Integer.toString(gameID) + "/" + Integer.toString(quizID);

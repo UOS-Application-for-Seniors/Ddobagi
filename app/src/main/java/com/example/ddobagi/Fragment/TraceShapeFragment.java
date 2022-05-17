@@ -37,6 +37,10 @@ public class TraceShapeFragment extends GameFragment{
     }
 
     public int commit(){
+        if(exampleLineList == null){
+            return 0;
+        }
+
         ArrayList<ExtendedLine> practiceLineList = practice.getLineList();
         int result = 0;
         int resultCnt = 0;
@@ -70,13 +74,6 @@ public class TraceShapeFragment extends GameFragment{
     void onHelp(){
 
     }
-
-    public void loadGame(int gameID, int quizID){
-        this.gameID = gameID;
-        this.quizID = quizID;
-        getGameData();
-    }
-
 
     public void onGetGameDataResponse(String response){
         String url = Communication.getQuizDataUrl + gameID + "/" + quizID + "/";
@@ -126,6 +123,6 @@ public class TraceShapeFragment extends GameFragment{
     }
 
     public void init(){
-
+        quizTTS = "";
     }
 }

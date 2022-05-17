@@ -173,8 +173,6 @@ public class GameTestActivity extends AppCompatActivity {
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
 
-        url = url + quiz.quizdatapath + "/";
-
         quizDetail.setText(quiz.quizdetail);
 
         String[] splitString = quiz.quizchoicesdetail.split(",");

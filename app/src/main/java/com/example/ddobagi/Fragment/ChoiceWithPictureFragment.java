@@ -89,12 +89,6 @@ public class ChoiceWithPictureFragment extends GameFragment {
 
     }
 
-    public void loadGame(int gameID, int quizID){
-        this.gameID = gameID;
-        this.quizID = quizID;
-        getGameData();
-    }
-
     public void onGetGameDataResponse(String response){
         int i = 0;
         String url = Communication.getQuizDataUrl + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
@@ -172,11 +166,13 @@ public class ChoiceWithPictureFragment extends GameFragment {
     }
 
     public void init(){
+        quizTTS = "";
         for(int i =0; i<choiceNum; i++){
             choiceBtn[i].setText("");
             choiceBtn[i].setBackground(getResources().getDrawable(R.drawable.light_green_btn));
             choiceBtn[i].setCompoundDrawables(null, null, null, null);
         }
+        imageView.setImageDrawable(null);
         curAnswer = "";
     }
 }

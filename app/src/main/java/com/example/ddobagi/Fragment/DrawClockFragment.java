@@ -57,12 +57,6 @@ public class DrawClockFragment extends GameFragment{
 
     }
 
-    public void loadGame(int gameID, int quizID){
-        this.gameID = gameID;
-        this.quizID = quizID;
-        getGameData();
-    }
-
     public void onGetGameDataResponse(String response){
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -88,6 +82,6 @@ public class DrawClockFragment extends GameFragment{
     }
 
     public void init(){
-
+        quizTTS = "";
     }
 }

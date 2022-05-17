@@ -99,12 +99,6 @@ public class SequenceChoiceFragment extends GameFragment{
 
     }
 
-    public void loadGame(int gameID, int quizID){
-        this.gameID = gameID;
-        this.quizID = quizID;
-        getGameData();
-    }
-
     public void onGetGameDataResponse(String response){
         int i = 0;
         String url = Communication.getQuizDataUrl;
@@ -185,6 +179,7 @@ public class SequenceChoiceFragment extends GameFragment{
     }
 
     public void init(){
+        quizTTS = "";
         for (int i = 0; i < choiceNum; i++){
             curAnswer[i] = -1;
             choiceBtn[i].setText("");

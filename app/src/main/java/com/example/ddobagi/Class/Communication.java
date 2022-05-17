@@ -31,6 +31,7 @@ public class Communication {
     public static String gameListUrl = url + "/quiz/games";
     public static String testListUrl = url + "/quiz/CIST";
     public static String sendTestResultUrl = url + "/quiz/CISTADDResult";
+    public static String sendGameResultUrl = url + "/users/saveGameResult";
     public static String idCheckUrl = url + "/users/check";
     public static String getQuizUrl = url + "/quiz/";
     public static String getQuizDataUrl = url + "/file/";
