@@ -16,17 +16,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.R;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -34,7 +31,7 @@ import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    EditText Name, UserID, UserPassword, address1, address2, userName,userBirthYear,userBirthMonth, userBirthDay, NOKName, NOKPhoneNumber, NOKNotificationDays;
+    EditText UserID, UserPassword, UserPasswordCheck, address1, address2, userName,userBirthYear,userBirthMonth, userBirthDay, NOKName, NOKPhoneNumber, NOKNotificationDays;
     Button save_Btn, duplicate_check;
     int educationlevel = 0;
 
@@ -43,9 +40,9 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         duplicate_check = findViewById(R.id.btn_duplicate);
-        Name = findViewById(R.id.userName);
         UserID = findViewById(R.id.userID);
         UserPassword = findViewById(R.id.userPassword);
+        UserPasswordCheck = findViewById(R.id.userPasswordCheck);
         save_Btn = findViewById(R.id.btn_save);
         address1 = findViewById(R.id.userAdress1);
         address2 = findViewById(R.id.userAdress2);
@@ -109,6 +106,14 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
+        Button exitBtn = findViewById(R.id.exit_btn);
+        exitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         save_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +122,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 JSONArray jsonArray = new JSONArray();
                 JSONObject jsonObject = new JSONObject();
                 try{
-                    jsonObject.put("name",Name.getText().toString());
+                    jsonObject.put("name",userName.getText().toString());
                     jsonObject.put("id", UserID.getText().toString());
                     jsonObject.put("password",UserPassword.getText().toString());
                     jsonObject.put("userBirthDate", userBirthDate);
@@ -135,6 +140,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONObject response) {
                                 Toast.makeText(RegistrationActivity.this, "회원가입 성공", Toast.LENGTH_LONG).show();
+                                finish();
                             }
                         },
                         new Response.ErrorListener(){

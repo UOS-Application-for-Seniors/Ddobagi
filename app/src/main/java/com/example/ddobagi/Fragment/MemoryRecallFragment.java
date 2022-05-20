@@ -15,8 +15,6 @@ import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-
 public class MemoryRecallFragment extends GameFragment{
     Button imgBtn;
     TextView inputBox;
@@ -59,7 +57,7 @@ public class MemoryRecallFragment extends GameFragment{
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         imgBtn.setText(quiz.quizdetail);
-        setImageOnButton(url, imgBtn, buttonImgBound);
+        setImageOnButton(url, imgBtn, buttonImgBound, 1);
 
         quizAnswer = quiz.quizanswer.split(",");
     }

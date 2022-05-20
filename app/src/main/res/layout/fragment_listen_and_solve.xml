@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C2BDB4"
+    android:background="@drawable/background"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="100dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="200dp"
+        android:layout_marginBottom="50dp"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatButton
@@ -17,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:layout_weight="0.8"
-            android:background="@drawable/light_green_btn"
+            android:background="@drawable/white_btn"
             android:padding="30dp"
             android:textSize="30sp" />
 
@@ -27,7 +30,7 @@
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:layout_weight="1.5"
-            android:background="@drawable/light_green_btn"
+            android:background="@drawable/yellow_btn"
             android:ems="10"
             android:gravity="center"
             android:hint="이곳을 터치해 정답을 입력하세요"

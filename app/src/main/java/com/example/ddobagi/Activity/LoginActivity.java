@@ -36,11 +36,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        buttonLogin = findViewById(R.id.btn_login);
+        buttonLogin = findViewById(R.id.login_btn);
         UserID = findViewById(R.id.input_id);
         Password = findViewById(R.id.input_password);
-        buttonRegistration = findViewById(R.id.btn_registrarion);
-        buttonExit = findViewById(R.id.login_exit_btn);
+        buttonRegistration = findViewById(R.id.registration_btn);
+        buttonExit = findViewById(R.id.exit_btn);
         buttonExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

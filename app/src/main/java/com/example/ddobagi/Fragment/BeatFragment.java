@@ -92,7 +92,7 @@ public class BeatFragment extends GameFragment{
             for(;i<choiceNum;i++){
             String tmp = quizdataUrl;
             tmp = tmp + Integer.toString(i) + ".jfif";
-            setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
+            setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 0);
             choiceBtn[i].setText(splitString[i]);
         }
     }

@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:orientation="vertical">
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         app:cardBackgroundColor="#FFFFFFFF"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <TextView
                 android:id="@+id/game_select_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="370dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/blue_btn"
-                android:text="게임 예시" />
+                android:background="@drawable/light_green_btn"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="게임 예시"
+                android:textSize="40sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

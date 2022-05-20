@@ -1,38 +1,27 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Vector;
 
 public class ChoiceWithPictureFragment extends GameFragment {
     TextView quizDetail;
     ImageView imageView;
     int choiceNum = 4;
     Button[] choiceBtn = new Button[choiceNum];
+    Button[] numBtn = new Button[choiceNum];
     String quizAnswer;
     final int buttonImgBound = 120, exampleImgBound = 150;
     String curAnswer;
@@ -112,7 +101,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
             final int inmutable_index = i;
             String tmp = url;
             tmp = tmp + Integer.toString(i) + ".jfif";
-            setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
+            setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 4);
             // choiceBtn[i].setText(splitString[i]);
         }
 
@@ -133,6 +122,11 @@ public class ChoiceWithPictureFragment extends GameFragment {
         choiceBtn[2] = rootView.findViewById(R.id.choice_with_pic_select_Btn3);
         choiceBtn[3] = rootView.findViewById(R.id.choice_with_pic_select_Btn4);
 
+        numBtn[0] = rootView.findViewById(R.id.num1);
+        numBtn[1] = rootView.findViewById(R.id.num2);
+        numBtn[2] = rootView.findViewById(R.id.num3);
+        numBtn[3] = rootView.findViewById(R.id.num4);
+
         for(int i=0; i<choiceNum; i++){
             final int inmutable_index = i;
             choiceBtn[i].setOnClickListener(new View.OnClickListener() {
@@ -150,13 +144,17 @@ public class ChoiceWithPictureFragment extends GameFragment {
 
     private void onButtonTouch(String newAnswer){
         if(curAnswer != ""){
-            Button curSelectButton = choiceBtn[Integer.parseInt(curAnswer)];
-            curSelectButton.setBackground(getResources().getDrawable(R.drawable.light_green_btn));
+            int curNum = Integer.parseInt(curAnswer);
+            Button curSelectButton = choiceBtn[curNum];
+            curSelectButton.setBackground(getResources().getDrawable(R.drawable.white_btn));
+            numBtn[curNum].setBackground(getResources().getDrawable(R.drawable.num_btn));
         }
 
-        Button newTouchButton = choiceBtn[Integer.parseInt(newAnswer)];
+        int newNum = Integer.parseInt(newAnswer);
+        Button newTouchButton = choiceBtn[newNum];
         this.curAnswer = newAnswer;
-        newTouchButton.setBackground(getResources().getDrawable(R.drawable.green_btn));
+        newTouchButton.setBackground(getResources().getDrawable(R.drawable.selected_btn));
+        numBtn[newNum].setBackground(getResources().getDrawable(R.drawable.selected_num_btn));
     }
 
     @Override
@@ -169,7 +167,8 @@ public class ChoiceWithPictureFragment extends GameFragment {
         quizTTS = "";
         for(int i =0; i<choiceNum; i++){
             choiceBtn[i].setText("");
-            choiceBtn[i].setBackground(getResources().getDrawable(R.drawable.light_green_btn));
+            choiceBtn[i].setBackground(getResources().getDrawable(R.drawable.white_btn));
+            numBtn[i].setBackground(getResources().getDrawable(R.drawable.num_btn));
             choiceBtn[i].setCompoundDrawables(null, null, null, null);
         }
         imageView.setImageDrawable(null);

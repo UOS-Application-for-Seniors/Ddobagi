@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C2BDB4"
+    android:background="@drawable/background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,11 +12,12 @@
         android:layout_height="match_parent"
         android:layout_margin="50dp"
         android:background="@drawable/blue_btn"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/blue_btn"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -24,12 +25,27 @@
                 android:id="@+id/test_result_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0"
-                android:fontFamily="@font/font_batang"
+                android:layout_weight="1"
+                android:fontFamily="@font/font_nanum"
                 android:gravity="center"
-                android:text="검사가 종료되었습니다. \n수고하셨습니다. \n\n검사 결과 [쿵짝쿵짝놀이]를 해보시는 것을\n 추천드립니다."
-                android:textSize="60sp"
+                android:text="검사가 종료되었습니다. \n수고하셨습니다. \n\n검사 결과에 맞춘\n추천 놀이가 준비되었습니다.\n바로 시작하시겠습니까?"
+                android:textColor="@color/black"
+                android:textSize="50sp"
                 android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/main_recommend_play_btn2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="30dp"
+                android:layout_weight="2"
+                android:background="@drawable/green_btn"
+                android:fontFamily="@font/font_nanum"
+                android:padding="50sp"
+                android:text="추천\n놀이\n\n시작하기"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
     </LinearLayout>

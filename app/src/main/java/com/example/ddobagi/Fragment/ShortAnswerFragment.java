@@ -1,7 +1,6 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +67,7 @@ public class ShortAnswerFragment extends GameFragment{
         String tmpAnswer = quiz.quizanswer;
         quizAnswer = tmpAnswer.split(",");
 
-        setImageOnButton(url, imgBtn, buttonImgBound);
+        setImageOnButton(url, imgBtn, buttonImgBound, 1);
 
 //        choiceBtn[Integer.parseInt(quizAnswer)].setOnClickListener((new View.OnClickListener() {
 //            @Override

@@ -1,7 +1,6 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,6 @@ import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 public class ListenAndSolveFragment extends GameFragment{
     Button imgBtn;
@@ -73,7 +70,7 @@ public class ListenAndSolveFragment extends GameFragment{
         detail = quiz.quizdetail;
         quizAnswer = quiz.quizanswer;
         imgBtn.setText(quiz.quizdetail);
-        setImageOnButton(url, imgBtn, buttonImgBound);
+        setImageOnButton(url, imgBtn, buttonImgBound, 1);
     }
 
     @Nullable

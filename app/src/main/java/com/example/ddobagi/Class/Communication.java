@@ -28,7 +28,8 @@ public class Communication {
     public static String loginUrl = url + "/auth/login";
     public static String registerUrl = url + "/auth/register";
     public static String refreshUrl = url + "/refresh";
-    public static String gameListUrl = url + "/quiz/games";
+    public static String recommendGameListUrl = url + "/quiz/games";
+    public static String selectGameListUrl = url + "/quiz/games";
     public static String testListUrl = url + "/quiz/CIST";
     public static String sendTestResultUrl = url + "/quiz/CISTADDResult";
     public static String sendGameResultUrl = url + "/users/saveGameResult";

@@ -1,7 +1,6 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SequenceChoiceFragment extends GameFragment{
     TextView quizDetail;
@@ -123,7 +114,7 @@ public class SequenceChoiceFragment extends GameFragment{
         for(;i<choiceNum;i++){
             String tmp = quizdataUrl;
             tmp = tmp + Integer.toString(i) + ".jfif";
-            setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
+            setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 1);
             choiceBtn[i].setText(splitString[i]);
         }
     }

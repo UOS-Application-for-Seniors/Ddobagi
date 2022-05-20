@@ -3,77 +3,149 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C2BDB4"
-    android:orientation="vertical">
+    android:background="#DDDDDD"
+    android:orientation="vertical"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp">
+
+    <TextView
+        android:id="@+id/quizDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:fontFamily="@font/font_nanum"
+        android:gravity="center_horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="20dp"
+        android:text="문제 설명 들어갈 곳"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="40dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/quizDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="0"
-            android:background="@drawable/quiz_bar"
-            android:fontFamily="@font/batang"
-            android:gravity="center_horizontal"
-            android:padding="30dp"
-            android:text="문제 설명 들어갈 곳"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+        android:layout_marginBottom="10dp"
+        android:layout_weight="0"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/sequnce_choice_btn1"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/light_green_btn"
-                android:textSize="20sp" />
+                android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/sequnce_choice_btn2"
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/sequnce_choice_btn1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_btn"
+                        android:textSize="20sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/num1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/num_btn"
+                        android:text="1"
+                        android:textSize="30sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/sequnce_choice_btn2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_btn"
+                        android:textSize="20sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/num2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/num_btn"
+                        android:text="2"
+                        android:textSize="30sp" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/light_green_btn"
-                android:textSize="20sp" />
-        </LinearLayout>
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/sequnce_choice_btn3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/light_green_btn"
-                android:textSize="20sp" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/sequnce_choice_btn3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_btn"
+                        android:textSize="20sp" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/sequnce_choice_btn4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/light_green_btn"
-                android:textSize="20sp" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/num3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/num_btn"
+                        android:text="3"
+                        android:textSize="30sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/sequnce_choice_btn4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_btn"
+                        android:textSize="20sp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/num4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/num_btn"
+                        android:text="4"
+                        android:textSize="30sp" />
+                </FrameLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -81,81 +153,86 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:layout_weight="1.2"
-            android:orientation="horizontal"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:orientation="vertical"
             android:paddingLeft="50dp"
             android:paddingRight="50dp">
 
             <TextView
                 android:id="@+id/sequenceView1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/light_green_btn"
+                android:background="@drawable/yellow_btn"
                 android:fontFamily="@font/batang"
                 android:gravity="center"
                 android:padding="10dp"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:textSize="40sp"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="56dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.3"
-                app:srcCompat="@android:drawable/ic_media_play" />
+                app:srcCompat="@drawable/triangle" />
 
             <TextView
                 android:id="@+id/sequenceView2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/light_green_btn"
+                android:background="@drawable/yellow_btn"
                 android:fontFamily="@font/batang"
                 android:gravity="center"
                 android:padding="10dp"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:textSize="40sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/viewwBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                app:srcCompat="@android:drawable/ic_media_play" />
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/triangle" />
 
             <TextView
                 android:id="@+id/sequenceView3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/light_green_btn"
+                android:background="@drawable/yellow_btn"
                 android:fontFamily="@font/batang"
                 android:gravity="center"
                 android:padding="10dp"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:textSize="40sp"
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                app:srcCompat="@android:drawable/ic_media_play" />
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/triangle" />
 
             <TextView
                 android:id="@+id/sequenceView4"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/light_green_btn"
+                android:background="@drawable/yellow_btn"
                 android:fontFamily="@font/batang"
                 android:gravity="center"
                 android:padding="10dp"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:textSize="40sp"
                 android:textStyle="bold" />
 

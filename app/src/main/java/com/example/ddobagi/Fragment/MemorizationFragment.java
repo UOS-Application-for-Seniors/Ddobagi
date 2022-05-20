@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,7 +47,7 @@ public class MemorizationFragment extends GameFragment{
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         imgBtn.setText(quiz.quizdetail);
-        setImageOnButton(url, imgBtn, buttonImgBound);
+        setImageOnButton(url, imgBtn, buttonImgBound, 1);
     }
     @Nullable
     @Override

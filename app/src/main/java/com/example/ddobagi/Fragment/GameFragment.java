@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.LoadImage;
+import com.example.ddobagi.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,16 +91,32 @@ public abstract class GameFragment extends Fragment {
 
     abstract public void onGetGameDataResponse(String response);
 
-    public void setImageOnButton(String url, Button button, int bound) {
+    public void setImageOnButton(String url, Button button, int bound, int location) {
         LoadImage loadImage = new LoadImage((bitmap) -> {
             if(bitmap != null){
                 Drawable drawable;
                 drawable = new BitmapDrawable(bitmap);
                 drawable.setBounds(0, 0, bound, bound);
-                button.setCompoundDrawables(null, drawable, null, null);
+                switch(location){
+                    case 0:
+                        button.setCompoundDrawables(drawable, null, null, null);
+                        break;
+                    case 1:
+                        button.setCompoundDrawables(null, drawable, null, null);
+                        break;
+                    case 2:
+                        button.setCompoundDrawables(null, null, drawable, null);
+                        break;
+                    case 3:
+                        button.setCompoundDrawables(null, null, null, drawable);
+                        break;
+                    case 4:
+                        button.setBackground(drawable);
+                        break;
+                }
             }
             else{
-                button.setTextSize(50.0f);
+                button.setTextSize(40.0f);
             }
         });
         loadImage.execute(url);

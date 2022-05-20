@@ -1,58 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C2BDB4"
-    android:orientation="horizontal"
-    tools:context=".Activity.RecordActivity">
+    android:background="#F6F6F6"
+    android:orientation="vertical"
+    tools:context=".Activity.MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_margin="30dp"
+        android:background="@drawable/round_background"
+        android:orientation="vertical"
+        tools:context=".Activity.MainActivity"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="30dp">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/exit_btn"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/exit_btn"
-            android:fontFamily="@font/batang"
-            android:text="나가기"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="2">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/exit_btn"
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:background="@drawable/exit_btn"
+                android:fontFamily="@font/font_nanum"
+                android:text="나가기"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="50dp"
-            android:background="@drawable/blue_btn"
+            android:layout_weight="0.3"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/record_recycler"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="30dp" />
+                android:layout_weight="0.3">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginRight="100dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@drawable/blue_btn"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/record_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp" />
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
-    </FrameLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+    </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/center_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/center_btn"
+        android:fontFamily="@font/font_nanum"
+        android:gravity="center_horizontal"
+        android:paddingLeft="80dp"
+        android:paddingTop="10dp"
+        android:paddingRight="80dp"
+        android:paddingBottom="10dp"
+        android:text="기록"
+        android:textColor="@color/black"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,191 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C2BDB4"
-    android:orientation="horizontal"
-    tools:context=".Activity.PlayActivity">
+    android:background="#F6F6F6"
+    android:orientation="vertical"
+    tools:context=".Activity.MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_margin="30dp"
+        android:background="@drawable/round_background"
+        android:orientation="vertical"
+        tools:context=".Activity.MainActivity"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="30dp">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/exit_btn"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/exit_btn"
-            android:fontFamily="@font/batang"
-            android:text="나가기"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <TextView
+                android:id="@+id/sttResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="357dp"
+                android:text="음성인식 결과"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/commit_btn"
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:background="@drawable/commit_btn"
+                android:fontFamily="@font/font_nanum"
+                android:text="다음"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/exit_btn"
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:background="@drawable/exit_btn"
+                android:fontFamily="@font/font_nanum"
+                android:text="나가기"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:layout_weight="0.6">
+
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/result_per_quiz_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/result_per_quiz_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="100dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/white_btn"
+                    android:fontFamily="@font/font_nanum"
+                    android:gravity="bottom|center_horizontal"
+                    android:paddingBottom="60dp"
+                    android:text="잘하고 계십니다\n여기를 눌러 계속 진행하세요"
+                    android:textSize="40sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/small_star_left"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:background="@drawable/yellow_star"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
+                    app:layout_constraintEnd_toStartOf="@+id/small_star_center"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="@+id/result_per_quiz_btn"
+                    app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/small_star_right"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:background="@drawable/yellow_star"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
+                    app:layout_constraintEnd_toEndOf="@+id/result_per_quiz_btn"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/small_star_center"
+                    app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/small_star_center"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:background="@drawable/yellow_star"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
+                    app:layout_constraintEnd_toEndOf="@+id/result_per_quiz_btn"
+                    app:layout_constraintStart_toStartOf="@+id/result_per_quiz_btn"
+                    app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn"
+                    app:layout_constraintVertical_bias="0.2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/ttsStart"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/green_btn"
-                android:fontFamily="@font/batang"
-                android:text="설명듣기"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-        </FrameLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.3">
-
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/result_per_quiz_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="visible">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/result_per_quiz_btn"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginLeft="100dp"
-                android:layout_marginTop="100dp"
-                android:layout_marginRight="100dp"
-                android:layout_marginBottom="100dp"
-                android:background="@drawable/light_green_btn"
-                android:fontFamily="@font/batang"
-                android:gravity="bottom|center_horizontal"
-                android:padding="80dp"
-                android:text="잘하고 계십니다"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/tts_btn"
+                android:drawableLeft="@drawable/speaker"
+                android:fontFamily="@font/font_nanum"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="200dp"
+                android:text="설명 듣기"
                 android:textSize="40sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/small_star_left"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:background="@drawable/yellow_star"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
-                app:layout_constraintEnd_toStartOf="@+id/small_star_center"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/result_per_quiz_btn"
-                app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/small_star_right"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:background="@drawable/yellow_star"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
-                app:layout_constraintEnd_toEndOf="@+id/result_per_quiz_btn"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/small_star_center"
-                app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/small_star_center"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                android:background="@drawable/yellow_star"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
-                app:layout_constraintEnd_toEndOf="@+id/result_per_quiz_btn"
-                app:layout_constraintStart_toStartOf="@+id/result_per_quiz_btn"
-                app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn"
-                app:layout_constraintVertical_bias="0.2" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </FrameLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/commit_btn"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/exit_btn"
-                android:fontFamily="@font/batang"
-                android:text="다음"
-                android:textSize="30sp"
                 android:textStyle="bold" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/sttStart"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@drawable/green_btn"
-                android:fontFamily="@font/batang"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/stt_btn"
+                android:drawableLeft="@drawable/mike"
+                android:fontFamily="@font/font_nanum"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="200dp"
                 android:text="말하기"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                android:visibility="visible" />
-        </FrameLayout>
+                android:textSize="40sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/sttResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="357dp"
-            android:text="음성인식 결과"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/sttStart"
-            app:layout_constraintVertical_bias="0.174" />
+    </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+    <TextView
+        android:id="@+id/center_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/center_btn"
+        android:fontFamily="@font/font_nanum"
+        android:gravity="center_horizontal"
+        android:paddingLeft="80dp"
+        android:paddingTop="10dp"
+        android:paddingRight="80dp"
+        android:paddingBottom="10dp"
+        android:text="또바기"
+        android:textColor="@color/black"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,103 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C2BDB4"
-    android:orientation="horizontal"
-    tools:context=".Activity.UserInfoActivity">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/exit_btn"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/exit_btn"
-            android:fontFamily="@font/batang"
-            android:text="나가기"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    android:background="#F6F6F6"
+    android:orientation="vertical"
+    tools:context=".Activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.3"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_margin="30dp"
+        android:background="@drawable/round_background"
+        android:orientation="vertical"
+        tools:context=".Activity.MainActivity"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="30dp">
 
-        <TextView
-            android:id="@+id/user_info_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/batang"
-            android:gravity="center_horizontal"
-            android:text="또바기"
-            android:textSize="48sp"
-            android:textStyle="bold" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/exit_btn"
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:background="@drawable/exit_btn"
+                android:fontFamily="@font/font_nanum"
+                android:text="나가기"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="100dp"
-            android:layout_marginBottom="100dp"
-            android:orientation="horizontal">
+            android:layout_weight="0.3"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginRight="150dp"
+                android:layout_marginBottom="100dp"
+                android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/user_info_record_btn"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/green_btn"
-                    android:fontFamily="@font/batang"
-                    android:text="놀이 기록"
-                    android:textSize="60sp" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/user_info_record_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/green_btn"
+                        android:fontFamily="@font/font_nanum"
+                        android:text="놀이 기록"
+                        android:textSize="60sp"
+                        android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/user_info_edit_btn"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/blue_btn"
-                    android:fontFamily="@font/batang"
-                    android:text="회원 정보\n수정"
-                    android:textSize="60sp" />
+                    android:orientation="vertical">
 
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/user_info_edit_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/blue_btn"
+                        android:fontFamily="@font/font_nanum"
+                        android:text="회원 정보\n수정"
+                        android:textSize="60sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
-
-</LinearLayout>
+    <TextView
+        android:id="@+id/center_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/center_btn"
+        android:fontFamily="@font/font_nanum"
+        android:gravity="center_horizontal"
+        android:paddingLeft="80dp"
+        android:paddingTop="10dp"
+        android:paddingRight="80dp"
+        android:paddingBottom="10dp"
+        android:text="사용자 정보"
+        android:textColor="@color/black"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

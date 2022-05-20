@@ -6,16 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Line;
 import com.example.ddobagi.Class.Quiz;
@@ -24,8 +18,6 @@ import com.example.ddobagi.View.LineConnectionView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LineConnectionFragment extends GameFragment{
     LineConnectionView lineConnectionView;
@@ -108,8 +100,10 @@ public class LineConnectionFragment extends GameFragment{
         for(int i=0;i<choiceNum;i++){
             String tmp = url;
             tmp = tmp + Integer.toString(i) + ".jfif";
-            setImageOnButton(tmp, choiceBtn[i], buttonImgBound);
-            choiceBtn[i].setText(splitString[i]);
+            setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 1);
+            if(!splitString[i].equals(" ")){
+                choiceBtn[i].setText(splitString[i]);
+            }
         }
     }
 

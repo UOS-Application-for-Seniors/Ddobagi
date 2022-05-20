@@ -2,28 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C2BDB4"
+    android:background="@drawable/background"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/quizDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:fontFamily="@font/font_nanum"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="문제 설명 들어갈 곳"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="40dp"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/quizDetail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="0"
-            android:background="@drawable/quiz_bar"
-            android:fontFamily="@font/batang"
-            android:gravity="center_horizontal"
-            android:padding="30dp"
-            android:text="문제 설명 들어갈 곳"
-            android:textSize="30sp"
-            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             <com.example.ddobagi.View.PaintShapeExample
                 android:id="@+id/paint_shape_example"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:textSize="30sp" />
@@ -42,7 +42,7 @@
             <com.example.ddobagi.View.PaintShapePractice
                 android:id="@+id/paint_shape_practice"
                 android:layout_width="match_parent"
-                android:layout_height="600dp"
+                android:layout_height="400dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.8"
                 android:textSize="30sp" />
