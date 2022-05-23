@@ -572,7 +572,14 @@ public class PlayActivity extends AppCompatActivity {
             quizScore[quizIndex] = score;
 
             Log.d("score", Integer.toString(quizIndex) + ": " + Integer.toString(score));
-            sendGameScore(quizList[quizIndex].gameid, score, Integer.parseInt(quizList[quizIndex].difficulty), quizCoin[quizIndex]);
+            int difficulty;
+            if(isTest){
+                difficulty = 0;
+            }
+            else{
+                difficulty = Integer.parseInt(quizList[quizIndex].difficulty);
+            }
+            sendGameScore(quizList[quizIndex].gameid, score, difficulty, quizCoin[quizIndex]);
             quizIndex++;
             if(quizIndex < quizList.length){
                 loadGame();

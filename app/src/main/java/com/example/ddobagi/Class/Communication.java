@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Communication {
-    public static String url = "http://121.164.170.67:3000";
+    public static String url = "https://ddobagi-backend.herokuapp.com";
     public static String loginUrl = url + "/auth/login";
     public static String registerUrl = url + "/auth/register";
     public static String refreshUrl = url + "/refresh";
