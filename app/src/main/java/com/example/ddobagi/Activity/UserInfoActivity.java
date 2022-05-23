@@ -34,6 +34,15 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         });
 
+        Button infoEditBtn = findViewById(R.id.user_info_edit_btn);
+        infoEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UserInfoEditActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Button editBtn = findViewById(R.id.user_info_edit_btn);
     }
 }

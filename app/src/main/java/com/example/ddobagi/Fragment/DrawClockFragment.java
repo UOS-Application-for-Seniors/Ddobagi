@@ -38,12 +38,20 @@ public class DrawClockFragment extends GameFragment{
         ArrayList<Line> lineList = drawClockView.getLineList();
         String[] answer = quizAnswer.split(",");
 
-        if(lineList.size() < 2){
+        if(lineList.size() <= 0){
             return 0;
+        }
+        else if(lineList.size() == 1){
+            if(Integer.parseInt(answer[0]) == lineList.get(0).end){
+                return 2;
+            }
         }
 
         if(Integer.parseInt(answer[0]) == lineList.get(0).end && Integer.parseInt(answer[1]) == lineList.get(1).end){
             return 1;
+        }
+        else if(Integer.parseInt(answer[0]) == lineList.get(0).end || Integer.parseInt(answer[1]) == lineList.get(1).end){
+            return 2;
         }
 
         return 0;

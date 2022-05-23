@@ -17,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ddobagi.Activity.LoginActivity;
 import com.example.ddobagi.Activity.MainActivity;
+import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -24,12 +25,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Communication {
-    public static String url = "https://ddobagi-backend.herokuapp.com";
+    public static String url = "http://121.164.170.67:3000";
     public static String loginUrl = url + "/auth/login";
     public static String registerUrl = url + "/auth/register";
     public static String refreshUrl = url + "/refresh";
-    public static String recommendGameListUrl = url + "/quiz/games";
-    public static String selectGameListUrl = url + "/quiz/games";
+    public static String recommendQuizListUrl = url + "/quiz/games";
+    public static String selectGameListUnLoginUrl = url + "/quiz/select";
+    public static String selectGameListLoginUrl = url + "/quiz/selectForUser";
+    public static String selectQuizList = url + "/quiz/selectGame";
+    public static String unlock = url + "/quiz/unlock";
     public static String testListUrl = url + "/quiz/CIST";
     public static String sendTestResultUrl = url + "/quiz/CISTADDResult";
     public static String sendGameResultUrl = url + "/users/saveGameResult";
@@ -81,18 +85,22 @@ public class Communication {
                 @Override
                 public void onResponse(String s) {
 
-                    String[] tmp = s.split(",");
-                    String[] access_tmp = tmp[0].split(":");
-                    String access_token = access_tmp[1].substring(1, access_tmp[1].length()-1);
-                    access_tmp = tmp[1].split(":");
-                    String access_token_expiration = access_tmp[1].substring(1, access_tmp[1].length()-2);
+//                    String[] tmp = s.split(",");
+//                    String[] access_tmp = tmp[0].split(":");
+//                    String access_token = access_tmp[1].substring(1, access_tmp[1].length()-1);
+//                    access_tmp = tmp[1].split(":");
+//                    String access_token_expiration = access_tmp[1].substring(1, access_tmp[1].length()-2);
+                    Gson gson = new Gson();
+                    UserInfo userInfo = gson.fromJson(s, UserInfo.class);
 
-                    Communication.println("응답 --> " + access_token);
+                    Communication.println("refreshToken: " + userInfo.access_token);
 
                     edit = share.edit();
-                    edit.putString("Access_token", access_token);
-                    edit.putLong("Access_token_expiration", Integer.parseInt(access_token_expiration));
+                    edit.putString("Access_token", userInfo.access_token);
+                    edit.putLong("Access_token_expiration", Integer.parseInt(userInfo.access_token_expiration));
                     edit.putLong("Access_token_time", date.getTime());
+                    edit.putInt("coin", userInfo.coin);
+                    edit.putString("address", userInfo.user_address);
                     edit.commit();
 
                     main.setLogin(true);

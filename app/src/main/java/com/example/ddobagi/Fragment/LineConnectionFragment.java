@@ -26,7 +26,7 @@ public class LineConnectionFragment extends GameFragment{
     int choiceNum = 8;
     Button[] choiceBtn = new Button[choiceNum];
     String quizAnswer;
-    final int buttonImgBound = 110;
+    final int buttonImgBound = 115;
 
     public LineConnectionFragment(){
         isSTTAble = false;
@@ -68,6 +68,9 @@ public class LineConnectionFragment extends GameFragment{
             //Toast.makeText(getActivity(), "정답입니다", Toast.LENGTH_LONG).show();
             result = 1;
         }
+        else if(resultCnt > 0){
+            result = 2;
+        }
         else{
             //Toast.makeText(getActivity(), "정답이 아닙니다", Toast.LENGTH_LONG).show();
             result = 0;
@@ -100,7 +103,7 @@ public class LineConnectionFragment extends GameFragment{
         for(int i=0;i<choiceNum;i++){
             String tmp = url;
             tmp = tmp + Integer.toString(i) + ".jfif";
-            setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 1);
+            setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 0);
             if(!splitString[i].equals(" ")){
                 choiceBtn[i].setText(splitString[i]);
             }
@@ -131,5 +134,10 @@ public class LineConnectionFragment extends GameFragment{
 
     public void init(){
         quizTTS = "";
+        for(int i=0;i<choiceNum;i++){
+            choiceBtn[i].setText("");
+            choiceBtn[i].setCompoundDrawables(null, null, null, null);
+        }
+        lineConnectionView.clearLineList();
     }
 }

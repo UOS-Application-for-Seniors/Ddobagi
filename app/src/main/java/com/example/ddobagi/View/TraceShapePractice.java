@@ -1,20 +1,25 @@
 package com.example.ddobagi.View;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.ddobagi.Class.ExtendedLine;
 import com.example.ddobagi.Class.Line;
+import com.example.ddobagi.R;
 
 import java.util.ArrayList;
 
@@ -27,7 +32,7 @@ public class TraceShapePractice extends View {
     int startPointNum = -1, endPointNum = -1;
 
     final int toolBoxWidth = 80;
-    int toolBoxHeight = toolBoxWidth * 2;
+    int toolBoxHeight = toolBoxWidth;
     float[] toolBoxCoor = new float[2];
     final int eraseMargin = 10;
 
@@ -37,8 +42,8 @@ public class TraceShapePractice extends View {
     boolean isTouchCancle = true, isEraseMode = false;
 
     Canvas mCanvas;
-    Bitmap mBitmap;
-    Paint linePaint, pointPaint, toolBoxPaint;
+    Bitmap mBitmap, eraser, eraser_bold, curEraser;
+    Paint linePaint, pointPaint; //toolBoxPaint;
 
     float startX, startY, curX, curY;
 
@@ -67,11 +72,18 @@ public class TraceShapePractice extends View {
         pointPaint.setColor(Color.GRAY);
         pointPaint.setStyle(Paint.Style.FILL);
 
-        toolBoxPaint = new Paint();
-        toolBoxPaint.setAntiAlias(true);
-        toolBoxPaint.setColor(Color.GREEN);
-        toolBoxPaint.setStyle(Paint.Style.STROKE);
-        toolBoxPaint.setStrokeWidth(10.0F);
+//        toolBoxPaint = new Paint();
+//        toolBoxPaint.setAntiAlias(true);
+//        toolBoxPaint.setColor(Color.GREEN);
+//        toolBoxPaint.setStyle(Paint.Style.STROKE);
+//        toolBoxPaint.setStrokeWidth(10.0F);
+
+        Drawable eraserDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.eraser, null);
+        eraser = ((BitmapDrawable)eraserDrawable).getBitmap();
+        eraserDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.eraser_bold, null);
+        eraser_bold = ((BitmapDrawable)eraserDrawable).getBitmap();
+
+        curEraser = eraser;
 
         this.startX = this.startY = -1;
     }
@@ -133,8 +145,10 @@ public class TraceShapePractice extends View {
     }
 
     private void drawToolBox(Canvas canvas){
-        canvas.drawRect(toolBoxCoor[0] - toolBoxWidth/2, toolBoxCoor[1] - toolBoxHeight/2,
-                toolBoxCoor[0] + toolBoxWidth/2, toolBoxCoor[1] + toolBoxHeight/2, toolBoxPaint);
+//        canvas.drawRect(toolBoxCoor[0] - toolBoxWidth/2, toolBoxCoor[1] - toolBoxHeight/2,
+//                toolBoxCoor[0] + toolBoxWidth/2, toolBoxCoor[1] + toolBoxHeight/2, toolBoxPaint);
+
+        canvas.drawBitmap(curEraser, toolBoxCoor[0] - toolBoxWidth/2, toolBoxCoor[1] - toolBoxHeight/2, pointPaint);
     }
 
     private void drawPoint(Canvas canvas){
@@ -178,11 +192,13 @@ public class TraceShapePractice extends View {
             isTouchCancle = true;
             if(isEraseMode){
                 isEraseMode = false;
-                toolBoxPaint.setColor(Color.GREEN);
+//                toolBoxPaint.setColor(Color.GREEN);
+                curEraser = eraser;
             }
             else{
                 isEraseMode = true;
-                toolBoxPaint.setColor(Color.YELLOW);
+//                toolBoxPaint.setColor(Color.YELLOW);
+                curEraser = eraser_bold;
             }
             return;
         }

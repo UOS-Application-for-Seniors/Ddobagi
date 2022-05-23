@@ -117,6 +117,9 @@ public class PaintShapeExample extends View {
         if(answerCount == insideShapeList.size() + outsideShapeList.size()){
             result = 1;
         }
+        else if(answerCount > 0){
+            result = 2;
+        }
         else{
             result = 0;
         }

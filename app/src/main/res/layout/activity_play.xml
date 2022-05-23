@@ -27,13 +27,34 @@
                 android:id="@+id/sttResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="357dp"
                 android:text="음성인식 결과"
                 android:textSize="20sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/coin_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/font_nanum"
+                android:text="30,000"
+                android:textSize="40sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/commit_btn"
+                app:layout_constraintStart_toEndOf="@+id/exit_btn" />
+
+            <ImageView
+                android:id="@+id/coin_img"
+                android:layout_width="67dp"
+                android:layout_height="53dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/coin_text"
+                app:srcCompat="@drawable/coin" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/commit_btn"
@@ -74,74 +95,106 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/result_per_quiz_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:visibility="visible">
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="100dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/white_btn"
+                android:orientation="vertical"
+                android:visibility="invisible">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/result_per_quiz_btn"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="100dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="100dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/white_btn"
-                    android:fontFamily="@font/font_nanum"
-                    android:gravity="bottom|center_horizontal"
-                    android:paddingBottom="60dp"
-                    android:text="잘하고 계십니다\n여기를 눌러 계속 진행하세요"
-                    android:textSize="40sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <LinearLayout
+                    android:id="@+id/result_coin_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/small_star_left"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:background="@drawable/yellow_star"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
-                    app:layout_constraintEnd_toStartOf="@+id/small_star_center"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/result_per_quiz_btn"
-                    app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="right|center_vertical"
+                        android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/small_star_right"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:background="@drawable/yellow_star"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
-                    app:layout_constraintEnd_toEndOf="@+id/result_per_quiz_btn"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/small_star_center"
-                    app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn" />
+                        <ImageView
+                            android:id="@+id/result_coin_img"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:background="@drawable/coin" />
+                    </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/small_star_center"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:background="@drawable/yellow_star"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/result_per_quiz_btn"
-                    app:layout_constraintEnd_toEndOf="@+id/result_per_quiz_btn"
-                    app:layout_constraintStart_toStartOf="@+id/result_per_quiz_btn"
-                    app:layout_constraintTop_toTopOf="@+id/result_per_quiz_btn"
-                    app:layout_constraintVertical_bias="0.2" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:orientation="vertical">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/result_coin_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/font_nanum"
+                            android:gravity="bottom|left"
+                            android:text="금화 300개 획득"
+                            android:textColor="@color/black"
+                            android:textSize="50sp" />
+
+                        <TextView
+                            android:id="@+id/result_coin_bonus_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:fontFamily="@font/font_nanum"
+                            android:gravity="top|left"
+                            android:text="[~~]난이도 보너스 적용!"
+                            android:textSize="30sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/result_cheer_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/font_nanum"
+                        android:gravity="bottom|center_horizontal"
+                        android:paddingLeft="50dp"
+                        android:paddingRight="50dp"
+                        android:text="잘하고 계십니다"
+                        android:textColor="@color/black"
+                        android:textSize="50sp" />
+
+                    <TextView
+                        android:id="@+id/result_base_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/font_nanum"
+                        android:gravity="center_horizontal|top"
+                        android:text="여기를 눌러 계속 진행하세요"
+                        android:textSize="30sp" />
+                </LinearLayout>
+
+            </LinearLayout>
 
         </FrameLayout>
 
         <LinearLayout
+            android:id="@+id/tts_stt_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"

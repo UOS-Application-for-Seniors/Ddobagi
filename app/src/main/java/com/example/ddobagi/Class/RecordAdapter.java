@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,10 +56,12 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView gameType, difficulty, totalYellowStar;
         ImageView star1, star1_5, star2, star2_5, star3;
+        LinearLayout layout;
 
         public ViewHolder(View itemView){
             super(itemView);
 
+            layout = itemView.findViewById(R.id.record_card_layout);
             gameType = itemView.findViewById(R.id.record_game_type);
             difficulty = itemView.findViewById(R.id.record_difficulty);
             totalYellowStar = itemView.findViewById(R.id.record_total_star_num);
@@ -89,23 +92,37 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
             difficulty.setText(str);
             totalYellowStar.setText("X "+ Integer.toString(record.stars));
 
+            star1_5.setVisibility(View.INVISIBLE);
             star2.setVisibility(View.INVISIBLE);
             star2_5.setVisibility(View.INVISIBLE);
             star3.setVisibility(View.INVISIBLE);
 
             float correctRate = record.correctRate;
 
-            if(0.25 <= correctRate && correctRate < 0.5){
-                star2.setVisibility(View.VISIBLE);
+            if(correctRate < 0.2){
+                layout.setBackgroundResource(R.drawable.red_btn);
             }
-            else if(0.5 <= correctRate && correctRate < 0.75){
+            else if(0.2 <= correctRate && correctRate < 0.4){
+                star1_5.setVisibility(View.VISIBLE);
+                layout.setBackgroundResource(R.drawable.yellow_btn);
+            }
+            else if(0.4 <= correctRate && correctRate < 0.6){
+                star1_5.setVisibility(View.VISIBLE);
+                star2.setVisibility(View.VISIBLE);
+                layout.setBackgroundResource(R.drawable.yellow_btn);
+            }
+            else if(0.6 <= correctRate && correctRate < 0.8){
+                star1_5.setVisibility(View.VISIBLE);
                 star2.setVisibility(View.VISIBLE);
                 star2_5.setVisibility(View.VISIBLE);
+                layout.setBackgroundResource(R.drawable.green_btn);
             }
-            else if(0.75 <= correctRate){
+            else if(0.8 <= correctRate){
+                star1_5.setVisibility(View.VISIBLE);
                 star2.setVisibility(View.VISIBLE);
                 star2_5.setVisibility(View.VISIBLE);
                 star3.setVisibility(View.VISIBLE);
+                layout.setBackgroundResource(R.drawable.green_btn);
             }
         }
     }

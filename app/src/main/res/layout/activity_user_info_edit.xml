@@ -66,6 +66,17 @@
                 android:layout_weight="1.5"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/guide_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="50dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="변경하고자 하는 정보만 다시 입력해주세요"
+                    android:textColor="@color/black"
+                    android:textSize="60dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -108,78 +119,6 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/id_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_weight="1.5"
-                        android:background="@drawable/green_btn"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:text="아이디"
-                        android:textColor="@color/black"
-                        android:textSize="60sp" />
-
-                    <EditText
-                        android:id="@+id/userID"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/white_btn"
-                        android:ems="10"
-                        android:gravity="center"
-                        android:inputType="textPersonName"
-                        android:maxLines="1"
-                        android:textSize="55sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_duplicate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/yellow_btn"
-                        android:fontFamily="@font/font_nanum"
-                        android:padding="20sp"
-                        android:text="아이디 중복검사"
-                        android:textSize="50sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/id_check_result"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="right"
-                        android:text="중복검사 버튼을 눌러주세요."
-                        android:textSize="40sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal">
@@ -196,7 +135,7 @@
                         android:background="@drawable/green_btn"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="비밀번호"
+                        android:text="새 비밀번호"
                         android:textColor="@color/black"
                         android:textSize="60sp" />
 
@@ -262,7 +201,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="비밀번호를 입력해주세요."
                     android:textSize="40sp" />
 
                 <LinearLayout
@@ -652,7 +590,7 @@
         android:paddingTop="10dp"
         android:paddingRight="80dp"
         android:paddingBottom="10dp"
-        android:text="회원가입"
+        android:text="회원 정보 수정"
         android:textColor="@color/black"
         android:textSize="48sp"
         app:layout_constraintEnd_toEndOf="parent"

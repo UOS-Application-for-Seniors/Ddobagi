@@ -52,7 +52,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/white_btn"
-                        android:textSize="20sp" />
+                        android:textSize="40sp" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -68,7 +68,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/white_btn"
-                        android:textSize="20sp" />
+                        android:textSize="40sp" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -84,7 +84,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/white_btn"
-                        android:textSize="20sp" />
+                        android:textSize="40sp" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -100,7 +100,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/white_btn"
-                        android:textSize="20sp" />
+                        android:textSize="40sp" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -117,45 +117,70 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/line_connection_btn5"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/white_btn"
-                    android:textSize="20sp" />
+                    android:layout_weight="1">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/line_connection_btn6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/white_btn"
-                    android:textSize="20sp" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/line_connection_btn5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_btn"
+                        android:textSize="40sp" />
+                </FrameLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/line_connection_btn7"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/white_btn"
-                    android:textSize="20sp" />
+                    android:layout_weight="1">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/line_connection_btn8"
-                    android:layout_width="wrap_content"
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/line_connection_btn6"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_btn"
+                        android:textSize="40sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/white_btn"
-                    android:textSize="20sp" />
+                    android:layout_weight="1">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/line_connection_btn7"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_btn"
+                        android:textSize="40sp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/line_connection_btn8"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_btn"
+                        android:textSize="40sp" />
+                </FrameLayout>
+
             </LinearLayout>
         </LinearLayout>
 

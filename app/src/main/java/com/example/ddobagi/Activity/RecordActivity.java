@@ -48,6 +48,11 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new RecordAdapter();
+        recyclerView.setAdapter(adapter);
+
         getRecord();
     }
 
@@ -99,14 +104,9 @@ public class RecordActivity extends AppCompatActivity {
             return;
         }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecordAdapter();
-
         for(int i=0;i<tmp.length;i++){
             adapter.addItem(tmp[i]);
         }
-
-        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

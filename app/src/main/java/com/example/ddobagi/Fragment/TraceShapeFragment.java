@@ -64,6 +64,9 @@ public class TraceShapeFragment extends GameFragment{
             //Toast.makeText(getActivity(), "정답입니다", Toast.LENGTH_LONG).show();
             result = 1;
         }
+        else if(resultCnt > 0){
+            result = 2;
+        }
         else{
             //Toast.makeText(getActivity(), "정답이 아닙니다", Toast.LENGTH_LONG).show();
             result = 0;

@@ -11,7 +11,6 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="#FFFFFFFF"
         app:cardCornerRadius="10dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
@@ -26,11 +25,14 @@
                 android:layout_width="370dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/light_green_btn"
+                android:background="@drawable/yellow_btn"
+                android:fontFamily="@font/font_nanum"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="게임 예시"
-                android:textSize="40sp" />
+                android:textColor="@color/black"
+                android:textSize="40sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

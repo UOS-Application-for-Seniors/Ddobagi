@@ -1,5 +1,11 @@
 package com.example.ddobagi.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,25 +23,41 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Activity.PlayActivity;
+import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.GameInfoSummary;
 import com.example.ddobagi.Class.GameSelectAdapter;
 import com.example.ddobagi.Class.OnGameItemClickListener;
 import com.example.ddobagi.Class.PlayResultAdapter;
+import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.Class.QuizInfoSummary;
 import com.example.ddobagi.Class.QuizResult;
 import com.example.ddobagi.R;
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameSelectFragment extends Fragment {
+    final int openCost = 5000;
     LinearLayout listLayout, difficultLayout;
 
     RecyclerView recyclerView;
+    GameSelectAdapter adapter;
 
     TextView descriptText, fieldText;
-    Button curGameBtn, easyBtn, normalBtn, hardBtn;
+    Button easyBtn, normalBtn, hardBtn;
+    Button exitBtn;
 
     GameInfoSummary curGame;
+    SharedPreferences share;
 
+    boolean isLogin;
 
     public GameSelectFragment(){
 
@@ -52,6 +74,8 @@ public class GameSelectFragment extends Fragment {
     }
 
     private void setComponent(ViewGroup rootView){
+        share = getActivity().getSharedPreferences("PREF", MODE_PRIVATE);
+
         listLayout = rootView.findViewById(R.id.game_select_list_layout);
         difficultLayout = rootView.findViewById(R.id.game_select_difficulty_layout);
 
@@ -59,31 +83,15 @@ public class GameSelectFragment extends Fragment {
 
         descriptText = rootView.findViewById(R.id.game_select_descript);
         fieldText = rootView.findViewById(R.id.game_select_field);
-        curGameBtn = rootView.findViewById(R.id.game_select_cur_game);
-        curGameBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                difficultLayout.setVisibility(View.INVISIBLE);
-                listLayout.setVisibility(View.VISIBLE);
-                curGame = null;
-            }
-        });
 
         easyBtn = rootView.findViewById(R.id.game_select_easy);
-        setDifficultBtn(easyBtn, 0);
         normalBtn = rootView.findViewById(R.id.game_select_normal);
-        setDifficultBtn(normalBtn, 1);
         hardBtn = rootView.findViewById(R.id.game_select_hard);
-        setDifficultBtn(hardBtn, 2);
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3, RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        GameSelectAdapter adapter = new GameSelectAdapter();
-
-        for(int i=0;i<30;i++) {
-            adapter.addItem(new GameInfoSummary(i, "테스트 게임 " + Integer.toString(i), "테스트 게임의 간략한 설명이 들어갈 곳입니다.", "기억력"));
-        }
+        adapter = new GameSelectAdapter();
 
         recyclerView.setAdapter(adapter);
 
@@ -93,30 +101,284 @@ public class GameSelectFragment extends Fragment {
                 GameInfoSummary item = adapter.getItem(position);
 
                 curGame = item;
-                curGameBtn.setText(curGame.gamename);
                 descriptText.setText(curGame.gamedescript);
                 fieldText.setText("효과 영역: " + curGame.field);
+                setDifficultBtn(easyBtn, 0, curGame.openedDifficulty, position);
+                setDifficultBtn(normalBtn, 1, curGame.openedDifficulty, position);
+                setDifficultBtn(hardBtn, 2, curGame.openedDifficulty, position);
 
                 listLayout.setVisibility(View.INVISIBLE);
                 difficultLayout.setVisibility(View.VISIBLE);
-                Toast.makeText(getActivity(), "아이템 선택됨: " + item.gamename, Toast.LENGTH_LONG).show();
+                PlayActivity activity = (PlayActivity) getActivity();
+                exitBtn = activity.getExitBtn();
+                exitBtn.setText("뒤로가기");
+                exitBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        difficultLayout.setVisibility(View.INVISIBLE);
+                        listLayout.setVisibility(View.VISIBLE);
+                        curGame = null;
+                        activity.setCenterText("선택 놀이");
+                        exitBtn.setText("나가기");
+                        exitBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                activity.finish();
+                            }
+                        });
+                    }
+                });
+                activity.setCenterText(curGame.gamename);
+
+                //Toast.makeText(getActivity(), "아이템 선택됨: " + item.gamename, Toast.LENGTH_LONG).show();
             }
         });
+        getSelectGameList();
     }
 
-    private void setDifficultBtn(Button button, int difficulty){
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(curGame != null){
-                    PlayActivity playActivity = (PlayActivity) getActivity();
-                    playActivity.onGameSelect(curGame, difficulty);
-                    difficultLayout.setVisibility(View.INVISIBLE);
-                    listLayout.setVisibility(View.VISIBLE);
-                    curGame = null;
+    private void getSelectGameList(){
+        PlayActivity play = (PlayActivity) getActivity();
+        String url;
+        StringRequest request;
+
+        if(play.isLogin()){
+            isLogin = true;
+            url = Communication.selectGameListLoginUrl;
+            request = new StringRequest(
+                    Request.Method.GET,
+                    url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Communication.println("onGetSelectGameList" + response);
+                            onGetSelectGameList(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if(!String.valueOf(error).equals("com.android.volley.TimeoutError")){
+                                if(error.networkResponse.statusCode==401) {
+                                    Communication.refreshToken(getActivity());
+                                }
+                            }
+                            else{
+                                Communication.handleVolleyError(error);
+                            }
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", "Bearer " + share.getString("Access_token", ""));
+
+                    return params;
                 }
+            };
+        }
+        else{
+            isLogin = false;
+            url = Communication.selectGameListUnLoginUrl;
+            request = new StringRequest(
+                    Request.Method.GET,
+                    url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Communication.println("onGetSelectGameList" + response);
+                            onGetSelectGameList(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if(!String.valueOf(error).equals("com.android.volley.TimeoutError")){
+                                if(error.networkResponse.statusCode==401) {
+                                    Communication.refreshToken(getActivity());
+                                }
+                            }
+                            else{
+                                Communication.handleVolleyError(error);
+                            }
+                        }
+                    }
+            );
+        }
+
+        request.setShouldCache(false);
+        Communication.requestQueue.add(request);
+        Communication.println("selectGameList 요청 보냄");
+    }
+
+    private void onGetSelectGameList(String response){
+        Gson gson = new Gson();
+        GameInfoSummary[] gameList = gson.fromJson(response, GameInfoSummary[].class);
+
+        for(int i=0;i<gameList.length;i++){
+            adapter.addItem(gameList[i]);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void setDifficultBtn(Button button, int difficulty, int openedDifficulty, int position){
+        if (difficulty <= openedDifficulty) {
+            switch (difficulty){
+                case 0:
+                    button.setBackgroundResource(R.drawable.green_btn);
+                    break;
+                case 1:
+                    button.setBackgroundResource(R.drawable.yellow_btn);
+                    break;
+                case 2:
+                    button.setBackgroundResource(R.drawable.red_btn);
+                    break;
             }
-        });
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(curGame != null){
+                        PlayActivity activity = (PlayActivity) getActivity();
+                        activity.resultPerQuizControl(4);
+                        activity.onGameSelect(curGame, difficulty);
+                        difficultLayout.setVisibility(View.INVISIBLE);
+                        listLayout.setVisibility(View.VISIBLE);
+                        exitBtn.setText("나가기");
+                        exitBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                activity.finish();
+                            }
+                        });
+                        curGame = null;
+                    }
+                }
+            });
+        }
+        else{
+            button.setBackgroundResource(R.drawable.grey_btn);
+            if(!isLogin){
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getActivity(), "로그인 이후 사용할 수 있습니다",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return;
+            }
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    if(openedDifficulty == difficulty - 1){
+                        builder.setTitle(button.getText().toString() + " 난이도 개방하기").setMessage("개방하기 위해서는 " + difficulty * openCost + "금화가 필요합니다.\n개방하시겠습니까?");
+                        builder.setPositiveButton("개방하기", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                PlayActivity play = (PlayActivity) getActivity();
+                                int curCoin = play.getCoin();
+                                if(curCoin >= difficulty * openCost){
+                                    String url = Communication.unlock;
+                                    StringRequest request = new StringRequest(
+                                            Request.Method.POST,
+                                            url,
+                                            new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    Communication.println("openDifficulty: " + response);
+                                                    play.setCoin(play.getCoin() - difficulty * openCost);
+                                                    setDifficultBtn(button, difficulty, openedDifficulty + 1, position);
+                                                    if(difficulty == 1){
+                                                        setDifficultBtn(hardBtn, 2, openedDifficulty + 1, position);
+                                                    }
+                                                    GameInfoSummary game = adapter.getItem(position);
+                                                    game.openedDifficulty += 1;
+                                                    adapter.setItem(position, game);
+                                                    adapter.notifyItemChanged(position);
+                                                    Toast.makeText(getActivity(), "개방되었습니다", Toast.LENGTH_SHORT).show();
+                                                }
+                                            },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    if(!String.valueOf(error).equals("com.android.volley.TimeoutError")){
+                                                        if(error.networkResponse.statusCode==401) {
+                                                            Communication.refreshToken(getActivity());
+                                                        }
+                                                        else if(error.networkResponse.statusCode==406){
+                                                            Toast.makeText(play, "금화가 부족합니다(서버)", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                    else{
+                                                        Communication.handleVolleyError(error);
+                                                    }
+                                                }
+                                            }
+                                    ) {
+                                        @Override
+                                        protected Map<String, String> getParams() throws AuthFailureError {
+                                            Map<String, String> params = new HashMap<String, String>();
+                                            params.put("gameID", Integer.toString(curGame.gameid));
+                                            params.put("difficulty", Integer.toString(difficulty));
+                                            return params;
+                                        }
+
+                                        @Override
+                                        public Map<String, String> getHeaders() throws AuthFailureError{
+                                            Map<String, String> headers = new HashMap<String, String>();
+                                            headers.put("Authorization", "Bearer " + share.getString("Access_token", ""));
+                                            return headers;
+                                        }
+                                    };
+                                    request.setShouldCache(false);
+                                    Communication.requestQueue.add(request);
+                                    Communication.println("selectQuizList 요청 보냄");
+                                }
+                                else{Toast.makeText(getActivity(), "금화가 모자랍니다", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                        builder.setNeutralButton("다음에 하기", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int id)
+                            {
+                                Toast.makeText(getActivity(), "취소되었습니다", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                    else{
+                        builder.setTitle(button.getText().toString() + " 난이도 개방하기").setMessage("보통 단계 난이도를 먼저 개방하셔야합니다");
+                        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                    }
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.setOnShowListener( new DialogInterface.OnShowListener() {
+                        @Override public void onShow(DialogInterface arg0) {
+                            Button positive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                            Button neutral = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                            if(positive != null){
+                                positive.setTextColor(Color.BLACK);
+                                positive.setTextSize(20);
+                            }
+                            if(neutral != null){
+                                neutral.setTextColor(Color.BLACK);
+                                neutral.setTextSize(20);
+                            }
+                        }
+                    });
+
+                    alertDialog.show();
+                }
+            });
+        }
     }
 
     @Override

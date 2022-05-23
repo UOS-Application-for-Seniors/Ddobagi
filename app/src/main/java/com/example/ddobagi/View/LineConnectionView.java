@@ -61,11 +61,16 @@ public class LineConnectionView extends View {
         this.startX = this.startY = -1;
     }
 
+    public void clearLineList(){
+        lineList.clear();
+        invalidate();
+    }
+
     protected void onSizeChanged(int w, int h, int oldw, int oldh){
         Bitmap img = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas();
         canvas.setBitmap(img);
-        canvas.drawColor(Color.WHITE);
+        canvas.drawColor(0xDDDDDD);
 
         mBitmap = img;
         mCanvas = canvas;

@@ -168,6 +168,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
         for(int i =0; i<choiceNum; i++){
             choiceBtn[i].setText("");
             choiceBtn[i].setBackground(getResources().getDrawable(R.drawable.white_btn));
+            choiceBtn[i].setPadding(0,0,0,0);
             numBtn[i].setBackground(getResources().getDrawable(R.drawable.num_btn));
             choiceBtn[i].setCompoundDrawables(null, null, null, null);
         }

@@ -43,7 +43,7 @@ public class GameSelectAdapter extends RecyclerView.Adapter<GameSelectAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         GameInfoSummary item = items.get(position);
-        holder.setItem(item);
+        holder.setItem(item, position);
     }
 
     @Override
@@ -85,8 +85,20 @@ public class GameSelectAdapter extends RecyclerView.Adapter<GameSelectAdapter.Vi
             });
         }
 
-        public void setItem(GameInfoSummary item){
+        public void setItem(GameInfoSummary item, int position){
             textView.setText(item.gamename);
+            int color = item.openedDifficulty;
+            switch (color){
+                case 0:
+                    textView.setBackgroundResource(R.drawable.green_btn);
+                    break;
+                case 1:
+                    textView.setBackgroundResource(R.drawable.yellow_btn);
+                    break;
+                case 2:
+                    textView.setBackgroundResource(R.drawable.red_btn);
+                    break;
+            }
         }
     }
 }

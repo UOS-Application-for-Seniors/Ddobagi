@@ -31,9 +31,11 @@ public class MemoryRecallFragment extends GameFragment{
 
     public int commit(){
         int result = 0;
-
+        String inputAns = inputBox.getText().toString();
         for(String ans: quizAnswer){
-
+            if(inputAns.contains(ans)){
+                result = 1;
+            }
         }
         return result;
     }

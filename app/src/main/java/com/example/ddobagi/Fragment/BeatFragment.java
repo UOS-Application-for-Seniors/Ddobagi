@@ -61,6 +61,9 @@ public class BeatFragment extends GameFragment{
         if(curAnswerStr.equals(quizAnswer)){
             return 1;
         }
+        else if(!curAnswerStr.equals("")){
+            return 2;
+        }
         return 0;
     }
 

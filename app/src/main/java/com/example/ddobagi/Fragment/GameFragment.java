@@ -3,15 +3,9 @@ package com.example.ddobagi.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.AuthFailureError;
@@ -21,7 +15,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.LoadImage;
-import com.example.ddobagi.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +27,8 @@ public abstract class GameFragment extends Fragment {
     String detail = "문제 설명";
     Bitmap pictures[];
     String helpdata;
+    boolean isReadyToShow = false;
+    boolean isReadyToCommit = false;
 
     public String getQuizTTS() {
         return quizTTS;
@@ -49,11 +44,30 @@ public abstract class GameFragment extends Fragment {
     }
 
     public void loadGame(int gameID, int quizID, int difficulty){
+        isReadyToCommit = false;
         this.gameID = gameID;
         this.quizID = quizID;
+
         this.difficulty = difficulty;
         getGameData();
     }
+
+    public boolean isReadyToShow(){
+        return isReadyToShow;
+    }
+
+    public void setReadyToShow(boolean readyToShow){
+        this.isReadyToShow = readyToShow;
+    }
+
+    public boolean isReadyToCommit() {
+        return isReadyToCommit;
+    }
+
+    public void setReadyToCommit(boolean readyToCommit) {
+        isReadyToCommit = readyToCommit;
+    }
+
 
     void getGameData(){
         String url = Communication.getQuizUrl + Integer.toString(gameID) + "/" + Integer.toString(quizID);
@@ -65,6 +79,7 @@ public abstract class GameFragment extends Fragment {
                     public void onResponse(String response) {
                         Communication.println("응답 --> " + response);
                         onGetGameDataResponse(response);
+                        isReadyToShow = true;
                     }
                 },
                 new Response.ErrorListener() {
@@ -111,7 +126,8 @@ public abstract class GameFragment extends Fragment {
                         button.setCompoundDrawables(null, null, null, drawable);
                         break;
                     case 4:
-                        button.setBackground(drawable);
+                        button.setCompoundDrawables(null, drawable, null, null);
+                        button.setPadding(0, 50, 0, 0);
                         break;
                 }
             }

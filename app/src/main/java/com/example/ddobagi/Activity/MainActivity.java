@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,6 +19,8 @@ import com.example.ddobagi.R;
 
 import com.example.ddobagi.Class.*;
 
+import java.text.DecimalFormat;
+
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_MAIN = 101;
     public static final int RESULT_LOGIN = 111;
@@ -26,7 +30,10 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
 
     boolean isLogin = false;
-    Button loginBtn;
+    Button loginBtn, testBtn, userInfoBtn;
+    TextView curCoin;
+    ImageView coinImgView;
+
 
     public void setLogin(boolean login) {
         isLogin = login;
@@ -45,21 +52,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
         share = getSharedPreferences("PREF", MODE_PRIVATE);
+        editor = share.edit();
+
+        setButton();
 
         if(share.getString("Refresh_token", null) != null){
             Communication.refreshToken(this);
         }
-        setButton();
     }
 
     private void setButton(){
-        Button testBtn = findViewById(R.id.main_test_btn);
+        testBtn = findViewById(R.id.main_test_btn);
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
-                intent.putExtra("type", "test");
-                startActivity(intent);
+                if(isLogin){
+                    Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+                    intent.putExtra("type", "test");
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "로그인 이후 사용할 수 있습니다",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -69,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
                 intent.putExtra("type", "recommend");
+                intent.putExtra("isLogin", isLogin);
                 startActivity(intent);
             }
         });
@@ -79,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
                 intent.putExtra("type", "select");
+                intent.putExtra("isLogin", isLogin);
                 startActivity(intent);
             }
-
         });
 
 //        Button leftBtn = findViewById(R.id.left_btn);
@@ -100,17 +115,50 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        loginBtn = findViewById(R.id.login_btn);
-        loginManagement();
 
-        Button userInfoBtn = findViewById(R.id.main_user_info_btn);
+        userInfoBtn = findViewById(R.id.main_user_info_btn);
         userInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
-                startActivity(intent);
+                if(isLogin){
+                    Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "로그인 이후 사용할 수 있습니다",Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+        loginBtn = findViewById(R.id.login_btn);
+        loginManagement();
+
+        curCoin = findViewById(R.id.coin_text);
+        coinImgView = findViewById(R.id.coin_img);
+    }
+
+    private void setCoin(int coin){
+        editor.putInt("coin", coin);
+        editor.commit();
+        DecimalFormat dc = new DecimalFormat("###,###,###,###,###,###");
+        String ch = dc.format(coin);
+
+        curCoin.setText(ch);
+    }
+
+    private int getCoin(){
+        return share.getInt("coin", 0);
+    }
+
+    private void hideCoinView(boolean bool){
+        if(bool){
+            curCoin.setVisibility(View.INVISIBLE);
+            coinImgView.setVisibility(View.INVISIBLE);
+        }
+        else{
+            curCoin.setVisibility(View.VISIBLE);
+            coinImgView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -119,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(requestCode == REQUEST_CODE_MAIN){
             if(resultCode == RESULT_LOGIN){
-                Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_LONG).show();
                 isLogin = true;
                 loginManagement();
             }
@@ -129,6 +176,11 @@ public class MainActivity extends AppCompatActivity {
     public void loginManagement(){
         if(isLogin){
             loginBtn.setText("로그아웃");
+            Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_LONG).show();
+            setCoin(getCoin());
+            hideCoinView(false);
+            testBtn.setBackgroundResource(R.drawable.blue_btn);
+            userInfoBtn.setBackgroundResource(R.drawable.red_btn);
             loginBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -136,11 +188,14 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "로그아웃 되었습니다", Toast.LENGTH_LONG).show();
                     isLogin = false;
                     loginManagement();
+                    hideCoinView(true);
                 }
             });
         }
         else{
             loginBtn.setText("로그인");
+            testBtn.setBackgroundResource(R.drawable.grey_btn);
+            userInfoBtn.setBackgroundResource(R.drawable.grey_btn);
             loginBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -154,12 +209,18 @@ public class MainActivity extends AppCompatActivity {
     private void loginTokenRemove(){
         SharedPreferences pref = getSharedPreferences("PREF", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.remove("Access_token");
+        editor.clear();
         editor.commit();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setCoin(getCoin());
     }
 }

@@ -48,8 +48,11 @@ public class FluentTestFragment extends GameFragment{
     }
 
     public int commit(){
-        if(correctWordCnt > 5){
+        if(correctWordCnt >= 15){
             return 1;
+        }
+        else if(correctWordCnt >= 9){
+            return 2;
         }
         else{
             return 0;

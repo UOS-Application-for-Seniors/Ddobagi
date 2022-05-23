@@ -3,7 +3,7 @@ package com.example.ddobagi.Activity;
 import static android.speech.tts.TextToSpeech.ERROR;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,9 +13,10 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ import com.example.ddobagi.Fragment.TraceShapeFragment;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -56,6 +58,9 @@ import java.util.Vector;
 import java.util.Date;
 
 public class PlayActivity extends AppCompatActivity {
+    final int wrongAnswerCoin = 20;
+    final int correctAnswerCoin = 100;
+
     GameFragment curGameFragment;
 
     MultipleChoiceFragment multipleChoiceFragment;
@@ -80,9 +85,11 @@ public class PlayActivity extends AppCompatActivity {
     Date date;
 
     SharedPreferences share;
+    SharedPreferences.Editor editor;
 
     QuizInfoSummary[] quizList;
     int[] quizScore;
+    int[] quizCoin;
     int quizIndex = 0;
 
     int fragmentIndex = 0;
@@ -102,12 +109,14 @@ public class PlayActivity extends AppCompatActivity {
     TextToSpeech tts;
     Button ttsBtn;
 
-    ConstraintLayout resultPerQuizLayout;
-    Button resultPerQuizBtn, leftStar, rightStar, centerStar;
-    Button commitBtn;
-    TextView centerText;
+    LinearLayout resultPerQuizLayout, resultCoinLayout;
+    Button exitBtn, commitBtn;
+    TextView centerText, curCoin;
+    ImageView coinImg, resultCoinImg;
+    TextView resultCoinText,resultCoinBonusText, resultCheerText, resultBaseText;
 
-    boolean isTest;
+
+    boolean isLogin, isTest, isRecommend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,21 +141,34 @@ public class PlayActivity extends AppCompatActivity {
         playResultFragment = new PlayResultFragment();
         testResultFragment = new TestResultFragment();
 
+        share = getSharedPreferences("PREF", MODE_PRIVATE);
+        editor = share.edit();
+
         setComponent();
 
         Intent intent = getIntent();
         String type = intent.getStringExtra("type");
+        isLogin = intent.getBooleanExtra("isLogin", false);
+
+        if(isLogin){
+            setCoin(getCoin());
+            hideCoinView(false);
+        }
+        else{
+            hideCoinView(true);
+        }
 
         if(type.equals("select")){
+            setCenterText("선택 놀이");
             gameSelectFragment = new GameSelectFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.container, gameSelectFragment).commit();
-            ttsBtn.setVisibility(View.INVISIBLE);
+            ttsBtn.setVisibility(View.GONE);
             commitBtn.setVisibility(View.INVISIBLE);
             sttBtn.setVisibility(View.GONE);
             ttsBtn.setPadding(470, 0, 0, 0);
             ttsBtn.setBackgroundResource(R.drawable.tts_btn_full);
 
-            resultPerQuizControl(-1);
+            //resultPerQuizControl(-1);
         }
         else{
             getRecommendQuizList(type);
@@ -154,10 +176,44 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
+    public String coinFormat(int coin){
+        DecimalFormat dc = new DecimalFormat("###,###,###,###,###,###");
+        return dc.format(coin);
+    }
+
+    public void setCoin(int coin){
+        if(isLogin){
+            editor.putInt("coin", coin);
+            editor.commit();
+
+            curCoin.setText(coinFormat(coin));
+        }
+    }
+
+    public int getCoin(){
+        if(isLogin){
+            return share.getInt("coin", 0);
+        }
+
+        return 0;
+    }
+
+    public void hideCoinView(boolean bool){
+        if(bool){
+            curCoin.setVisibility(View.INVISIBLE);
+            coinImg.setVisibility(View.INVISIBLE);
+        }
+        else{
+            curCoin.setVisibility(View.VISIBLE);
+            coinImg.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void getRecommendQuizList(String type){
         String url;
         if(type.equals("recommend")){
-            url = Communication.recommendGameListUrl;
+            url = Communication.recommendQuizListUrl;
+            isRecommend = true;
         }
         else if (type.equals("test")){
             url = Communication.testListUrl;
@@ -215,6 +271,7 @@ public class PlayActivity extends AppCompatActivity {
         }
 
         quizScore = new int[quizList.length];
+        quizCoin = new int[quizList.length];
 
         loadGame();
     }
@@ -226,17 +283,15 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void getSelectQuizList(int gameID, int difficulty){
-        String url = Communication.selectGameListUrl;
-
-        refreshShare();
-
+        //refreshShare();
+        String url = Communication.selectQuizList;
         StringRequest request = new StringRequest(
-                Request.Method.GET,
+                Request.Method.POST,
                 url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Communication.println("응답 --> " + response);
+                        Communication.println("getSelectQuizList: " + response);
                         onGetQuizListResponse(response);
                     }
                 },
@@ -255,14 +310,6 @@ public class PlayActivity extends AppCompatActivity {
                 }
         ) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Bearer " + share.getString("Access_token", ""));
-
-                return params;
-            }
-
-            @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("gameID", Integer.toString(gameID));
@@ -276,9 +323,8 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void refreshShare(){
-        share = getSharedPreferences("PREF", MODE_PRIVATE);
         if((share != null) && (share.contains("Access_token"))){
-            Toast.makeText(getApplicationContext(), share.getString("Access_token", ""), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), share.getString("Access_token", ""), Toast.LENGTH_LONG).show();
             date = new Date();
             Communication.println(String.valueOf(date.getTime()) + " " + String.valueOf(share.getLong("Access_token_time", 0)
             ) );
@@ -289,7 +335,7 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    void sendGameScore(int gameID, int score, int difficulty){
+    void sendGameScore(int gameID, int score, int difficulty, int coin){
         String url;
         if(isTest){
             url = Communication.sendTestResultUrl;
@@ -327,6 +373,7 @@ public class PlayActivity extends AppCompatActivity {
                 params.put("score", Integer.toString(score));
 
                 if(!isTest){
+                    params.put("coin", Integer.toString(coin));
                     params.put("difficulty", Integer.toString(difficulty));
                 }
 
@@ -388,7 +435,7 @@ public class PlayActivity extends AppCompatActivity {
             case "1":
             case "2":
                 quizScore[quizIndex] = Integer.parseInt(usingFragment);
-                sendGameScore(quizList[quizIndex].gameid, Integer.parseInt(usingFragment), 0);
+                sendGameScore(quizList[quizIndex].gameid, Integer.parseInt(usingFragment), 0, 0);
                 quizIndex++;
                 if(quizIndex < quizList.length){
                     loadGame();
@@ -398,7 +445,11 @@ public class PlayActivity extends AppCompatActivity {
                 curGameFragment = null;
         }
         if(curGameFragment != null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, curGameFragment).commit();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            if(fragmentManager == null){
+                return;
+            }
+            fragmentManager.beginTransaction().replace(R.id.container, curGameFragment).commit();
             int difficulty;
             if(isTest){
                 difficulty = 0;
@@ -423,6 +474,8 @@ public class PlayActivity extends AppCompatActivity {
 
     private void setComponent(){
         centerText = findViewById(R.id.center_text);
+        curCoin = findViewById(R.id.coin_text);
+        coinImg = findViewById(R.id.coin_img);
 
         commitBtn = findViewById(R.id.commit_btn);
         commitBtn.setOnClickListener(new View.OnClickListener() {
@@ -432,7 +485,7 @@ public class PlayActivity extends AppCompatActivity {
             }
         });
 
-        Button exitBtn = findViewById(R.id.exit_btn);
+        exitBtn = findViewById(R.id.exit_btn);
         exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -442,36 +495,18 @@ public class PlayActivity extends AppCompatActivity {
 
 
         resultPerQuizLayout = findViewById(R.id.result_per_quiz_layout);
-        resultPerQuizBtn = findViewById(R.id.result_per_quiz_btn);
-        resultPerQuizBtn.setOnClickListener(new View.OnClickListener() {
+        resultPerQuizLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 resultPerQuizControl(-1);
             }
         });
-
-        leftStar = findViewById(R.id.small_star_left);
-        rightStar = findViewById(R.id.small_star_right);
-        centerStar = findViewById(R.id.small_star_center);
-        leftStar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resultPerQuizControl(-1);
-            }
-        });
-        rightStar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resultPerQuizControl(-1);
-            }
-        });
-        centerStar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resultPerQuizControl(-1);
-            }
-        });
-
+        resultCoinLayout = findViewById(R.id.result_coin_layout);
+        resultCoinText = findViewById(R.id.result_coin_text);
+        resultCoinImg = findViewById(R.id.result_coin_img);
+        resultCoinBonusText = findViewById(R.id.result_coin_bonus_text);
+        resultBaseText = findViewById(R.id.result_base_text);
+        resultCheerText = findViewById(R.id.result_cheer_text);
 
         //=============================음성인식=============================
         sttResultView = findViewById(R.id.sttResult);
@@ -517,6 +552,10 @@ public class PlayActivity extends AppCompatActivity {
 
     private void onCommit(){
         if(curGameFragment != null){
+            if(!curGameFragment.isReadyToCommit()){
+               return;
+            }
+
             int result = curGameFragment.commit();
             curGameFragment.init();
 
@@ -530,15 +569,16 @@ public class PlayActivity extends AppCompatActivity {
                 score = result;
             }
 
-            quizScore[quizIndex] =  score;
+            quizScore[quizIndex] = score;
+
             Log.d("score", Integer.toString(quizIndex) + ": " + Integer.toString(score));
-            sendGameScore(quizList[quizIndex].gameid, score, 0);
+            sendGameScore(quizList[quizIndex].gameid, score, Integer.parseInt(quizList[quizIndex].difficulty), quizCoin[quizIndex]);
             quizIndex++;
             if(quizIndex < quizList.length){
                 loadGame();
             }
             else{
-                ttsBtn.setVisibility(View.INVISIBLE);
+                ttsBtn.setVisibility(View.GONE);
                 commitBtn.setVisibility(View.INVISIBLE);
                 sttBtn.setVisibility(View.GONE);
                 ttsBtn.setPadding(470, 0, 0, 0);
@@ -613,81 +653,130 @@ public class PlayActivity extends AppCompatActivity {
         return score;
     }
 
-    private void resultPerQuizControl(int result){
-        resultPerQuizBtn.setTextSize(40.0f);
-        leftStar.setVisibility(View.INVISIBLE);
-        rightStar.setVisibility(View.INVISIBLE);
-        centerStar.setVisibility(View.INVISIBLE);
-        resultPerQuizBtn.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL);
-        resultPerQuizBtn.setText("");
-        String baseMsg = "\n여기를 눌러 계속 진행하세요.", msg;
+    public void setCenterText(String str){
+        centerText.setText(str);
+    }
+
+    public Button getExitBtn(){
+        return exitBtn;
+    }
+
+    public void resultPerQuizControl(int result){
+        String baseMsg = "\n여기를 눌러 계속 진행하세요.";
+        int difficultyBonus = 0;
         switch (result){
             case -1: //결과창 끄기
-                leftStar.setVisibility(View.INVISIBLE);
-                rightStar.setVisibility(View.INVISIBLE);
-                centerStar.setVisibility(View.INVISIBLE);
-                resultPerQuizBtn.setText("");
-                resultPerQuizLayout.setVisibility(View.INVISIBLE);
-                ttsBtn.callOnClick();
-                if(quizList != null){
-                    if(quizIndex + 1 > quizList.length){
-                        centerText.setText("결과");
-                    }
-                    else{
-                        centerText.setText((quizIndex+1) + " 번 / " + (quizList.length) + " 문제");
-                    }
+                if(quizList == null){
+                    return;
                 }
-                break;
-            case 0: //오답시 중앙 별만 출력
-                centerStar.setVisibility(View.VISIBLE);
-                msg = "잘하고 계십니다";
-                msg += baseMsg;
-                resultPerQuizBtn.setText(msg);
-                resultPerQuizLayout.setVisibility(View.VISIBLE);
-                break;
-            case 1: //정답시 모든 별 출력
-                leftStar.setVisibility(View.VISIBLE);
-                rightStar.setVisibility(View.VISIBLE);
-                centerStar.setVisibility(View.VISIBLE);
-                msg = "완벽합니다";
-                msg += baseMsg;
-                resultPerQuizBtn.setText(msg);
-                resultPerQuizLayout.setVisibility(View.VISIBLE);
-                break;
-            case 2: //부분 정답시 왼쪽, 오른쪽 별만 출력
-                leftStar.setVisibility(View.VISIBLE);
-                rightStar.setVisibility(View.VISIBLE);
-                msg = "훌륭합니다";
-                msg += baseMsg;
-                resultPerQuizBtn.setText(msg);
-                resultPerQuizLayout.setVisibility(View.VISIBLE);
+                if(quizIndex + 1 > quizList.length){
+                    centerText.setText("결과");
+                }
+                else if(curGameFragment.isReadyToShow()){
+                    centerText.setText((quizIndex+1) + " 번 / " + (quizList.length) + " 문제");
+                }
+                else{
+                    return;
+                }
+
+                resultCheerText.setText("");
+                resultBaseText.setText("");
+                resultPerQuizLayout.setVisibility(View.INVISIBLE);
+                resultCoinLayout.setVisibility(View.VISIBLE);
+                ttsBtn.callOnClick();
+                if(curGameFragment != null){
+                    curGameFragment.setReadyToShow(false);
+                    curGameFragment.setReadyToCommit(true);
+                }
+                return;
+            case 0: //0, 1, 2 부분은 아래에서 한번에 처리
+            case 1:
+            case 2:
                 break;
             case 3: //MemorizationFragment에서 호출. 별이 따로 없음
                 resultPerQuizLayout.setVisibility(View.INVISIBLE);
-                break;
+                quizCoin[quizIndex] = 0;
+                return;
             case 4: //처음 게임 로딩할 때 호출
                 if(isTest){
-                    resultPerQuizBtn.setText("지금부터 인지 선별 검사를 진행합니다. \n알맞은 답을 고르고 우측 상단의 \"다음\" 버튼을 눌러주세요.");
+                    resultCheerText.setText("지금부터 인지 선별 검사를 진행합니다. \n알맞은 답을 고르고 우측 상단의 \n\"다음\" 버튼을 눌러주세요.");
+                    resultBaseText.setText(baseMsg);
+                    resultCoinImg.setVisibility(View.INVISIBLE);
+                    resultCoinText.setVisibility(View.INVISIBLE);
+                    hideCoinView(true);
                 }
                 else{
-                    resultPerQuizBtn.setText("지금부터 놀이를 진행합니다. \n알맞은 답을 고르고 우측 상단의 \"다음\" 버튼을 눌러주세요.");
+                    resultCheerText.setText("지금부터 놀이를 진행합니다. \n알맞은 답을 고르고 우측 상단의 \n\"다음\" 버튼을 눌러주세요.");
+                    resultBaseText.setText(baseMsg);
                 }
-                resultPerQuizBtn.setTextSize(40.0f);
-                resultPerQuizBtn.setGravity(Gravity.CENTER);
+                resultCoinLayout.setVisibility(View.GONE);
                 resultPerQuizLayout.setVisibility(View.VISIBLE);
-                break;
+                return;
             case 5: //인지 선별 검사 문제
-                msg = "결과가 저장되었습니다.";
-                msg += baseMsg;
-                resultPerQuizBtn.setText(msg);
-                resultPerQuizBtn.setTextSize(40.0f);
-                resultPerQuizBtn.setGravity(Gravity.CENTER);
+                resultCheerText.setText("결과가 저장되었습니다.");
+                resultBaseText.setText(baseMsg);
+                resultCoinLayout.setVisibility(View.GONE);
                 resultPerQuizLayout.setVisibility(View.VISIBLE);
-                break;
+                quizCoin[quizIndex] = 0;
+                return;
             default:
                 Log.d("resultPerQuizControl", "올바르지 않은 result 값");
-                break;
+                return;
         }
+
+        int coin = 1;
+        String msg = "";
+        int difficulty = Integer.parseInt(quizList[quizIndex].difficulty);
+        String coinBonusStr = "";
+
+        resultCoinBonusText.setVisibility(View.VISIBLE);
+
+        switch (difficulty){
+            case 0:
+                resultCoinBonusText.setVisibility(View.INVISIBLE);
+                break;
+            case 1:
+                coin *= 2;
+                coinBonusStr += "보통 난이도 보너스 적용!\n";
+                break;
+            case 2:
+                coin *= 3;
+                coinBonusStr += "어려움 난이도 보너스 적용!\n";
+                break;
+            default:
+        }
+
+        if(isRecommend){
+            resultCoinBonusText.setVisibility(View.VISIBLE);
+            coinBonusStr  += "추천 놀이 보너스 적용!!";
+            coin *= 5;
+        }
+
+        resultCoinBonusText.setText(coinBonusStr);
+
+        if(result == 0){
+            msg = "잘하고 계십니다";
+            resultCoinBonusText.setVisibility(View.INVISIBLE);
+            coin = wrongAnswerCoin;
+        }
+        else if(result == 1){
+            msg = "완벽합니다";
+            coin *= correctAnswerCoin;
+        }
+        else if(result == 2){
+            msg = "훌륭합니다";
+            coin *= correctAnswerCoin/2;
+        }
+
+
+        resultCoinText.setText("금화 " + coinFormat(coin) +"개 획득");
+        resultCheerText.setText(msg);
+        resultBaseText.setText(baseMsg);
+        resultCoinImg.setVisibility(View.VISIBLE);
+        resultCoinText.setVisibility(View.VISIBLE);
+        resultPerQuizLayout.setVisibility(View.VISIBLE);
+        setCoin(getCoin() + coin);
+        quizCoin[quizIndex] = coin;
     }
 
     private void fragmentChange(){
@@ -782,15 +871,15 @@ public class PlayActivity extends AppCompatActivity {
                     break;
             }
 
-            Toast.makeText(getApplicationContext(), "에러가 발생하였습니다. : " + message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "음성을 잘 인식하지 못했습니다: " + message, Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onResults(Bundle bundle) {
             ArrayList<String> matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             for (int i = 0; i < matches.size(); i++) {
-                Log.e("MainActivity" ,"" + matches.get(i));
-                sttResultView.setText(matches.get(i));
+                Log.e("음성인식 결과: ", "" + matches.get(i));
+                Toast.makeText(getApplicationContext(), "음성인식: " + matches.get(i), Toast.LENGTH_LONG).show();
             }
 
             //matches[0]: "봄 여름 가을 겨울" String
@@ -883,5 +972,9 @@ public class PlayActivity extends AppCompatActivity {
             return;
         }
         quizList[quizIndex + index].usingfragment = Integer.toString(score);
+    }
+
+    public boolean isLogin() {
+        return isLogin;
     }
 }

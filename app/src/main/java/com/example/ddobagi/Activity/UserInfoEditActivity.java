@@ -32,9 +32,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class UserInfoEditActivity extends AppCompatActivity {
 
-    EditText UserID, UserPassword, UserPasswordCheck, address1, address2, userName,userBirthYear,userBirthMonth, userBirthDay, NOKNameEditText, NOKPhoneNumber, NOKNotificationDays;
+    EditText UserPassword, UserPasswordCheck, address1, address2, userName ,userBirthYear ,userBirthMonth , userBirthDay, NOKNameEditText, NOKPhoneNumber, NOKNotificationDays;
     Button save_Btn, duplicate_check;
     int educationlevel = 0;
     TextView idCheckResult, passCheckResult;
@@ -43,9 +43,9 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_user_info_edit);
+
         duplicate_check = findViewById(R.id.btn_duplicate);
-        UserID = findViewById(R.id.userID);
         idCheckResult = findViewById(R.id.id_check_result);
         UserPassword = findViewById(R.id.userPassword);
         UserPasswordCheck = findViewById(R.id.userPasswordCheck);
@@ -68,24 +68,6 @@ public class RegistrationActivity extends AppCompatActivity {
         NOKPhoneNumber = findViewById(R.id.NOKNumber);
         NOKNotificationDays = findViewById(R.id.NOKnotifi);
 
-        UserID.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                idCheckResult.setText("중복검사 버튼을 눌러주세요.");
-                isValidID = false;
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -106,6 +88,14 @@ public class RegistrationActivity extends AppCompatActivity {
                         passCheckResult.setText("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
                         isValidPass = false;
                     }
+                }
+                else if(str1.equals("") && str2.equals("")){
+                    passCheckResult.setText("");
+                    isValidPass = false;
+                }
+                else if(str1.equals("") || str2.equals("")){
+                    passCheckResult.setText("비밀번호를 모두 입력해주세요.");
+                    isValidPass = false;
                 }
             }
 
@@ -129,48 +119,6 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
-        duplicate_check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String inputID = UserID.getText().toString();
-                if(inputID.equals("")){
-                    return;
-                }
-
-                StringRequest request = new StringRequest(Request.Method.POST, Communication.idCheckUrl, new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String s) {
-                        if(Integer.parseInt(s) != 0){
-                            idCheckResult.setText("중복된 아이디입니다.");
-                            isValidID = false;
-                            //Toast.makeText(RegistrationActivity.this, "중복된 아이디입니다", Toast.LENGTH_LONG).show();
-                        }
-                        else{
-                            idCheckResult.setText("사용하실 수 있습니다.");
-                            isValidID = true;
-                            //Toast.makeText(RegistrationActivity.this, "사용하실 수 있습니다.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(RegistrationActivity.this, "Some error occurred -> "+volleyError, Toast.LENGTH_LONG).show();;
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("username", inputID);
-                        // 추가 내용
-
-                        return params;
-                    }
-                };
-
-                Communication.requestQueue.add(request);
-            }
-        });
-
         Button exitBtn = findViewById(R.id.exit_btn);
         exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,7 +132,6 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String name, id, password, year, month, day, add1, add2, NOKName, NOKPhone, NOKnotifi, userBirthDate, address;
                 name = userName.getText().toString();
-                id = UserID.getText().toString();
                 password = UserPassword.getText().toString();
                 year = userBirthYear.getText().toString();
                 month = userBirthMonth.getText().toString();
@@ -235,7 +182,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject();
                 try{
                     jsonObject.put("name",name);
-                    jsonObject.put("id", id);
                     jsonObject.put("password",password);
                     jsonObject.put("userBirthDate", userBirthDate);
                     jsonObject.put("Address", address);
@@ -251,7 +197,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                Toast.makeText(RegistrationActivity.this, "회원가입 성공", Toast.LENGTH_LONG).show();
+                                Toast.makeText(UserInfoEditActivity.this, "회원가입 성공", Toast.LENGTH_LONG).show();
                                 finish();
                             }
                         },

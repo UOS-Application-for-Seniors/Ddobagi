@@ -34,7 +34,7 @@
             <com.example.ddobagi.View.PaintShapeExample
                 android:id="@+id/paint_shape_example"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="420dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:textSize="30sp" />
@@ -42,7 +42,7 @@
             <com.example.ddobagi.View.PaintShapePractice
                 android:id="@+id/paint_shape_practice"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="420dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.8"
                 android:textSize="30sp" />
