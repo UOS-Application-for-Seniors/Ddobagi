@@ -28,6 +28,7 @@ public class Communication {
     public static String url = "https://ddobagi-backend.herokuapp.com";
     public static String loginUrl = url + "/auth/login";
     public static String registerUrl = url + "/auth/register";
+    public static String userInfoUpdate = url + "/users/update";
     public static String refreshUrl = url + "/refresh";
     public static String recommendQuizListUrl = url + "/quiz/games";
     public static String selectGameListUnLoginUrl = url + "/quiz/select";

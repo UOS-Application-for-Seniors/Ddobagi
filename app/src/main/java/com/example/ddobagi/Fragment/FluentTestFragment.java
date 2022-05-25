@@ -1,6 +1,7 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.ddobagi.Activity.PlayActivity;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.DictResult;
 import com.example.ddobagi.Class.Quiz;
@@ -27,16 +29,54 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FluentTestFragment extends GameFragment{
-    TextView quizDetail, inputProgress;
+    TextView quizDetail, inputProgress, timerText;
     EditText inputText;
     String quizAnswer;
     ArrayList<String> curAnswer = new ArrayList<>();
     int correctWordCnt = 0;
+    final int maxTime = 80;
+    int remainTime = maxTime;
+
+    Timer timer;
+    TimerTask task;
+    Handler handler = new Handler();
 
     public FluentTestFragment(){
         isSTTAble = true;
+    }
+
+    @Override
+    public void setReadyToCommit(boolean readyToCommit) {
+        super.setReadyToCommit(readyToCommit);
+        if(readyToCommit){
+            task = new TimerTask() {
+                @Override
+                public void run() {
+                    remainTime--;
+                    if(remainTime < 0){
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                PlayActivity play = (PlayActivity) getActivity();
+                                play.commitBtn.callOnClick();
+                            }
+                        });
+                        return;
+                    }
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            timerText.setText(Integer.toString(remainTime));
+                        }
+                    });
+                }
+            };
+            timer.schedule(task, 0,1000);
+        }
     }
 
     public void receiveSTTResult(String voice){
@@ -48,6 +88,7 @@ public class FluentTestFragment extends GameFragment{
     }
 
     public int commit(){
+        task.cancel();
         if(correctWordCnt >= 15){
             return 1;
         }
@@ -127,6 +168,9 @@ public class FluentTestFragment extends GameFragment{
         quizDetail = rootView.findViewById(R.id.quizDetail);
         inputProgress = rootView.findViewById(R.id.fluent_progress);
         inputText = rootView.findViewById(R.id.fluent_editText);
+        timerText = rootView.findViewById(R.id.timer_text);
+
+        timer = new Timer();
 
         Button inputBtn = rootView.findViewById(R.id.fluent_input_btn);
         inputBtn.setOnClickListener(new View.OnClickListener() {
@@ -162,5 +206,7 @@ public class FluentTestFragment extends GameFragment{
         quizTTS = "";
         curAnswer.clear();
         inputProgress.setText("");
+        remainTime = maxTime;
+        timerText.setText(Integer.toString(maxTime));
     }
 }

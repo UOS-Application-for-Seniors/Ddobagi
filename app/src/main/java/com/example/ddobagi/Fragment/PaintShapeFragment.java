@@ -103,6 +103,7 @@ public class PaintShapeFragment extends GameFragment{
     public void init(){
         quizTTS = "";
         curAnswer.clear();
+        example.initShapeList();
     }
 
 }

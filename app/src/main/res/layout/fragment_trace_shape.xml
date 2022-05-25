@@ -35,7 +35,7 @@
             <com.example.ddobagi.View.TraceShapeExample
                 android:id="@+id/trace_shape_example"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="380dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:textSize="30sp" />
@@ -43,7 +43,7 @@
             <com.example.ddobagi.View.TraceShapePractice
                 android:id="@+id/trace_shape_practice"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="380dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.9"
                 android:textSize="30sp" />

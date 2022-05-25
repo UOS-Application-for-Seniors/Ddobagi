@@ -53,40 +53,38 @@ public class PlayResultAdapter extends RecyclerView.Adapter<PlayResultAdapter.Vi
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView leftText, rightText;
-        ImageView star1, star2, star3;
+        TextView leftText, centerText, rightText, coinText;
+        //ImageView coinImg;
 
         public ViewHolder(View itemView){
             super(itemView);
 
             leftText = itemView.findViewById(R.id.play_result_card_left_text);
+            centerText = itemView.findViewById(R.id.play_result_card_center_text);
             rightText = itemView.findViewById(R.id.play_result_card_right_text);
-            star1 = itemView.findViewById(R.id.play_result_star1);
-            star2 = itemView.findViewById(R.id.play_result_star2);
-            star3 = itemView.findViewById(R.id.play_result_star3);
+            //coinImg = itemView.findViewById(R.id.play_result_card_coin_img);
+            coinText = itemView.findViewById(R.id.play_result_card_coin_text);
         }
 
         public void setItem(QuizResult quizResult){
             leftText.setText(quizResult.quizIndex + ". ");
-            rightText.setText(quizResult.quizBrief);
-            star1.setVisibility(View.INVISIBLE);
-            star2.setVisibility(View.INVISIBLE);
-            star3.setVisibility(View.INVISIBLE);
-
-            switch (quizResult.score){
+            centerText.setText(quizResult.quizName);
+            String difficulty;
+            switch (quizResult.difficulty){
                 case 0:
-                    star3.setVisibility(View.VISIBLE);
+                    difficulty = "쉬움";
                     break;
                 case 1:
-                    star1.setVisibility(View.VISIBLE);
-                    star2.setVisibility(View.VISIBLE);
-                    star3.setVisibility(View.VISIBLE);
+                    difficulty = "보통";
                     break;
                 case 2:
-                    star2.setVisibility(View.VISIBLE);
-                    star3.setVisibility(View.VISIBLE);
+                    difficulty = "어려움";
                     break;
+                default:
+                    difficulty = "";
             }
+            rightText.setText(difficulty);
+            coinText.setText(Integer.toString(quizResult.coin));
         }
     }
 }

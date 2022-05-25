@@ -45,6 +45,9 @@ public class DrawClockFragment extends GameFragment{
             if(Integer.parseInt(answer[0]) == lineList.get(0).end){
                 return 2;
             }
+            else{
+                return 0;
+            }
         }
 
         if(Integer.parseInt(answer[0]) == lineList.get(0).end && Integer.parseInt(answer[1]) == lineList.get(1).end){
@@ -91,5 +94,6 @@ public class DrawClockFragment extends GameFragment{
 
     public void init(){
         quizTTS = "";
+        drawClockView.clearLineList();
     }
 }

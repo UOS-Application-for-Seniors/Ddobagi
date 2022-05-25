@@ -1,6 +1,9 @@
 package com.example.ddobagi.Fragment;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +40,8 @@ public class ShortAnswerFragment extends GameFragment{
         }
         int result = 0;
         String inputText = editText.getText().toString();
+        inputText = normalizationString(inputText);
+        Log.d("test", inputText);
         for(String str: quizAnswer){
             if(inputText.contains(str)){
                 result = 1;
@@ -65,7 +70,15 @@ public class ShortAnswerFragment extends GameFragment{
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
         String tmpAnswer = quiz.quizanswer;
-        quizAnswer = tmpAnswer.split(",");
+        if(gameID == 34){
+            Activity activity = getActivity();
+            SharedPreferences share = activity.getSharedPreferences("PREF", activity.MODE_PRIVATE);
+            quizAnswer[0] = share.getString("address", "").replace(",", "");
+            Log.d("address", quizAnswer[0]);
+        }
+        else{
+            quizAnswer = tmpAnswer.split(",");
+        }
 
         setImageOnButton(url, imgBtn, buttonImgBound, 1);
 

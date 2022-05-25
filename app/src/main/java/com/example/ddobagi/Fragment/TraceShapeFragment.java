@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -127,5 +126,6 @@ public class TraceShapeFragment extends GameFragment{
 
     public void init(){
         quizTTS = "";
+        practice.clearLineList();
     }
 }

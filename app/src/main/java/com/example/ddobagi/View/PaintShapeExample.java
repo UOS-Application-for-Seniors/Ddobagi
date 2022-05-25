@@ -194,6 +194,14 @@ public class PaintShapeExample extends View {
         paintShapePractice.invalidate();
     }
 
+    public void initShapeList(){
+        insideShapeList.clear();
+        outsideShapeList.clear();
+        if(paintShapePractice != null){
+            paintShapePractice.initShapeList();
+        }
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         if(mBitmap != null){

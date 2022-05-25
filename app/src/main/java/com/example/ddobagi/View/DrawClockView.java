@@ -42,6 +42,11 @@ public class DrawClockView extends View {
         return lineList;
     }
 
+    public void clearLineList(){
+        lineList.clear();
+        invalidate();
+    }
+
     public DrawClockView(Context context) {
         super(context);
         init(context);

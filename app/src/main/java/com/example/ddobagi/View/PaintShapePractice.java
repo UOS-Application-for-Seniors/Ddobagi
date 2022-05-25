@@ -218,6 +218,11 @@ public class PaintShapePractice extends View {
         }
     }
 
+    public void initShapeList(){
+        insideShapeList.clear();
+        outsideShapeList.clear();
+    }
+
     public ArrayList<Shape> getOutsideShapeList() {
         return outsideShapeList;
     }

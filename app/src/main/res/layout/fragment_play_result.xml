@@ -41,11 +41,12 @@
                 android:id="@+id/play_result_star_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
                 android:layout_weight="0"
                 android:fontFamily="@font/font_nanum"
+                android:gravity="center"
                 android:text="~~개 획득!!"
-                android:textSize="80sp"
+                android:textColor="@color/black"
+                android:textSize="60sp"
                 android:textStyle="bold" />
         </LinearLayout>
 

@@ -16,6 +16,8 @@ import com.example.ddobagi.R;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BeatFragment extends GameFragment{
     TextView quizDetail, inputProgress;
@@ -146,5 +148,7 @@ public class BeatFragment extends GameFragment{
         quizTTS = "";
         curAnswer.clear();
         inputProgress.setText("");
+        choiceBtn[0].setCompoundDrawables(null, null, null, null);
+        choiceBtn[1].setCompoundDrawables(null, null, null, null);
     }
 }

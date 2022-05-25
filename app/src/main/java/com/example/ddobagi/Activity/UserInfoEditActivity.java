@@ -1,6 +1,7 @@
 package com.example.ddobagi.Activity;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,10 +35,10 @@ import java.util.Map;
 
 public class UserInfoEditActivity extends AppCompatActivity {
 
-    EditText UserPassword, UserPasswordCheck, address1, address2, userName ,userBirthYear ,userBirthMonth , userBirthDay, NOKNameEditText, NOKPhoneNumber, NOKNotificationDays;
-    Button save_Btn, duplicate_check;
+    EditText userName, UserPassword, UserPasswordCheck, address1, address2, userBirthYear ,userBirthMonth , userBirthDay, NOKNameEditText, NOKPhoneNumber, NOKNotificationDays;
+    Button save_Btn;
     int educationlevel = 0;
-    TextView idCheckResult, passCheckResult;
+    TextView passCheckResult;
     boolean isValidID = false, isValidPass = false;
 
     @Override
@@ -45,8 +46,6 @@ public class UserInfoEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info_edit);
 
-        duplicate_check = findViewById(R.id.btn_duplicate);
-        idCheckResult = findViewById(R.id.id_check_result);
         UserPassword = findViewById(R.id.userPassword);
         UserPasswordCheck = findViewById(R.id.userPasswordCheck);
         passCheckResult = findViewById(R.id.pass_check_result);
@@ -130,9 +129,10 @@ public class UserInfoEditActivity extends AppCompatActivity {
         save_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name, id, password, year, month, day, add1, add2, NOKName, NOKPhone, NOKnotifi, userBirthDate, address;
+                String name, password, passwordCheck, year, month, day, add1, add2, NOKName, NOKPhone, NOKnotifi, userBirthDate, address;
                 name = userName.getText().toString();
                 password = UserPassword.getText().toString();
+                passwordCheck = UserPasswordCheck.getText().toString();
                 year = userBirthYear.getText().toString();
                 month = userBirthMonth.getText().toString();
                 day = userBirthDay.getText().toString();
@@ -143,61 +143,88 @@ public class UserInfoEditActivity extends AppCompatActivity {
                 NOKPhone = NOKPhoneNumber.getText().toString();
                 NOKnotifi = NOKNotificationDays.getText().toString();
 
-                if(name.equals("")){
-                    makeToast("성명을 입력해주세요");
-                    return;
+
+                if(!password.equals("") || !passwordCheck.equals("")){
+                    if(!isValidPass){
+                        makeToast("비밀번호를 확인해주세요");
+                        return;
+                    }
                 }
-                else if(!isValidID){
-                    makeToast("중복되지 않은 아이디를 입력하고 중복검사 버튼을 눌러주세요");
-                    return;
+                else if(!year.equals("") || !month.equals("") || !day.equals("")){
+                    if(!year.equals("") && !month.equals("") && !day.equals("")){
+
+                    }
+                    else{
+                        makeToast("출생년도를 모두 입력해주세요");
+                        return;
+                    }
                 }
-                else if(!isValidPass){
-                    makeToast("비밀번호를 확인해주세요");
-                    return;
+                else if(!add1.equals("") || !add2.equals("")){
+                    if(!add1.equals("") && !add2.equals("")){
+
+                    }
+                    else{
+                        makeToast("주소를 모두 입력해주세요");
+                        return;
+                    }
                 }
-                else if(year.equals("") || month.equals("") || day.equals("")){
-                    makeToast("출생년도를 모두 입력해주세요");
-                    return;
+                else if(!NOKPhone.equals("")){
+                    if(NOKPhone.length() != 11){
+                        makeToast("전화번호 11자리를 모두 입력해주세요");
+                        return;
+                    }
                 }
-                else if(add1.equals("") || add2.equals("")){
-                    makeToast("주소를 모두 입력해주세요");
-                    return;
-                }
-                else if(NOKName.equals("")){
-                    makeToast("보호자 성명을 입력해주세요");
-                    return;
-                }
-                else if(NOKPhone.equals("")){
-                    makeToast("보호자 연락처를 입력해주세요");
-                    return;
-                }
-                else if(NOKnotifi.equals("")){
-                    makeToast("알림 송신 주기를 입력해주세요");
-                    return;
-                }
+//                else if(name.equals("") && password.equals("") && year.equals("") && add1.equals("") && NOKName.equals("") && NOKPhone.equals("") && NOKnotifi.equals("")){
+//                    makeToast("변경할 정보가 없습니다");
+//                    return;
+//                }
+                //최종학력
+
 
                 userBirthDate = year+"-"+month+"-"+day;
+
+
+
                 address = add1+","+add2;
-                JSONArray jsonArray = new JSONArray();
-                JSONObject jsonObject = new JSONObject();
-                try{
-                    jsonObject.put("name",name);
-                    jsonObject.put("password",password);
-                    jsonObject.put("userBirthDate", userBirthDate);
-                    jsonObject.put("Address", address);
-                    jsonObject.put("userEducationLevel", educationlevel);
-                    jsonObject.put("NOKName", NOKName);
-                    jsonObject.put("NOKPhoneNumber", NOKPhone);
-                    jsonObject.put("NOKNotificationDays", Integer.parseInt(NOKnotifi));
-                    jsonArray.put(jsonObject);
-                    Log.i("jsonString", jsonObject.toString());
-                }catch(Exception e){
-                }
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Communication.registerUrl, jsonObject,
-                        new Response.Listener<JSONObject>() {
+
+
+//                JSONArray jsonArray = new JSONArray();
+//                JSONObject jsonObject = new JSONObject();
+//                try{
+//                    if(!name.equals("")){
+//                        jsonObject.put("name",name);
+//                    }
+//                    if(!password.equals("")){
+//                        jsonObject.put("password",password);
+//                    }
+//                    if(!userBirthDate.equals("--")){
+//                        jsonObject.put("userBirthDate", userBirthDate);
+//                    }
+//                    if(!address.equals(",")){
+//                        jsonObject.put("Address", address);
+//                    }
+//
+//                    jsonObject.put("userEducationLevel", educationlevel);
+//
+//                    if(!NOKName.equals("")){
+//                        jsonObject.put("NOKName", NOKName);
+//                    }
+//                    if(!NOKPhone.equals("")){
+//                        jsonObject.put("NOKPhoneNumber", NOKPhone);
+//                    }
+//                    if(!NOKnotifi.equals("")){
+//                        jsonObject.put("NOKNotificationDays", Integer.parseInt(NOKnotifi));
+//                    }
+//                    jsonArray.put(jsonObject);
+//                    Log.i("jsonString", jsonObject.toString());
+//                }catch(Exception e){
+//                    e.printStackTrace();
+//                }
+                StringRequest request = new StringRequest(Request.Method.POST, Communication.userInfoUpdate,
+                        new Response.Listener<String>() {
                             @Override
-                            public void onResponse(JSONObject response) {
-                                Toast.makeText(UserInfoEditActivity.this, "회원가입 성공", Toast.LENGTH_LONG).show();
+                            public void onResponse(String response) {
+                                Toast.makeText(UserInfoEditActivity.this, "정보 수정 완료", Toast.LENGTH_LONG).show();
                                 finish();
                             }
                         },
@@ -218,9 +245,47 @@ public class UserInfoEditActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                        );
-                Communication.requestQueue.add(jsonObjectRequest);
+                        ){
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<String, String>();
+                                if(!name.equals("")){
+                                    params.put("name", name);
+                                }
+                                if(!password.equals("")){
+                                    params.put("password", password);
+                                }
+                                if(!userBirthDate.equals("--")){
+                                    params.put("userBirthDate", userBirthDate);
+                                }
+                                if(!address.equals(",")){
+                                    params.put("Address", address);
+                                }
 
+                                params.put("userEducationLevel", Integer.toString(educationlevel));
+
+                                if(!NOKName.equals("")){
+                                    params.put("NOKName",NOKName);
+                                }
+                                if(!NOKPhone.equals("")){
+                                    params.put("NOKPhoneNumber",NOKPhone);
+                                }
+                                if(!NOKnotifi.equals("")){
+                                    params.put("NOKNotificationDays", NOKnotifi);
+                                }
+                                return params;
+                            }
+
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<String, String>();
+                                SharedPreferences share = getSharedPreferences("PREF", MODE_PRIVATE);
+                                params.put("Authorization", "Bearer " + share.getString("Access_token", ""));
+
+                                return params;
+                        }
+                };
+                        Communication.requestQueue.add(request);
                 };
 
         });

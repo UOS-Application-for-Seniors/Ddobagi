@@ -151,6 +151,15 @@ public abstract class GameFragment extends Fragment {
         loadImage.execute(url);
     }
 
+    public String normalizationString(String str){
+        str = str.replace(" ", "");
+        str = str.replace(",", "");
+        str = str.replace(".", "");
+        str = str.replace("-", "");
+
+        return str;
+    }
+
     public boolean isSTTAble() {
         return isSTTAble;
     }

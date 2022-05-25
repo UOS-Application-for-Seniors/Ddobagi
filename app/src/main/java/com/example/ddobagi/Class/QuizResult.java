@@ -2,12 +2,14 @@ package com.example.ddobagi.Class;
 
 public class QuizResult {
     int quizIndex;
-    String quizBrief;
-    int score;
+    String quizName;
+    int difficulty;
+    int coin;
 
-    public QuizResult(int quizIndex, String quizBrief, int score){
+    public QuizResult(int quizIndex, String quizName, int difficulty, int coin){
         this.quizIndex = quizIndex;
-        this.quizBrief = quizBrief;
-        this.score = score;
+        this.quizName = quizName;
+        this.difficulty = difficulty;
+        this.coin = coin;
     }
 }

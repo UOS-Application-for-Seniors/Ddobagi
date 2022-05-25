@@ -110,7 +110,8 @@ public class PlayActivity extends AppCompatActivity {
     Button ttsBtn;
 
     LinearLayout resultPerQuizLayout, resultCoinLayout;
-    Button exitBtn, commitBtn;
+    Button exitBtn;
+    public Button commitBtn;
     TextView centerText, curCoin;
     ImageView coinImg, resultCoinImg;
     TextView resultCoinText,resultCoinBonusText, resultCheerText, resultBaseText;
@@ -265,14 +266,13 @@ public class PlayActivity extends AppCompatActivity {
     public void onGetQuizListResponse(String response){
         Gson gson = new Gson();
         quizList = gson.fromJson(response, QuizInfoSummary[].class);
-        if(quizList == null){
+        if(quizList == null || quizList.length == 0){
             Log.d("warning","quizList is null");
             return;
         }
 
         quizScore = new int[quizList.length];
         quizCoin = new int[quizList.length];
-
         loadGame();
     }
 
@@ -701,7 +701,10 @@ public class PlayActivity extends AppCompatActivity {
             case 2:
                 break;
             case 3: //MemorizationFragment에서 호출. 별이 따로 없음
-                resultPerQuizLayout.setVisibility(View.INVISIBLE);
+                resultCheerText.setText("잠시 뒤에 외우신 문장을 여쭈어보겠습니다");
+                resultBaseText.setText(baseMsg);
+                resultCoinLayout.setVisibility(View.GONE);
+                resultPerQuizLayout.setVisibility(View.VISIBLE);
                 quizCoin[quizIndex] = 0;
                 return;
             case 4: //처음 게임 로딩할 때 호출
@@ -970,8 +973,8 @@ public class PlayActivity extends AppCompatActivity {
         return quizList;
     }
 
-    public int[] getQuizScore() {
-        return quizScore;
+    public int[] getQuizCoin() {
+        return quizCoin;
     }
 
     public void skipNextList(int index, int score){
