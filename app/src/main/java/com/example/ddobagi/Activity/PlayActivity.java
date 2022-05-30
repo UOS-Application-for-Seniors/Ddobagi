@@ -614,7 +614,7 @@ public class PlayActivity extends AppCompatActivity {
                 .position(display.widthPixels / 2, display.heightPixels / 3)
                 .build();
 
-        quizRain = new PartyFactory(new Emitter(3, TimeUnit.SECONDS).perSecond(100))
+        quizRain = new PartyFactory(new Emitter(2, TimeUnit.SECONDS).perSecond(60))
                 .angle(Angle.BOTTOM)
                 .spread(Spread.ROUND)
                 .sizes(Size.Companion.getLARGE())
@@ -635,7 +635,7 @@ public class PlayActivity extends AppCompatActivity {
                 .position(0, 0, display.widthPixels, 0)
                 .build();
 
-        EmitterConfig paradeEmitter = new Emitter(3, TimeUnit.SECONDS).perSecond(100);
+        EmitterConfig paradeEmitter = new Emitter(2, TimeUnit.SECONDS).perSecond(100);
         paradeLeft = new PartyFactory(paradeEmitter)
                 .angle(Angle.RIGHT - 30)
                 .spread(Spread.SMALL)
