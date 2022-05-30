@@ -3,18 +3,22 @@ package com.example.ddobagi.Activity;
 import static android.speech.tts.TextToSpeech.ERROR;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.GameInfoSummary;
+import com.example.ddobagi.Class.GifLoader;
 import com.example.ddobagi.Class.QuizInfoSummary;
 import com.example.ddobagi.Fragment.BeatFragment;
 import com.example.ddobagi.Fragment.CIST10Fragment;
@@ -51,11 +56,23 @@ import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import nl.dionsegijn.konfetti.core.Angle;
+import nl.dionsegijn.konfetti.core.Party;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.Spread;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Shape;
+import nl.dionsegijn.konfetti.core.models.Size;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 public class PlayActivity extends AppCompatActivity {
     final int wrongAnswerCoin = 20;
@@ -116,8 +133,17 @@ public class PlayActivity extends AppCompatActivity {
     ImageView coinImg, resultCoinImg;
     TextView resultCoinText,resultCoinBonusText, resultCheerText, resultBaseText;
 
+    LinearLayout exampleLayout;
+    TextView exampleBtn;
+    ImageView exampleImg;
+    CheckBox exampleCheckBox;
+
+    Party explode, paradeLeft, paradeRight, quizRain, resultRain;
+    KonfettiView konfettiView;
+    Shape.DrawableShape drawableShape;
 
     boolean isLogin, isTest, isRecommend;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +174,7 @@ public class PlayActivity extends AppCompatActivity {
         setComponent();
 
         Intent intent = getIntent();
-        String type = intent.getStringExtra("type");
+        type = intent.getStringExtra("type");
         isLogin = intent.getBooleanExtra("isLogin", false);
 
         if(isLogin){
@@ -446,7 +472,7 @@ public class PlayActivity extends AppCompatActivity {
         }
         if(curGameFragment != null){
             FragmentManager fragmentManager = getSupportFragmentManager();
-            if(fragmentManager == null){
+            if(fragmentManager == null || fragmentManager.isDestroyed()){
                 return;
             }
             fragmentManager.beginTransaction().replace(R.id.container, curGameFragment).commit();
@@ -495,18 +521,39 @@ public class PlayActivity extends AppCompatActivity {
 
 
         resultPerQuizLayout = findViewById(R.id.result_per_quiz_layout);
+        resultPerQuizLayout.setVisibility(View.INVISIBLE);
         resultPerQuizLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 resultPerQuizControl(-1);
             }
         });
+
         resultCoinLayout = findViewById(R.id.result_coin_layout);
         resultCoinText = findViewById(R.id.result_coin_text);
         resultCoinImg = findViewById(R.id.result_coin_img);
         resultCoinBonusText = findViewById(R.id.result_coin_bonus_text);
         resultBaseText = findViewById(R.id.result_base_text);
         resultCheerText = findViewById(R.id.result_cheer_text);
+
+        exampleLayout = findViewById(R.id.example_layout);
+        exampleLayout.setVisibility(View.INVISIBLE);
+        exampleBtn = findViewById(R.id.example_button);
+        exampleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(exampleCheckBox.isChecked()){
+                    exampleCheckBox.setChecked(false);
+                    resultPerQuizControl(-3);
+                }
+                else{
+                    resultPerQuizControl(-2);
+                }
+            }
+        });
+        exampleCheckBox = findViewById(R.id.example_checkBox);
+        //exampleText = findViewById(R.id.example_text);
+        exampleImg = findViewById(R.id.example_img);
 
         //=============================음성인식=============================
         sttResultView = findViewById(R.id.sttResult);
@@ -541,13 +588,71 @@ public class PlayActivity extends AppCompatActivity {
                     CharSequence ttsText = curGameFragment.getQuizTTS();
                     if (ttsText != null) {
                         tts.setPitch(1.0f);         // 음성 톤 설정 (n배)
-                        tts.setSpeechRate(0.5f);    // 읽는 속도 설정 (n배)
+                        tts.setSpeechRate(0.7f);    // 읽는 속도 설정 (n배)
                         tts.speak(ttsText.toString(), TextToSpeech.QUEUE_FLUSH, null);
                     }
                 }
             }
         });
         //=================================================================
+
+        final Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_heart);
+        drawableShape = new Shape.DrawableShape(drawable, true);
+
+        konfettiView = findViewById(R.id.konfetti);
+
+        DisplayMetrics display = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(display);
+
+        explode = new PartyFactory(new Emitter(100L, TimeUnit.MILLISECONDS).max(100))
+                .spread(360)
+                .sizes(Size.Companion.getLARGE())
+                .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                .setSpeedBetween(0f, 50f)
+                .position(display.widthPixels / 2, display.heightPixels / 3)
+                .build();
+
+        quizRain = new PartyFactory(new Emitter(3, TimeUnit.SECONDS).perSecond(100))
+                .angle(Angle.BOTTOM)
+                .spread(Spread.ROUND)
+                .sizes(Size.Companion.getLARGE())
+                .timeToLive(2500L)
+                .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                .setSpeedBetween(0f, 20f)
+                .position(0, 0, display.widthPixels, 0)
+                .build();
+        resultRain = new PartyFactory(new Emitter(7, TimeUnit.SECONDS).perSecond(60))
+                .angle(Angle.BOTTOM)
+                .spread(Spread.ROUND)
+                .sizes(Size.Companion.getLARGE())
+                .timeToLive(2500L)
+                .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                .setSpeedBetween(0f, 20f)
+                .position(0, 0, display.widthPixels, 0)
+                .build();
+
+        EmitterConfig paradeEmitter = new Emitter(3, TimeUnit.SECONDS).perSecond(100);
+        paradeLeft = new PartyFactory(paradeEmitter)
+                .angle(Angle.RIGHT - 30)
+                .spread(Spread.SMALL)
+                .sizes(Size.Companion.getLARGE())
+                .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                .setSpeedBetween(30f, 100f)
+                .position(0, display.heightPixels/2)
+                .build();
+        paradeRight = new PartyFactory(paradeEmitter)
+                .angle(Angle.LEFT + 30)
+                .spread(Spread.SMALL)
+                .sizes(Size.Companion.getLARGE())
+                .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE, drawableShape))
+                .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                .setSpeedBetween(30f, 100f)
+                .position(display.widthPixels, display.heightPixels/2)
+                .build();
     }
 
     private void onCommit(){
@@ -591,6 +696,7 @@ public class PlayActivity extends AppCompatActivity {
                 ttsBtn.setPadding(470, 0, 0, 0);
                 ttsBtn.setBackgroundResource(R.drawable.tts_btn_full);
                 if(isTest){
+                    makeToast("검사가 종료되었습니다. 수고하셨습니다.");
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, testResultFragment).commit();
                 }
                 else{
@@ -672,15 +778,30 @@ public class PlayActivity extends AppCompatActivity {
         String baseMsg = "\n여기를 눌러 계속 진행하세요.";
         int difficultyBonus = 0;
         switch (result){
+            case -3: //다시 보지 않음을 누르고
+                GifLoader.setSkipGif(quizList[quizIndex].usingfragment, share);
+            case -2: //예시 GIF 끄기
+                curGameFragment.setReadyToShow(false);
+                curGameFragment.setReadyToCommit(true);
+                ttsBtn.callOnClick();
+
+                exampleLayout.setVisibility(View.INVISIBLE);
+                return;
             case -1: //결과창 끄기
                 if(quizList == null){
+                    makeToast("문제를 불러오는 중입니다\n다시 시도해주세요");
                     return;
                 }
                 if(quizIndex + 1 > quizList.length){
                     centerText.setText("결과");
+                    konfettiView.start(resultRain);
                 }
                 else if(curGameFragment.isReadyToShow()){
                     centerText.setText((quizIndex+1) + " 번 / " + (quizList.length) + " 문제");
+                }
+                else if(!curGameFragment.isReadyToShow()){
+                    makeToast("문제를 불러오는 중입니다\n다시 시도해주세요");
+                    return;
                 }
                 else{
                     return;
@@ -690,10 +811,16 @@ public class PlayActivity extends AppCompatActivity {
                 resultBaseText.setText("");
                 resultPerQuizLayout.setVisibility(View.INVISIBLE);
                 resultCoinLayout.setVisibility(View.VISIBLE);
-                ttsBtn.callOnClick();
                 if(curGameFragment != null){
-                    curGameFragment.setReadyToShow(false);
-                    curGameFragment.setReadyToCommit(true);
+                    if(GifLoader.needToLoadGif(quizList[quizIndex].usingfragment, share)){ //예시 GIF layout 표시
+                        GifLoader.loadGif(this, exampleImg, quizList[quizIndex].usingfragment);
+                        exampleLayout.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        curGameFragment.setReadyToShow(false);
+                        curGameFragment.setReadyToCommit(true);
+                        ttsBtn.callOnClick();
+                    }
                 }
                 return;
             case 0: //0, 1, 2 부분은 아래에서 한번에 처리
@@ -768,16 +895,18 @@ public class PlayActivity extends AppCompatActivity {
             msg = "잘하고 계십니다";
             resultCoinBonusText.setVisibility(View.INVISIBLE);
             coin = wrongAnswerCoin;
+            konfettiView.start(explode);
         }
         else if(result == 1){
             msg = "완벽합니다";
             coin *= correctAnswerCoin;
+            konfettiView.start(paradeLeft, paradeRight);
         }
         else if(result == 2){
             msg = "훌륭합니다";
             coin *= correctAnswerCoin/2;
+            konfettiView.start(quizRain);
         }
-
 
         resultCoinText.setText("금화 " + coinFormat(coin) +"개 획득");
         resultCheerText.setText(msg);
@@ -824,7 +953,7 @@ public class PlayActivity extends AppCompatActivity {
     private RecognitionListener listener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle bundle) {
-            Toast.makeText(getApplicationContext(), "음성인식을 시작합니다", Toast.LENGTH_SHORT).show();
+            makeToast("음성인식을 시작합니다");
         }
 
         @Override
@@ -881,7 +1010,7 @@ public class PlayActivity extends AppCompatActivity {
                     break;
             }
 
-            Toast.makeText(getApplicationContext(), "음성을 잘 인식하지 못했습니다: " + message, Toast.LENGTH_LONG).show();
+            makeToast("음성을 잘 인식하지 못했습니다: " + message);
         }
 
         @Override
@@ -889,7 +1018,7 @@ public class PlayActivity extends AppCompatActivity {
             ArrayList<String> matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
             for (int i = 0; i < matches.size(); i++) {
                 Log.e("음성인식 결과: ", "" + matches.get(i));
-                Toast.makeText(getApplicationContext(), "음성인식: " + matches.get(i), Toast.LENGTH_LONG).show();
+                makeToast("음성인식: " + matches.get(i));
             }
 
             //matches[0]: "봄 여름 가을 겨울" String
@@ -977,6 +1106,11 @@ public class PlayActivity extends AppCompatActivity {
         return quizCoin;
     }
 
+
+    public int[] getQuizScore() {
+        return quizScore;
+    }
+
     public void skipNextList(int index, int score){
         if(index<0){
             return;
@@ -986,5 +1120,9 @@ public class PlayActivity extends AppCompatActivity {
 
     public boolean isLogin() {
         return isLogin;
+    }
+
+    private void makeToast(String str){
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
     }
 }

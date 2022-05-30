@@ -44,6 +44,7 @@
                         android:gravity="center"
                         android:maxLines="1"
                         android:text="~~문제 유형"
+                        android:textColor="@color/black"
                         android:textSize="30sp" />
 
                 </LinearLayout>
@@ -56,28 +57,14 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/record_total_star"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/record_difficulty"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="총 획득:"
-                        android:textSize="50sp" />
-
-                    <ImageView
-                        android:id="@+id/record_yellow_star"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_weight="0"
-                        app:srcCompat="@drawable/yellow_star" />
-
-                    <TextView
-                        android:id="@+id/record_total_star_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="X 5000"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="~~ 난이도"
                         android:textSize="30sp" />
-
                 </LinearLayout>
 
             </LinearLayout>
@@ -89,78 +76,54 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingRight="20dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/record_achievement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:text="성취도: "
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
 
-                        <TextView
-                            android:id="@+id/record_difficulty"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:text="~~ 난이도"
-                            android:textSize="30sp" />
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/record_blue_star1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="0"
+                        app:srcCompat="@drawable/blue_star" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="left|center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingRight="20dp">
+                    <ImageView
+                        android:id="@+id/record_blue_star2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="0"
+                        app:srcCompat="@drawable/blue_star" />
 
-                        <TextView
-                            android:id="@+id/record_achievement"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:text="성취도: "
-                            android:textSize="50sp" />
+                    <ImageView
+                        android:id="@+id/record_blue_star3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="0"
+                        app:srcCompat="@drawable/blue_star" />
 
-                        <ImageView
-                            android:id="@+id/record_blue_star1"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_weight="0"
-                            app:srcCompat="@drawable/blue_star" />
+                    <ImageView
+                        android:id="@+id/record_blue_star4"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="0"
+                        app:srcCompat="@drawable/blue_star" />
 
-                        <ImageView
-                            android:id="@+id/record_blue_star1_5"
-                            android:layout_width="30dp"
-                            android:layout_height="60dp"
-                            android:layout_weight="0"
-                            app:srcCompat="@drawable/left_half_blue_star" />
-
-                        <ImageView
-                            android:id="@+id/record_blue_star2"
-                            android:layout_width="30dp"
-                            android:layout_height="60dp"
-                            android:layout_weight="0"
-                            app:srcCompat="@drawable/right_half_blue_star" />
-
-                        <ImageView
-                            android:id="@+id/record_blue_star2_5"
-                            android:layout_width="30dp"
-                            android:layout_height="60dp"
-                            android:layout_weight="0"
-                            app:srcCompat="@drawable/left_half_blue_star" />
-
-                        <ImageView
-                            android:id="@+id/record_blue_star3"
-                            android:layout_width="30dp"
-                            android:layout_height="60dp"
-                            android:layout_weight="0"
-                            android:visibility="visible"
-                            app:srcCompat="@drawable/right_half_blue_star" />
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/record_blue_star5"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="0"
+                        app:srcCompat="@drawable/blue_star" />
 
                 </LinearLayout>
 

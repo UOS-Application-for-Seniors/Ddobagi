@@ -38,7 +38,7 @@ public class FluentTestFragment extends GameFragment{
     String quizAnswer;
     ArrayList<String> curAnswer = new ArrayList<>();
     int correctWordCnt = 0;
-    final int maxTime = 80;
+    final int maxTime = 70;
     int remainTime = maxTime;
 
     Timer timer;
@@ -67,12 +67,14 @@ public class FluentTestFragment extends GameFragment{
                         });
                         return;
                     }
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            timerText.setText(Integer.toString(remainTime));
-                        }
-                    });
+                    if(remainTime < 60){
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                timerText.setText(Integer.toString(remainTime));
+                            }
+                        });
+                    }
                 }
             };
             timer.schedule(task, 0,1000);
@@ -207,6 +209,6 @@ public class FluentTestFragment extends GameFragment{
         curAnswer.clear();
         inputProgress.setText("");
         remainTime = maxTime;
-        timerText.setText(Integer.toString(maxTime));
+        timerText.setText("60");
     }
 }

@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.Class.Communication;
+import com.example.ddobagi.Class.GifLoader;
 import com.example.ddobagi.R;
 
 import org.json.JSONArray;
@@ -40,6 +41,8 @@ public class UserInfoEditActivity extends AppCompatActivity {
     int educationlevel = 0;
     TextView passCheckResult;
     boolean isValidID = false, isValidPass = false;
+
+    TextView initSkipGif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,15 @@ public class UserInfoEditActivity extends AppCompatActivity {
         NOKNameEditText = findViewById(R.id.NOKName);
         NOKPhoneNumber = findViewById(R.id.NOKNumber);
         NOKNotificationDays = findViewById(R.id.NOKnotifi);
+
+        initSkipGif = findViewById(R.id.init_skip_gif_btn);
+        initSkipGif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GifLoader.initSkipGif(getSharedPreferences("PREF", MODE_PRIVATE));
+                makeToast("이제 입력 예시를 다시 볼 수 있습니다");
+            }
+        });
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override

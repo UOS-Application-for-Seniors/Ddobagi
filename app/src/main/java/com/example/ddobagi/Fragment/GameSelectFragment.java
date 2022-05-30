@@ -3,6 +3,7 @@ package com.example.ddobagi.Fragment;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -88,7 +89,6 @@ public class GameSelectFragment extends Fragment {
         normalBtn = rootView.findViewById(R.id.game_select_normal);
         hardBtn = rootView.findViewById(R.id.game_select_hard);
 
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3, RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new GameSelectAdapter();
@@ -269,13 +269,23 @@ public class GameSelectFragment extends Fragment {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    Dialog dialog = new Dialog(getActivity());
                     if(openedDifficulty == difficulty - 1){
-                        builder.setTitle(button.getText().toString() + " 난이도 개방하기").setMessage("개방하기 위해서는 " + difficulty * openCost + "금화가 필요합니다.\n개방하시겠습니까?");
-                        builder.setPositiveButton("개방하기", new DialogInterface.OnClickListener(){
+                        dialog.setContentView(R.layout.open_difficulty_dialog);
+
+                        TextView title, body;
+                        Button yesBtn, noBtn;
+
+                        title = dialog.findViewById(R.id.title_text);
+                        title.setText(button.getText().toString() + " 난이도 개방하기");
+
+                        body = dialog.findViewById(R.id.body_text);
+                        body.setText("개방하기 위해서는 " + difficulty * openCost + "금화가 필요합니다.\n개방하시겠습니까?");
+
+                        yesBtn = dialog.findViewById(R.id.yes_btn);
+                        yesBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int id)
-                            {
+                            public void onClick(View view) {
                                 PlayActivity play = (PlayActivity) getActivity();
                                 int curCoin = play.getCoin();
                                 if(curCoin >= difficulty * openCost){
@@ -337,45 +347,34 @@ public class GameSelectFragment extends Fragment {
                                 }
                                 else{Toast.makeText(getActivity(), "금화가 모자랍니다", Toast.LENGTH_SHORT).show();
                                 }
+                                dialog.dismiss();
                             }
                         });
 
-                        builder.setNeutralButton("다음에 하기", new DialogInterface.OnClickListener(){
+                        noBtn = dialog.findViewById(R.id.no_btn);
+                        noBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int id)
-                            {
+                            public void onClick(View view) {
                                 Toast.makeText(getActivity(), "취소되었습니다", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
                             }
                         });
-
                     }
                     else{
-                        builder.setTitle(button.getText().toString() + " 난이도 개방하기").setMessage("보통 단계 난이도를 먼저 개방하셔야합니다");
-                        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                        dialog.setContentView(R.layout.information_dialog);
 
+                        TextView body = dialog.findViewById(R.id.body_text);
+                        body.setText("보통 단계 난이도를 먼저 개방하셔야합니다");
+
+                        Button btn = dialog.findViewById(R.id.ok_btn);
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog.dismiss();
                             }
                         });
                     }
-
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.setOnShowListener( new DialogInterface.OnShowListener() {
-                        @Override public void onShow(DialogInterface arg0) {
-                            Button positive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                            Button neutral = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                            if(positive != null){
-                                positive.setTextColor(Color.BLACK);
-                                positive.setTextSize(20);
-                            }
-                            if(neutral != null){
-                                neutral.setTextColor(Color.BLACK);
-                                neutral.setTextSize(20);
-                            }
-                        }
-                    });
-
-                    alertDialog.show();
+                    dialog.show();
                 }
             });
         }

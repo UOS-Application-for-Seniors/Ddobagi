@@ -30,28 +30,27 @@ public class MultipleChoiceFragment extends GameFragment{
 
     public void receiveSTTResult(String voice){
         int vAnsChoice = 0;
-        String vResultString = "";
-        char[] vResultChar;
 
-        vResultString = voice;
-        vResultChar = vResultString.toCharArray();
-
-        for(int i = 0; i < vResultChar.length; i++) {
-            switch (vResultChar[i]) {
-                case '1' :
-                    vAnsChoice = 1;
-                    break;
-                case '2' :
-                    vAnsChoice = 2;
-                    break;
-                case '3' :
-                    vAnsChoice = 3;
-                    break;
-                case '4' :
-                    vAnsChoice = 4;
-                    break;
-            }
-        }
+//        vResultString = voice;
+//        vResultChar = vResultString.toCharArray();
+//
+//        for(int i = 0; i < vResultChar.length; i++) {
+//            switch (vResultChar[i]) {
+//                case '1' :
+//                    vAnsChoice = 1;
+//                    break;
+//                case '2' :
+//                    vAnsChoice = 2;
+//                    break;
+//                case '3' :
+//                    vAnsChoice = 3;
+//                    break;
+//                case '4' :
+//                    vAnsChoice = 4;
+//                    break;
+//            }
+//        }
+//
 
         String[] vAnsShort = voice.split(" ");
         String[] buttonText = new String[choiceNum];
@@ -64,8 +63,24 @@ public class MultipleChoiceFragment extends GameFragment{
             for(int j =0;j<choiceNum;j++){
                 if(buttonText[j].contains(vAnsShort[i])){
                     vAnsChoice = j + 1;
+                    onButtonTouch(Integer.toString(vAnsChoice - 1));
+                    return;
                 }
             }
+        }
+
+        voice = normalizationString(voice);
+        if(voice.contains("1") || voice.contains("일") || voice.contains("하나") || voice.contains("첫")){
+            vAnsChoice = 1;
+        }
+        else if(voice.contains("2") || voice.contains("이번") || voice.contains("둘") || voice.contains("두")){
+            vAnsChoice = 2;
+        }
+        else if(voice.contains("3") || voice.contains("삼") || voice.contains("서이") || voice.contains("산") || voice.contains("세")){
+            vAnsChoice = 3;
+        }
+        else if(voice.contains("4") || voice.contains("사") || voice.contains("넷")){
+            vAnsChoice = 4;
         }
 
         if(vAnsChoice == 0){

@@ -24,7 +24,6 @@ public class DrawClockView extends View {
     final int clockNum = 12;
     float[][] clockNumCoor = new float[clockNum][2];
     boolean touchCancle = true;
-    int startClockNum = -1, endClockNum = -1;
 
     int drawingCount = 0; //0이면 시침 그릴 차례, 1이면 분침 그릴 차례, 2이면 새로 그리기
 
@@ -44,6 +43,7 @@ public class DrawClockView extends View {
 
     public void clearLineList(){
         lineList.clear();
+        drawingCount = 0;
         invalidate();
     }
 

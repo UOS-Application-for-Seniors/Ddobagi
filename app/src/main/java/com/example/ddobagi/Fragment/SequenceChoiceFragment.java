@@ -45,18 +45,23 @@ public class SequenceChoiceFragment extends GameFragment{
         for(int i = 0; i < vResultChar.length; i++) {
             switch (vResultChar[i]) {
                 case '1' :
+                case '일':
                     vAnsChoice = 1;
                     onButtonTouch(vAnsChoice - 1);
                     break;
                 case '2' :
+                case '이':
                     vAnsChoice = 2;
                     onButtonTouch(vAnsChoice - 1);
                     break;
                 case '3' :
+                case '삼':
+                case '참':
                     vAnsChoice = 3;
                     onButtonTouch(vAnsChoice - 1);
                     break;
                 case '4' :
+                case '사':
                     vAnsChoice = 4;
                     onButtonTouch(vAnsChoice - 1);
                     break;

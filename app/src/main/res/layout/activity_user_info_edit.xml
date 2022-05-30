@@ -66,10 +66,34 @@
                 android:layout_weight="1.5"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/init_skip_gif_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/yellow_btn"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="놀이 정답 입력 예시 다시 보기"
+                        android:textColor="@color/black"
+                        android:textSize="60sp" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/guide_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
                     android:layout_marginBottom="50dp"
                     android:layout_weight="1"
                     android:gravity="center"

@@ -68,7 +68,6 @@ public abstract class GameFragment extends Fragment {
         isReadyToCommit = readyToCommit;
     }
 
-
     void getGameData(){
         String url = Communication.getQuizUrl + Integer.toString(gameID) + "/" + Integer.toString(quizID);
         StringRequest request = new StringRequest(

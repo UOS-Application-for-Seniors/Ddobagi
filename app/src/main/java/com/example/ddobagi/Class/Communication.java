@@ -109,7 +109,8 @@ public class Communication {
                 }
             }, new Response.ErrorListener(){
                 @Override
-                public void onErrorResponse(VolleyError volleyError) {
+                public void onErrorResponse(VolleyError error) {
+                    handleVolleyError(error);
                     Toast.makeText(context, "Refresh Token Error", Toast.LENGTH_LONG).show();;
                 }
             }) {

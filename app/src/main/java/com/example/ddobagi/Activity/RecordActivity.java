@@ -1,6 +1,7 @@
 package com.example.ddobagi.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,7 +49,7 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RecordAdapter();
         recyclerView.setAdapter(adapter);

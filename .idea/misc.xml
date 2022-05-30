@@ -15,10 +15,12 @@
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable-v24/blue_btn.xml" value="0.385" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable-v24/exit_btn.xml" value="0.385" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable-v24/green_btn.xml" value="0.385" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable-v24/ic_heart.xml" value="0.42" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable-v24/left_btn.xml" value="0.383" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable-v24/red_btn.xml" value="0.385" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable-v24/yellow_btn.xml" value="0.385" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/background.xml" value="0.385" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/calendar_selector.xml" value="0.42" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/center_btn.xml" value="0.42" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/commit_btn.xml" value="0.42" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/grey_btn.xml" value="0.42" />
@@ -30,6 +32,7 @@
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/selected_btn.xml" value="0.385" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/selected_num_btn.xml" value="0.385" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/stt_btn.xml" value="0.385" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/transparent_calendar_element.xml" value="0.42" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/tts_btn.xml" value="0.385" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/tts_btn_full.xml" value="0.42" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/white_btn.xml" value="0.44" />
@@ -37,7 +40,7 @@
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_game_test.xml" value="0.2692502532928065" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_login2.xml" value="0.33" />
-        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_main2.xml" value="0.25" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_play.xml" value="0.25" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/activity_play2.xml" value="0.25" />
@@ -66,9 +69,13 @@
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_test_result.xml" value="0.2" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_trace_shape.xml" value="0.22" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/game_select_card.xml" value="0.33" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/information_dialog.xml" value="0.384375" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/open_difficulty_dialog.xml" value="0.384375" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/play_result_card.xml" value="0.25" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/recommend_dialog.xml" value="0.18" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/record_card.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/spinner_item.xml" value="0.3828125" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/test_dialog.xml" value="0.384375" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/drawable-v24/blue_btn.xml" value="0.1" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/drawable-v24/exit_btn.xml" value="0.1875" />
         <entry key="..\:/Users/temp/AndroidStudioProjects/Ddobagi/app/src/main/res/drawable-v24/green_btn.xml" value="0.1875" />

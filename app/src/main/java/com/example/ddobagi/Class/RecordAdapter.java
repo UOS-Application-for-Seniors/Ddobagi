@@ -54,8 +54,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView gameType, difficulty, totalYellowStar;
-        ImageView star1, star1_5, star2, star2_5, star3;
+        TextView gameType, difficulty;
+        ImageView star1, star2, star3, star4, star5;
         LinearLayout layout;
 
         public ViewHolder(View itemView){
@@ -64,12 +64,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
             layout = itemView.findViewById(R.id.record_card_layout);
             gameType = itemView.findViewById(R.id.record_game_type);
             difficulty = itemView.findViewById(R.id.record_difficulty);
-            totalYellowStar = itemView.findViewById(R.id.record_total_star_num);
             star1 = itemView.findViewById(R.id.record_blue_star1);
-            star1_5 = itemView.findViewById(R.id.record_blue_star1_5);
             star2 = itemView.findViewById(R.id.record_blue_star2);
-            star2_5 = itemView.findViewById(R.id.record_blue_star2_5);
             star3 = itemView.findViewById(R.id.record_blue_star3);
+            star4 = itemView.findViewById(R.id.record_blue_star4);
+            star5 = itemView.findViewById(R.id.record_blue_star5);
         }
 
         public void setItem(Record record){
@@ -78,51 +77,49 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
             switch (record.difficulty){
                 case 0:
                     str = "쉬움";
+                    layout.setBackgroundResource(R.drawable.green_btn);
                     break;
                 case 1:
                     str = "보통";
+                    layout.setBackgroundResource(R.drawable.yellow_btn);
                     break;
                 case 2:
                     str = "어려움";
+                    layout.setBackgroundResource(R.drawable.red_btn);
                     break;
                 default:
                     str = "난이도 오류";
                     break;
             }
             difficulty.setText(str);
-            totalYellowStar.setText("X "+ Integer.toString(record.stars));
 
-            star1_5.setVisibility(View.INVISIBLE);
-            star2.setVisibility(View.INVISIBLE);
-            star2_5.setVisibility(View.INVISIBLE);
-            star3.setVisibility(View.INVISIBLE);
+            star1.setVisibility(View.VISIBLE);
+            star2.setVisibility(View.GONE);
+            star3.setVisibility(View.GONE);
+            star4.setVisibility(View.GONE);
+            star5.setVisibility(View.GONE);
 
             float correctRate = record.correctRate;
 
             if(correctRate < 0.2){
-                layout.setBackgroundResource(R.drawable.red_btn);
             }
             else if(0.2 <= correctRate && correctRate < 0.4){
-                star1_5.setVisibility(View.VISIBLE);
-                layout.setBackgroundResource(R.drawable.yellow_btn);
+                star2.setVisibility(View.VISIBLE);
             }
             else if(0.4 <= correctRate && correctRate < 0.6){
-                star1_5.setVisibility(View.VISIBLE);
                 star2.setVisibility(View.VISIBLE);
-                layout.setBackgroundResource(R.drawable.yellow_btn);
+                star3.setVisibility(View.VISIBLE);
             }
             else if(0.6 <= correctRate && correctRate < 0.8){
-                star1_5.setVisibility(View.VISIBLE);
                 star2.setVisibility(View.VISIBLE);
-                star2_5.setVisibility(View.VISIBLE);
-                layout.setBackgroundResource(R.drawable.green_btn);
+                star3.setVisibility(View.VISIBLE);
+                star4.setVisibility(View.VISIBLE);
             }
             else if(0.8 <= correctRate){
-                star1_5.setVisibility(View.VISIBLE);
                 star2.setVisibility(View.VISIBLE);
-                star2_5.setVisibility(View.VISIBLE);
                 star3.setVisibility(View.VISIBLE);
-                layout.setBackgroundResource(R.drawable.green_btn);
+                star4.setVisibility(View.VISIBLE);
+                star5.setVisibility(View.VISIBLE);
             }
         }
     }
