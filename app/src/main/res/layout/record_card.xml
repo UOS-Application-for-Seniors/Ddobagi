@@ -95,35 +95,35 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_weight="0"
-                        app:srcCompat="@drawable/blue_star" />
+                        app:srcCompat="@drawable/yellow_star" />
 
                     <ImageView
                         android:id="@+id/record_blue_star2"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_weight="0"
-                        app:srcCompat="@drawable/blue_star" />
+                        app:srcCompat="@drawable/yellow_star" />
 
                     <ImageView
                         android:id="@+id/record_blue_star3"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_weight="0"
-                        app:srcCompat="@drawable/blue_star" />
+                        app:srcCompat="@drawable/yellow_star" />
 
                     <ImageView
                         android:id="@+id/record_blue_star4"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_weight="0"
-                        app:srcCompat="@drawable/blue_star" />
+                        app:srcCompat="@drawable/yellow_star" />
 
                     <ImageView
                         android:id="@+id/record_blue_star5"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_weight="0"
-                        app:srcCompat="@drawable/blue_star" />
+                        app:srcCompat="@drawable/yellow_star" />
 
                 </LinearLayout>
 
