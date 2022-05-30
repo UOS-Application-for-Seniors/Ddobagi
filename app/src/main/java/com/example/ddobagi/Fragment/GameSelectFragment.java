@@ -228,7 +228,7 @@ public class GameSelectFragment extends Fragment {
                     button.setBackgroundResource(R.drawable.green_btn);
                     break;
                 case 1:
-                    button.setBackgroundResource(R.drawable.yellow_btn);
+                    button.setBackgroundResource(R.drawable.blue_btn);
                     break;
                 case 2:
                     button.setBackgroundResource(R.drawable.red_btn);

@@ -93,7 +93,7 @@ public class GameSelectAdapter extends RecyclerView.Adapter<GameSelectAdapter.Vi
                     textView.setBackgroundResource(R.drawable.green_btn);
                     break;
                 case 1:
-                    textView.setBackgroundResource(R.drawable.yellow_btn);
+                    textView.setBackgroundResource(R.drawable.blue_btn);
                     break;
                 case 2:
                     textView.setBackgroundResource(R.drawable.red_btn);

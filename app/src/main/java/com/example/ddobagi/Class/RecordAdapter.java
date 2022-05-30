@@ -81,7 +81,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
                     break;
                 case 1:
                     str = "보통";
-                    layout.setBackgroundResource(R.drawable.yellow_btn);
+                    layout.setBackgroundResource(R.drawable.blue_btn);
                     break;
                 case 2:
                     str = "어려움";
