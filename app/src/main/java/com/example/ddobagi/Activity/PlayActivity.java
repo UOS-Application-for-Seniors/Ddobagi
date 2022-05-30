@@ -53,6 +53,7 @@ import com.example.ddobagi.Fragment.TestResultFragment;
 import com.example.ddobagi.Fragment.TraceShapeFragment;
 import com.example.ddobagi.R;
 import com.google.gson.Gson;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -690,6 +691,36 @@ public class PlayActivity extends AppCompatActivity {
                 loadGame();
             }
             else{
+                String dayString = share.getString("playDates", "");
+                String newStr;
+                if(!dayString.equals("")){
+                    newStr = ",";
+                }
+                else{
+                    newStr = "";
+                }
+                CalendarDay today = CalendarDay.today();
+                String todayStr = today.getYear() + "-" + (today.getMonth() + 1) + "-" + today.getDay();
+                newStr += todayStr;
+
+                String[] dates = dayString.split(",");
+
+                boolean played = false;
+                for(String day : dates){
+                    if(day.equals(todayStr)){
+                        played = true;
+                        break;
+                    }
+                }
+
+                if(!played){
+                    dayString += newStr;
+                    editor.putString("playDates", dayString);
+                }
+
+                editor.putString("notRecommend", todayStr);
+                editor.commit();
+
                 ttsBtn.setVisibility(View.GONE);
                 commitBtn.setVisibility(View.INVISIBLE);
                 sttBtn.setVisibility(View.GONE);

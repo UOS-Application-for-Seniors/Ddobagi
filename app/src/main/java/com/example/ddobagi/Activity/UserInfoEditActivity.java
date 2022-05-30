@@ -41,6 +41,7 @@ public class UserInfoEditActivity extends AppCompatActivity {
     int educationlevel = 0;
     TextView passCheckResult;
     boolean isValidID = false, isValidPass = false;
+    SharedPreferences share;
 
     TextView initSkipGif;
 
@@ -70,11 +71,16 @@ public class UserInfoEditActivity extends AppCompatActivity {
         NOKPhoneNumber = findViewById(R.id.NOKNumber);
         NOKNotificationDays = findViewById(R.id.NOKnotifi);
 
+        share = getSharedPreferences("PREF", MODE_PRIVATE);
+
         initSkipGif = findViewById(R.id.init_skip_gif_btn);
         initSkipGif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GifLoader.initSkipGif(getSharedPreferences("PREF", MODE_PRIVATE));
+                GifLoader.initSkipGif(share);
+                SharedPreferences.Editor editor = share.edit();
+                editor.putString("notRecommend", "");
+                editor.commit();
                 makeToast("이제 입력 예시를 다시 볼 수 있습니다");
             }
         });

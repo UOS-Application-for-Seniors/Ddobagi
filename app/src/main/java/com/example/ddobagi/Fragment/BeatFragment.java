@@ -89,11 +89,10 @@ public class BeatFragment extends GameFragment{
 
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
-            quizDetail.setText(detail);
+        quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
 
         String[] splitString = quiz.quizchoicesdetail.split(",");
-
             for(;i<choiceNum;i++){
             String tmp = quizdataUrl;
             tmp = tmp + Integer.toString(i) + ".jfif";

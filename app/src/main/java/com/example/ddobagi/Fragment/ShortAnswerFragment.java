@@ -73,6 +73,7 @@ public class ShortAnswerFragment extends GameFragment{
         if(gameID == 34){
             Activity activity = getActivity();
             SharedPreferences share = activity.getSharedPreferences("PREF", activity.MODE_PRIVATE);
+            quizAnswer = new String[1];
             quizAnswer[0] = share.getString("address", "").replace(",", "");
             Log.d("address", quizAnswer[0]);
         }

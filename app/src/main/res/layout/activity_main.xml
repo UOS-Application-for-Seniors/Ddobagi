@@ -106,7 +106,8 @@
                         android:fontFamily="@font/font_nanum"
                         android:text="추천 놀이"
                         android:textSize="60sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/main_select_play_btn"
@@ -114,7 +115,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="10dp"
                         android:layout_weight="1"
-                        android:background="@drawable/yellow_btn"
+                        android:background="@drawable/green_btn"
                         android:fontFamily="@font/font_nanum"
                         android:text="선택 놀이"
                         android:textSize="60sp"

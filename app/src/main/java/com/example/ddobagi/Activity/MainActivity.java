@@ -5,11 +5,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +33,8 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
-import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         share = getSharedPreferences("PREF", MODE_PRIVATE);
         editor = share.edit();
 
-        setButton();
+        setComponent();
 
         if(share.getString("Refresh_token", null) != null){
             Communication.refreshToken(this);
@@ -78,16 +81,10 @@ public class MainActivity extends AppCompatActivity {
             GifLoader.initSkipGif(share);
             editor.putInt("initSkipGif", 1);
         }
-
-        recommendDialog = new Dialog(this);
-        recommendDialog.setContentView(R.layout.recommend_dialog);
-        setCalender();
-        recommendDialog.show();
     }
 
     private void setCalender(){
         MaterialCalendarView calendarView = recommendDialog.findViewById(R.id.calendar);
-        calendarView.setSelectedDate(CalendarDay.today());
 
         // 월, 요일을 한글로 보이게 설정 (MonthArrayTitleFormatter의 작동을 확인하려면 밑의 setTitleFormatter()를 지운다)
         calendarView.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
@@ -96,34 +93,46 @@ public class MainActivity extends AppCompatActivity {
         // 좌우 화살표 사이 연, 월의 폰트 스타일 설정
         calendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader);
 
-        // 일자 선택 시 내가 정의한 드로어블이 적용되도록 한다
-        calendarView.addDecorators(new DayDecorator(this));
+        String dayStr = share.getString("playDates", "");
+        dayStr += ",2022-5-29,2022-5-10,2022-5-20,2022-5-19,2022-5-28";
 
-//        // 좌우 화살표 가운데의 연/월이 보이는 방식 커스텀
-//        calendarView.setTitleFormatter(new TitleFormatter() {
-//            @Override
-//            public CharSequence format(CalendarDay day) {
-//                // CalendarDay라는 클래스는 LocalDate 클래스를 기반으로 만들어진 클래스다
-//                // 때문에 MaterialCalendarView에서 연/월 보여주기를 커스텀하려면 CalendarDay 객체의 getDate()로 연/월을 구한 다음 LocalDate 객체에 넣어서
-//                // LocalDate로 변환하는 처리가 필요하다
-//                LocalDate inputText = day.getDate();
-//                String[] calendarHeaderElements = inputText.toString().split("-");
-//                StringBuilder calendarHeaderBuilder = new StringBuilder();
-//                calendarHeaderBuilder.append(calendarHeaderElements[0])
-//                        .append(" ")
-//                        .append(calendarHeaderElements[1]);
-//                return calendarHeaderBuilder.toString();
-//            }
-//        });
+        Log.d("dayStr", dayStr);
+
+//        HashSet<CalendarDay> dates = new HashSet<>();
+//        CalendarDay today;
+//        today = CalendarDay.today();
+//        dates.add(today);
+
+        calendarView.addDecorators(new SaturdayDecorator(), new SundayDecorator(), new FutureDecorator(),
+                new DayDecorator(), new PlayDayDecorator(this, dayStr), new TodayDecorator(this));
+    }
+
+    private static class TodayDecorator implements DayViewDecorator {
+        private final Drawable drawable;
+
+        public TodayDecorator(Context context) {
+            drawable = ContextCompat.getDrawable(context, R.drawable.calendar_today);
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            CalendarDay today = CalendarDay.today();
+            if(today.isAfter(day) || today.isBefore(day)){
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setSelectionDrawable(drawable);
+        }
     }
 
     /* 선택된 요일의 background를 설정하는 Decorator 클래스 */
     private static class DayDecorator implements DayViewDecorator {
 
-        private final Drawable drawable;
-
-        public DayDecorator(Context context) {
-            drawable = ContextCompat.getDrawable(context, R.drawable.calendar_selector);
+        public DayDecorator() {
         }
 
         // true를 리턴 시 모든 요일에 내가 설정한 드로어블이 적용된다
@@ -135,12 +144,96 @@ public class MainActivity extends AppCompatActivity {
         // 일자 선택 시 내가 정의한 드로어블이 적용되도록 한다
         @Override
         public void decorate(DayViewFacade view) {
-            view.setSelectionDrawable(drawable);
+            view.addSpan(new AbsoluteSizeSpan(20));
+            view.setDaysDisabled(true);
 //            view.addSpan(new StyleSpan(Typeface.BOLD));   // 달력 안의 모든 숫자들이 볼드 처리됨
         }
     }
 
-    private void setButton(){
+    private static class SaturdayDecorator implements DayViewDecorator {
+        private final Calendar calendar = Calendar.getInstance();
+
+        public SaturdayDecorator() {
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            day.copyTo(calendar);
+            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+            return weekDay == Calendar.SATURDAY;
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new ForegroundColorSpan(Color.BLUE));
+        }
+    }
+
+    private static class SundayDecorator implements DayViewDecorator {
+        private final Calendar calendar = Calendar.getInstance();
+
+        public SundayDecorator() {
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            day.copyTo(calendar);
+            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+            return weekDay == Calendar.SUNDAY;
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new ForegroundColorSpan(Color.RED));
+        }
+    }
+
+    private static class FutureDecorator implements DayViewDecorator {
+        CalendarDay today = CalendarDay.today();
+
+        public FutureDecorator() {
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return (today.getMonth() < day.getMonth() || today.getDay() < day.getDay());
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new ForegroundColorSpan(Color.GRAY));
+        }
+    }
+
+    private static class PlayDayDecorator implements DayViewDecorator {
+        private final Drawable drawable;
+        private final String[] dates;
+
+        public PlayDayDecorator(Context context, String dayStr) {
+            drawable = ContextCompat.getDrawable(context, R.drawable.played_day_element);
+            this.dates = dayStr.split(",");
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            String dayStr = day.getYear() + "-" + (day.getMonth() + 1) + "-" + day.getDay();
+            //Log.d("dayStr", dayStr);
+            for(String tmpDay : dates){
+                if(tmpDay.equals(dayStr)){
+                    //Log.d("true", "true");
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setBackgroundDrawable(drawable);
+        }
+    }
+
+    private void setComponent(){
         testBtn = findViewById(R.id.main_test_btn);
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,6 +307,43 @@ public class MainActivity extends AppCompatActivity {
 
         curCoin = findViewById(R.id.coin_text);
         coinImgView = findViewById(R.id.coin_img);
+
+
+        recommendDialog = new Dialog(this);
+        recommendDialog.setContentView(R.layout.recommend_dialog);
+
+        Button dialogRecommendBtn = recommendDialog.findViewById(R.id.recommend_play_btn);
+        dialogRecommendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recommendDialog.dismiss();
+
+                CalendarDay today = CalendarDay.today();
+                String todayStr = today.getYear()+"-"+ (today.getMonth()+1)+"-"+ today.getDay();
+                editor.putString("notRecommend", todayStr);
+                editor.commit();
+
+                Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
+                intent.putExtra("type", "recommend");
+                intent.putExtra("isLogin", isLogin);
+                startActivity(intent);
+            }
+        });
+
+        Button dialogExitBtn = recommendDialog.findViewById(R.id.recommend_exit_btn);
+        CheckBox dialogCheck = recommendDialog.findViewById(R.id.recommend_check);
+        dialogExitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(dialogCheck.isChecked()){
+                    CalendarDay today = CalendarDay.today();
+                    String todayStr = today.getYear()+"-"+ (today.getMonth()+1)+"-"+ today.getDay();
+                    editor.putString("notRecommend", todayStr);
+                    editor.commit();
+                }
+                recommendDialog.dismiss();
+            }
+        });
     }
 
     private void setCoin(int coin){
@@ -254,6 +384,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void loginManagement(){
         if(isLogin){
+            showRecommendDialog();
+
             loginBtn.setText("로그아웃");
             Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_LONG).show();
             setCoin(getCoin());
@@ -297,9 +429,21 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    private void showRecommendDialog(){
+        CalendarDay today = CalendarDay.today();
+        String todayStr = today.getYear()+"-"+ (today.getMonth()+1)+"-"+ today.getDay();
+        if(!share.getString("notRecommend","").equals(todayStr)){
+            setCalender();
+            recommendDialog.show();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         setCoin(getCoin());
+        if(isLogin){
+            showRecommendDialog();
+        }
     }
 }
