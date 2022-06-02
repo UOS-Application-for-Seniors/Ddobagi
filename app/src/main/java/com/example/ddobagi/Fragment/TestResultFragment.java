@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -61,6 +62,14 @@ public class TestResultFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_test_result, container, false);
 
         textView1 = rootView.findViewById(R.id.test_result_text1);
+        Button startRecommend = rootView.findViewById(R.id.recommend_play_btn);
+        startRecommend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlayActivity play = (PlayActivity) getActivity();
+                play.startRecommendQuiz();
+            }
+        });
         return rootView;
     }
 

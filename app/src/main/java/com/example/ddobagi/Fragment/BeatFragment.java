@@ -24,6 +24,7 @@ public class BeatFragment extends GameFragment{
     int choiceNum = 2;
     Button[] choiceBtn = new Button[choiceNum];
     String quizAnswer;
+    String[] quizPicture;
     ArrayList<String> curAnswer = new ArrayList<>();
     int index = 0;
     final int buttonImgBound = 100;
@@ -76,7 +77,6 @@ public class BeatFragment extends GameFragment{
     public void onGetGameDataResponse(String response){
         int i = 0;
         String url = Communication.getQuizDataUrl;
-        String quizdataUrl;
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -85,19 +85,21 @@ public class BeatFragment extends GameFragment{
             return;
         }
 
-        quizdataUrl = url + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
 
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
 
-        String[] splitString = quiz.quizchoicesdetail.split(",");
+        String[] quizChoicesDetail = quiz.quizchoicesdetail.split(",");
+        quizPicture = quiz.quizchoicespicture.split(",");
+        if(quizPicture.length == choiceNum){
             for(;i<choiceNum;i++){
-            String tmp = quizdataUrl;
-            tmp = tmp + Integer.toString(i) + ".jfif";
-            setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 0);
-            choiceBtn[i].setText(splitString[i]);
+                String tmp = url;
+                tmp +=  quizPicture[i] + ".jfif";
+                setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 0);
+                choiceBtn[i].setText(quizChoicesDetail[i]);
+            }
         }
     }
 
@@ -119,7 +121,8 @@ public class BeatFragment extends GameFragment{
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                init();
+                curAnswer.clear();
+                inputProgress.setText("");
             }
         });
 
@@ -144,7 +147,7 @@ public class BeatFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         curAnswer.clear();
         inputProgress.setText("");
         choiceBtn[0].setCompoundDrawables(null, null, null, null);

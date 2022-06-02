@@ -3,6 +3,7 @@ package com.example.ddobagi.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -13,6 +14,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.ddobagi.Activity.PlayActivity;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.LoadImage;
 
@@ -21,6 +23,8 @@ import java.util.Map;
 
 public abstract class GameFragment extends Fragment {
     int gameID, quizID, difficulty;
+    final int maxRemainNum = 99;
+    int ttsRemainNum = maxRemainNum;
     String quizTTS;
     String gameName;
     String gameField;
@@ -31,7 +35,13 @@ public abstract class GameFragment extends Fragment {
     boolean isReadyToCommit = false;
 
     public String getQuizTTS() {
-        return quizTTS;
+        if(ttsRemainNum > 0){
+            ttsRemainNum--;
+            return quizTTS;
+        }
+        else{
+            return "exceeded";
+        }
     }
 
     boolean isSTTAble;
@@ -47,6 +57,21 @@ public abstract class GameFragment extends Fragment {
         isReadyToCommit = false;
         this.gameID = gameID;
         this.quizID = quizID;
+
+//        PlayActivity play = (PlayActivity) getActivity();
+//        if(play.isTest){}
+
+        if(gameID == 35 || gameID == 36 || gameID == 37 || gameID == 38){
+            ttsRemainNum = 1;
+        }
+        else if(gameID == 39 || gameID == 53){
+            ttsRemainNum = 2;
+        }
+        else{
+            ttsRemainNum = maxRemainNum;
+        }
+        //Log.d("ttsRemainNum", Integer.toString(ttsRemainNum));
+
 
         this.difficulty = difficulty;
         getGameData();
@@ -117,12 +142,15 @@ public abstract class GameFragment extends Fragment {
                         break;
                     case 1:
                         button.setCompoundDrawables(null, drawable, null, null);
+                        button.setPadding(0, 10, 0, 10);
                         break;
                     case 2:
                         button.setCompoundDrawables(null, null, drawable, null);
+                        button.setPadding(0, 0, 0, 0);
                         break;
                     case 3:
                         button.setCompoundDrawables(null, null, null, drawable);
+                        button.setPadding(0, 0, 0, 0);
                         break;
                     case 4:
                         button.setCompoundDrawables(null, drawable, null, null);

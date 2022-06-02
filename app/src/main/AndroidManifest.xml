@@ -31,12 +31,6 @@
             android:name=".Activity.PlayActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.GameTestActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.TestPlayActivity"
-            android:exported="false" />
-        <activity
             android:name=".Activity.UserInfoEditActivity"
             android:exported="false"/>
         <activity

@@ -104,14 +104,16 @@ public class Communication {
                     edit.putString("address", userInfo.user_address);
                     edit.commit();
 
-                    main.setLogin(true);
-                    main.loginManagement();
+                    if(!main.isLogin()){
+                        main.setLogin(true);
+                        main.loginManagement();
+                    }
                 }
             }, new Response.ErrorListener(){
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     handleVolleyError(error);
-                    Toast.makeText(context, "Refresh Token Error", Toast.LENGTH_LONG).show();;
+                    //Toast.makeText(context, "Refresh Token Error", Toast.LENGTH_LONG).show();;
                 }
             }) {
                 @Override

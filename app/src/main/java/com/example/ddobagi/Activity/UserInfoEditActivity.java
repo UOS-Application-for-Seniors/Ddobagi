@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -309,7 +311,16 @@ public class UserInfoEditActivity extends AppCompatActivity {
         });
 
     }
+
     private void makeToast(String str){
-        Toast.makeText(this, str, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.layout));
+        TextView textView = layout.findViewById(R.id.text);
+        textView.setText(str);
+
+        Toast toast = Toast.makeText(this, str, Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }

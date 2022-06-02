@@ -24,7 +24,8 @@ public class ShortAnswerFragment extends GameFragment{
     Button imgBtn;
     EditText editText;
     String[] quizAnswer;
-    final int buttonImgBound = 350;
+    String[] quizPicture;
+    final int buttonImgBound = 320;
 
     public ShortAnswerFragment(){
         isSTTAble = true;
@@ -41,7 +42,18 @@ public class ShortAnswerFragment extends GameFragment{
         int result = 0;
         String inputText = editText.getText().toString();
         inputText = normalizationString(inputText);
-        Log.d("test", inputText);
+
+        if(gameID == 31){
+            if(inputText.contains("정월")){
+                inputText = "1";
+            }
+        }
+        else if(gameID == 32){
+            if(inputText.contains("초하루")){
+                inputText = "1";
+            }
+        }
+
         for(String str: quizAnswer){
             if(inputText.contains(str)){
                 result = 1;
@@ -57,7 +69,7 @@ public class ShortAnswerFragment extends GameFragment{
 
     public void onGetGameDataResponse(String response){
         int i = 0;
-        String url = Communication.getQuizDataUrl + gameID + "/" +quizID + "/0.jfif";
+        String url = Communication.getQuizDataUrl;
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -69,6 +81,7 @@ public class ShortAnswerFragment extends GameFragment{
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
+        quizPicture = quiz.quizchoicespicture.split(",");
         String tmpAnswer = quiz.quizanswer;
         if(gameID == 34){
             Activity activity = getActivity();
@@ -81,7 +94,7 @@ public class ShortAnswerFragment extends GameFragment{
             quizAnswer = tmpAnswer.split(",");
         }
 
-        setImageOnButton(url, imgBtn, buttonImgBound, 1);
+        setImageOnButton(url + quizPicture[0] + ".jfif", imgBtn, buttonImgBound, 1);
 
 //        choiceBtn[Integer.parseInt(quizAnswer)].setOnClickListener((new View.OnClickListener() {
 //            @Override
@@ -108,7 +121,7 @@ public class ShortAnswerFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         imgBtn.setCompoundDrawables(null, null, null, null);
         editText.setText("");
     }

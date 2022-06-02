@@ -16,7 +16,9 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -143,7 +145,9 @@ public class PlayActivity extends AppCompatActivity {
     KonfettiView konfettiView;
     Shape.DrawableShape drawableShape;
 
-    boolean isLogin, isTest, isRecommend;
+    boolean isLogin;
+    public boolean isTest;
+    boolean isRecommend;
     String type;
 
     @Override
@@ -564,9 +568,13 @@ public class PlayActivity extends AppCompatActivity {
         sttIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
 
         sttBtn.setOnClickListener(v -> {
-            mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-            mRecognizer.setRecognitionListener(listener);
-            mRecognizer.startListening(sttIntent);
+            if(curGameFragment != null){
+                if(curGameFragment.isReadyToCommit()){
+                    mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+                    mRecognizer.setRecognitionListener(listener);
+                    mRecognizer.startListening(sttIntent);
+                }
+            }
         });
 
         //음성인식 답안 제출
@@ -586,8 +594,15 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(curGameFragment != null){
-                    CharSequence ttsText = curGameFragment.getQuizTTS();
-                    if (ttsText != null) {
+                    if(curGameFragment.isReadyToCommit()){
+                        CharSequence ttsText = curGameFragment.getQuizTTS();
+                        if(ttsText == null){
+                            return;
+                        }
+                        if(ttsText.equals("exceeded")){
+                            makeToast("설명 듣기 시도 횟수를 초과했습니다");
+                            return;
+                        }
                         tts.setPitch(1.0f);         // 음성 톤 설정 (n배)
                         tts.setSpeechRate(0.7f);    // 읽는 속도 설정 (n배)
                         tts.speak(ttsText.toString(), TextToSpeech.QUEUE_FLUSH, null);
@@ -1041,7 +1056,7 @@ public class PlayActivity extends AppCompatActivity {
                     break;
             }
 
-            makeToast("음성을 잘 인식하지 못했습니다: " + message);
+            makeToast("음성을 잘 인식하지 못했습니다\n다시 시도해주세요");
         }
 
         @Override
@@ -1055,7 +1070,9 @@ public class PlayActivity extends AppCompatActivity {
             //matches[0]: "봄 여름 가을 겨울" String
             //vAnsShort[0]: "봄"
             //vAnsShort[1]: "여름"......
-            curGameFragment.receiveSTTResult(matches.get(0));
+            if(curGameFragment != null){
+                curGameFragment.receiveSTTResult(matches.get(0));
+            }
 
             /*
             //주관식 문제에 대한 답안 가공
@@ -1154,6 +1171,24 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void makeToast(String str){
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.layout));
+        TextView textView = layout.findViewById(R.id.text);
+        textView.setText(str);
+
+        Toast toast = Toast.makeText(this, str, Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
+    }
+
+    public void startRecommendQuiz(){
+        isTest = false;
+        getRecommendQuizList("recommend");
+        resultPerQuizControl(4);
+        quizIndex = 0;
+        ttsBtn.setVisibility(View.VISIBLE);
+        sttBtn.setVisibility(View.VISIBLE);
+        commitBtn.setVisibility(View.VISIBLE);
     }
 }

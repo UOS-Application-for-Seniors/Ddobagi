@@ -46,15 +46,15 @@ public class MemoryRecallFragment extends GameFragment{
     }
 
     public void onGetGameDataResponse(String response){
-        int i = 0;
-        String url = Communication.getQuizDataUrl + gameID + "/" +quizID + "/0.jfif";
-
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
 
         if(quiz == null){
             return;
         }
+
+        int i = 0;
+        String url = Communication.getQuizDataUrl + quiz.quizchoicespicture + "/0.jfif";
 
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
@@ -80,7 +80,7 @@ public class MemoryRecallFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         imgBtn.setCompoundDrawables(null, null, null, null);
         imgBtn.setText("");
         inputBox.setText("");

@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.ddobagi.Activity.PlayActivity;
 import com.example.ddobagi.Class.Communication;
 import com.example.ddobagi.Class.Quiz;
 import com.example.ddobagi.R;
@@ -35,7 +36,7 @@ public class MemorizationFragment extends GameFragment{
 
     public void onGetGameDataResponse(String response){
         int i = 0;
-        String url = Communication.getQuizDataUrl + gameID + "/" +quizID + "/0.jfif";
+        String url = Communication.getQuizDataUrl;
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -47,8 +48,14 @@ public class MemorizationFragment extends GameFragment{
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         imgBtn.setText(quiz.quizdetail);
-        setImageOnButton(url, imgBtn, buttonImgBound, 1);
+        if(quiz.quizchoicespicture != null && !quiz.quizchoicespicture.equals("")){
+            setImageOnButton(url + quiz.quizchoicespicture + ".jfif", imgBtn, buttonImgBound, 1);
+        }
+        else{
+            imgBtn.setTextSize(40);
+        }
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,8 +72,9 @@ public class MemorizationFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         imgBtn.setCompoundDrawables(null, null, null, null);
+        imgBtn.setTextSize(30);
         imgBtn.setText("");
     }
 }

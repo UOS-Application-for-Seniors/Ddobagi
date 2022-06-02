@@ -1,6 +1,7 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,7 @@ public class LineConnectionFragment extends GameFragment{
 
 
     public void onGetGameDataResponse(String response){
-        String url = Communication.getQuizDataUrl + gameID + "/" + quizID + "/";
+        String url = Communication.getQuizDataUrl;
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -98,15 +99,23 @@ public class LineConnectionFragment extends GameFragment{
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
 
-        String[] splitString = quiz.quizchoicesdetail.split(",");
+        String[] quizChoicesDetail = quiz.quizchoicesdetail.split(",");
+        String[] quizPicture = quiz.quizchoicespicture.split(",");
 
-        for(int i=0;i<choiceNum;i++){
-            String tmp = url;
-            tmp = tmp + Integer.toString(i) + ".jfif";
-            setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 0);
-            if(!splitString[i].equals(" ")){
-                choiceBtn[i].setText(splitString[i]);
+        if(quizPicture.length == choiceNum){
+            for(int i=0;i<choiceNum;i++){
+                if(!quizPicture[i].equals(" ")){
+                    String tmp = url;
+                    tmp = tmp + quizPicture[i] + ".jfif";
+                    setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 0);
+                }
+                if(!quizChoicesDetail[i].equals(" ")){
+                    choiceBtn[i].setText(quizChoicesDetail[i]);
+                }
             }
+        }
+        else{
+            Log.d("lineConnection", "서버에서 잘못된 개수의 정보가 도착했습니다.");
         }
     }
 
@@ -133,10 +142,11 @@ public class LineConnectionFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         for(int i=0;i<choiceNum;i++){
             choiceBtn[i].setText("");
             choiceBtn[i].setCompoundDrawables(null, null, null, null);
+            choiceBtn[i].setTextSize(40);
         }
         lineConnectionView.clearLineList();
     }

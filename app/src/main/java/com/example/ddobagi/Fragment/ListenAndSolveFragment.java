@@ -57,8 +57,6 @@ public class ListenAndSolveFragment extends GameFragment{
 
     public void onGetGameDataResponse(String response){
         int i = 0;
-        String url = Communication.getQuizDataUrl + gameID + "/" +quizID + "/0.jfif";
-
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
 
@@ -66,11 +64,19 @@ public class ListenAndSolveFragment extends GameFragment{
             return;
         }
 
+
+
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizAnswer = quiz.quizanswer;
         imgBtn.setText(quiz.quizdetail);
-        setImageOnButton(url, imgBtn, buttonImgBound, 1);
+        if(quiz.quizchoicespicture != null && !quiz.quizchoicespicture.equals("")){
+            String url = Communication.getQuizDataUrl + quiz.quizchoicespicture + ".jfif";
+            setImageOnButton(url, imgBtn, buttonImgBound, 1);
+        }
+        else{
+            imgBtn.setTextSize(40);
+        }
     }
 
     @Nullable
@@ -89,9 +95,10 @@ public class ListenAndSolveFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         imgBtn.setCompoundDrawables(null, null, null, null);
         imgBtn.setText("");
+        imgBtn.setTextSize(30);
         inputBox.setText("");
     }
 }

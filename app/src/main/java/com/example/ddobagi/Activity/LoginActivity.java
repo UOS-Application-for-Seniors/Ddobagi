@@ -3,9 +3,12 @@ package com.example.ddobagi.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -99,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 }, new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(LoginActivity.this, "아이디 또는 비밀번호를 확인해주세요.", Toast.LENGTH_LONG).show();
+                        makeToast("아이디 또는 비밀번호를 확인해주세요");
                         Communication.handleVolleyError(volleyError);
                     }
                 }) {
@@ -123,5 +126,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void makeToast(String str){
+        //Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.layout));
+        TextView textView = layout.findViewById(R.id.text);
+        textView.setText(str);
+
+        Toast toast = Toast.makeText(this, str, Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }

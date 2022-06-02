@@ -87,7 +87,7 @@ public class CIST10Fragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         editText.setText("");
         activity = (PlayActivity) getActivity();
     }

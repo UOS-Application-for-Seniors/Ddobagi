@@ -60,14 +60,15 @@ public class TraceShapeFragment extends GameFragment{
             }
         }
         if(resultCnt == exampleLineList.size() && resultCnt == practiceLineList.size()){
-            //Toast.makeText(getActivity(), "정답입니다", Toast.LENGTH_LONG).show();
             result = 1;
         }
-        else if(resultCnt > 0){
+        else if(resultCnt == exampleLineList.size() - 1 && exampleLineList.size() == practiceLineList.size() + 1){
+            result = 2;
+        }
+        else if(resultCnt == exampleLineList.size() && exampleLineList.size() == practiceLineList.size() - 1){
             result = 2;
         }
         else{
-            //Toast.makeText(getActivity(), "정답이 아닙니다", Toast.LENGTH_LONG).show();
             result = 0;
         }
         return result;
@@ -125,7 +126,7 @@ public class TraceShapeFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         practice.clearLineList();
     }
 }

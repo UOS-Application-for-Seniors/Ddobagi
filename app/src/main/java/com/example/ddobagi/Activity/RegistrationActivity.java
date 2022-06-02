@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -44,6 +46,7 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
         duplicate_check = findViewById(R.id.btn_duplicate);
         UserID = findViewById(R.id.userID);
         idCheckResult = findViewById(R.id.id_check_result);
@@ -154,7 +157,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 },new Response.ErrorListener(){
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        Toast.makeText(RegistrationActivity.this, "Some error occurred -> "+volleyError, Toast.LENGTH_LONG).show();;
+                        makeToast("오류가 발생했습니다: "+volleyError);
                     }
                 }) {
                     @Override
@@ -183,6 +186,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name, id, password, year, month, day, add1, add2, NOKName, NOKPhone, NOKnotifi, userBirthDate, address;
+                boolean NOK = false;
                 name = userName.getText().toString();
                 id = UserID.getText().toString();
                 password = UserPassword.getText().toString();
@@ -216,17 +220,14 @@ public class RegistrationActivity extends AppCompatActivity {
                     makeToast("주소를 모두 입력해주세요");
                     return;
                 }
-                else if(NOKName.equals("")){
-                    makeToast("보호자 성명을 입력해주세요");
-                    return;
-                }
-                else if(NOKPhone.equals("")){
-                    makeToast("보호자 연락처를 입력해주세요");
-                    return;
-                }
-                else if(NOKnotifi.equals("")){
-                    makeToast("알림 송신 주기를 입력해주세요");
-                    return;
+                else if(!NOKName.equals("") || !NOKPhone.equals("") || !NOKnotifi.equals("")){
+                    if(!NOKName.equals("") && !NOKPhone.equals("") && !NOKnotifi.equals("")){
+                        NOK = true;
+                    }
+                    else{
+                        makeToast("보호자 정보를 모두 입력하세요");
+                        return;
+                    }
                 }
 
                 userBirthDate = year+"-"+month+"-"+day;
@@ -240,9 +241,11 @@ public class RegistrationActivity extends AppCompatActivity {
                     jsonObject.put("userBirthDate", userBirthDate);
                     jsonObject.put("Address", address);
                     jsonObject.put("userEducationLevel", educationlevel);
-                    jsonObject.put("NOKName", NOKName);
-                    jsonObject.put("NOKPhoneNumber", NOKPhone);
-                    jsonObject.put("NOKNotificationDays", Integer.parseInt(NOKnotifi));
+                    if(NOK){
+                        jsonObject.put("NOKName", NOKName);
+                        jsonObject.put("NOKPhoneNumber", NOKPhone);
+                        jsonObject.put("NOKNotificationDays", Integer.parseInt(NOKnotifi));
+                    }
                     jsonArray.put(jsonObject);
                     Log.i("jsonString", jsonObject.toString());
                 }catch(Exception e){
@@ -280,7 +283,16 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
     }
+
     private void makeToast(String str){
-        Toast.makeText(this, str, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.layout));
+        TextView textView = layout.findViewById(R.id.text);
+        textView.setText(str);
+
+        Toast toast = Toast.makeText(this, str, Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }

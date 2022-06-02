@@ -205,7 +205,7 @@ public class FluentTestFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         curAnswer.clear();
         inputProgress.setText("");
         remainTime = maxTime;

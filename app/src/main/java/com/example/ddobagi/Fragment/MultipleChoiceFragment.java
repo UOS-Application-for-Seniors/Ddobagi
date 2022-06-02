@@ -1,6 +1,7 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,8 +108,7 @@ public class MultipleChoiceFragment extends GameFragment{
     }
 
     public void onGetGameDataResponse(String response){
-        int i = 0;
-        String url = Communication.getQuizDataUrl + gameID + "/" +quizID + "/";
+        String url = Communication.getQuizDataUrl;
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -122,29 +122,41 @@ public class MultipleChoiceFragment extends GameFragment{
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
 
-        String[] splitString = quiz.quizchoicesdetail.split(",");
-
-        for(;i<choiceNum;i++){
-            final int inmutable_index = i;
-            String tmp = url;
-            tmp = tmp + Integer.toString(i) + ".jfif";
-            setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 1);
-            choiceBtn[i].setText(splitString[i]);
-//            choiceBtn[i].setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Toast.makeText(getActivity(), "정답이 아닙니다", Toast.LENGTH_LONG).show();
-//                }
-//            });
+        boolean isChoicesDetail = false;
+        //버튼 텍스트 배치
+        if(quiz.quizchoicesdetail != null && !quiz.quizchoicesdetail.equals("null") && !quiz.quizchoicesdetail.equals("")){
+            isChoicesDetail = true;
+            String[] splitString = quiz.quizchoicesdetail.split(",");
+            if(splitString.length == choiceNum){
+                for(int i=0;i<choiceNum;i++){
+                    choiceBtn[i].setText(splitString[i]);
+                }
+            }
         }
 
-//        choiceBtn[Integer.parseInt(quizAnswer)].setOnClickListener((new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(getActivity(), "정답입니다", Toast.LENGTH_LONG).show();
-//            }
-//        }));
+        //버튼 이미지 배치
+        String[] quizPicture;
+        if(quiz.quizchoicespicture != null && !quiz.quizchoicespicture.equals("") && !quiz.quizchoicespicture.equals("null")){
+            quizPicture = quiz.quizchoicespicture.split(",");
 
+            if(quizPicture.length == choiceNum){
+                for(int i=0;i<choiceNum;i++){
+                    String tmp = url;
+                    tmp += quizPicture[i] + ".jfif";
+                    int location = 4;
+                    if(isChoicesDetail){
+                        location = 1;
+                    }
+                    Log.d("bool", Boolean.toString(isChoicesDetail));
+                    setImageOnButton(tmp, choiceBtn[i], buttonImgBound, location);
+                }
+            }
+        }
+        else{
+            for(int i=0;i<choiceNum;i++){
+                choiceBtn[i].setTextSize(40);
+            }
+        }
     }
 
     @Nullable
@@ -198,9 +210,11 @@ public class MultipleChoiceFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         for(int i=0; i<choiceNum; i++){
             choiceBtn[i].setBackground(getResources().getDrawable(R.drawable.white_btn));
+            choiceBtn[i].setTextSize(30);
+            choiceBtn[i].setCompoundDrawables(null, null, null, null);
             numBtn[i].setBackground(getResources().getDrawable(R.drawable.num_btn));
         }
         curAnswer = "";

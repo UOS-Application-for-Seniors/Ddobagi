@@ -93,7 +93,7 @@ public class DrawClockFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         drawClockView.clearLineList();
     }
 }

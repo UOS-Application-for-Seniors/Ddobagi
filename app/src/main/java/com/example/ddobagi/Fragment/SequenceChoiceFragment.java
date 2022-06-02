@@ -1,6 +1,7 @@
 package com.example.ddobagi.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +99,6 @@ public class SequenceChoiceFragment extends GameFragment{
     public void onGetGameDataResponse(String response){
         int i = 0;
         String url = Communication.getQuizDataUrl;
-        String quizdataUrl;
 
         Gson gson = new Gson();
         Quiz quiz = gson.fromJson(response, Quiz.class);
@@ -107,20 +107,29 @@ public class SequenceChoiceFragment extends GameFragment{
             return;
         }
 
-        quizdataUrl = url + Integer.toString(gameID) + "/" + Integer.toString(quizID) + "/";
-
         quizTTS = quiz.quizTTS;
         detail = quiz.quizdetail;
         quizDetail.setText(detail);
         quizAnswer = quiz.quizanswer;
 
         String[] splitString = quiz.quizchoicesdetail.split(",");
+        String[] quizPicture = quiz.quizchoicespicture.split(",");
 
-        for(;i<choiceNum;i++){
-            String tmp = quizdataUrl;
-            tmp = tmp + Integer.toString(i) + ".jfif";
-            setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 1);
-            choiceBtn[i].setText(splitString[i]);
+        if(splitString.length == choiceNum && quizPicture.length == choiceNum){
+            for(;i<choiceNum;i++){
+                if(!quizPicture[i].equals(" ")){
+                    String tmp = url;
+                    tmp = tmp + quizPicture[i] + ".jfif";
+                    setImageOnButton(tmp, choiceBtn[i], buttonImgBound, 1);
+                }
+                else{
+                    choiceBtn[i].setTextSize(40);
+                }
+                choiceBtn[i].setText(splitString[i]);
+            }
+        }
+        else{
+            Log.d("multipleChoice", "서버로부터 잘못된 정보가 입력되었습니다");
         }
     }
 
@@ -175,7 +184,7 @@ public class SequenceChoiceFragment extends GameFragment{
     }
 
     public void init(){
-        quizTTS = "";
+        super.init();
         for (int i = 0; i < choiceNum; i++){
             curAnswer[i] = -1;
             choiceBtn[i].setText("");

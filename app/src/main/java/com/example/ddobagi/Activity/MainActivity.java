@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -33,6 +35,8 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
+
+import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -196,7 +200,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            return (today.getMonth() < day.getMonth() || today.getDay() < day.getDay());
+            if(today.getMonth() < day.getMonth()){
+                return true;
+            }
+            else if(today.getMonth() == day.getMonth()){
+                if(today.getDay() < day.getDay()){
+                    return true;
+                }
+            }
+            return false;
         }
 
         @Override
@@ -244,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "로그인 이후 사용할 수 있습니다",Toast.LENGTH_SHORT).show();
+                    makeToast("로그인 이후 사용할 수 있습니다");
                 }
             }
         });
@@ -297,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "로그인 이후 사용할 수 있습니다",Toast.LENGTH_SHORT).show();
+                    makeToast("로그인 이후 사용하실 수 있습니다");
                 }
             }
         });
@@ -387,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
             showRecommendDialog();
 
             loginBtn.setText("로그아웃");
-            Toast.makeText(this, "로그인 되었습니다", Toast.LENGTH_LONG).show();
+            makeToast("로그인 되었습니다");
             setCoin(getCoin());
             hideCoinView(false);
             testBtn.setBackgroundResource(R.drawable.blue_btn);
@@ -396,7 +408,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     loginTokenRemove();
-                    Toast.makeText(getApplicationContext(), "로그아웃 되었습니다", Toast.LENGTH_LONG).show();
+                    makeToast("로그아웃 되었습니다");
                     isLogin = false;
                     loginManagement();
                     hideCoinView(true);
@@ -417,16 +429,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public boolean isLogin() {
+        return isLogin;
+    }
+
     private void loginTokenRemove(){
-        SharedPreferences pref = getSharedPreferences("PREF", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.clear();
+        editor.putString("Access_token", "");
+        editor.putString("Access_token_expiration", "");
+        editor.putString("Access_token_time", "");
+        editor.putString("Refresh_token", "");
+        editor.putString("Refresh_token_expiration", "");
+        editor.putString("Refresh_token_time", "");
+        editor.putInt("coin", 0);
+        editor.putString("address", "");
         editor.commit();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        recommendDialog.dismiss();
     }
 
     private void showRecommendDialog(){
@@ -445,5 +467,17 @@ public class MainActivity extends AppCompatActivity {
         if(isLogin){
             showRecommendDialog();
         }
+    }
+
+    private void makeToast(String str){
+        //Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.layout));
+        TextView textView = layout.findViewById(R.id.text);
+        textView.setText(str);
+
+        Toast toast = Toast.makeText(this, str, Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }
