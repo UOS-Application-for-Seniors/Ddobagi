@@ -255,6 +255,7 @@ public class MainActivity extends AppCompatActivity {
                 if(isLogin){
                     Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
                     intent.putExtra("type", "test");
+                    intent.putExtra("isLogin", isLogin);
                     startActivity(intent);
                 }
                 else{

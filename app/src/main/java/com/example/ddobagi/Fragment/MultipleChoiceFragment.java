@@ -147,7 +147,6 @@ public class MultipleChoiceFragment extends GameFragment{
                     if(isChoicesDetail){
                         location = 1;
                     }
-                    Log.d("bool", Boolean.toString(isChoicesDetail));
                     setImageOnButton(tmp, choiceBtn[i], buttonImgBound, location);
                 }
             }

@@ -221,7 +221,6 @@ public class PlayActivity extends AppCompatActivity {
         if(isLogin){
             return share.getInt("coin", 0);
         }
-
         return 0;
     }
 
@@ -1068,55 +1067,6 @@ public class PlayActivity extends AppCompatActivity {
             if(curGameFragment != null){
                 curGameFragment.receiveSTTResult(matches.get(0));
             }
-
-            /*
-            //주관식 문제에 대한 답안 가공
-            vAnsShort = matches.get(0).split(" ");
-            for (int i = 0; i < vAnsShort.length; i++) {
-                System.out.println("주관식 답안["+ (i + 1) + "] : " + vAnsShort[i]);
-            }
-
-            //객관식 문제에 대한 답안 가공
-            vResultString = matches.toString();
-            vResultChar = vResultString.toCharArray();
-            vAnsChoice.clear();
-
-            for(int i = 0; i < vResultChar.length; i++) {
-                switch (vResultChar[i]) {
-                    case '1' :
-                        vAnsChoice.add(1);
-                        break;
-                    case '2' :
-                        vAnsChoice.add(2);
-                        break;
-                    case '3' :
-                        vAnsChoice.add(3);
-                        break;
-                    case '4' :
-                        vAnsChoice.add(4);
-                        break;
-                    case '5' :
-                        vAnsChoice.add(5);
-                        break;
-                    case '6' :
-                        vAnsChoice.add(6);
-                        break;
-                    case '7' :
-                        vAnsChoice.add(7);
-                        break;
-                    case '8' :
-                        vAnsChoice.add(8);
-                        break;
-                    case '9' :
-                        vAnsChoice.add(9);
-                        break;
-                }
-            }
-            for(int i = 0; i < vAnsChoice.size(); i++)
-            {
-                Log.e("MainActivity", "" + vAnsChoice.get(i));
-            }*/
-
         }
 
         @Override
@@ -1179,6 +1129,9 @@ public class PlayActivity extends AppCompatActivity {
 
     public void startRecommendQuiz(){
         isTest = false;
+        hideCoinView(false);
+        setCoin(getCoin());
+        type = "recommend";
         getRecommendQuizList("recommend");
         resultPerQuizControl(4);
         quizIndex = 0;
