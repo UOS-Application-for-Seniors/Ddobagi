@@ -30,10 +30,6 @@ public class MemorizationFragment extends GameFragment{
         return 3;
     }
 
-    void onHelp(){
-
-    }
-
     public void onGetGameDataResponse(String response){
         int i = 0;
         String url = Communication.getQuizDataUrl;

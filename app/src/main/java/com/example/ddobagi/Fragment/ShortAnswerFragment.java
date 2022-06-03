@@ -63,10 +63,6 @@ public class ShortAnswerFragment extends GameFragment{
         return result;
     }
 
-    void onHelp(){
-
-    }
-
     public void onGetGameDataResponse(String response){
         int i = 0;
         String url = Communication.getQuizDataUrl;

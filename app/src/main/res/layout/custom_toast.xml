@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font_nanum"
+                android:gravity="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="토스트입니다"

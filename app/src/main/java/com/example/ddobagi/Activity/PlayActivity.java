@@ -63,7 +63,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Vector;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -116,14 +115,10 @@ public class PlayActivity extends AppCompatActivity {
     int fragmentNum = 13;
 
     Intent sttIntent;
-    SpeechRecognizer mRecognizer;
+    SpeechRecognizer recognizer;
     Button sttBtn;
     TextView sttResultView;
 
-    Vector<Integer> vAnsChoice = new Vector<Integer>();
-    String[] vAnsShort = null;
-    String vResultString = "";
-    char[] vResultChar;
     Button sttSubmit;
 
     TextToSpeech tts;
@@ -380,7 +375,7 @@ public class PlayActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Communication.println("응답 --> " + response);
+                        Communication.println("gameID:" + gameID + ", score: " + score + " 서버로 보냄");
                     }
                 },
                 new Response.ErrorListener() {
@@ -570,9 +565,9 @@ public class PlayActivity extends AppCompatActivity {
         sttBtn.setOnClickListener(v -> {
             if(curGameFragment != null){
                 if(curGameFragment.isReadyToCommit()){
-                    mRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-                    mRecognizer.setRecognitionListener(listener);
-                    mRecognizer.startListening(sttIntent);
+                    recognizer = SpeechRecognizer.createSpeechRecognizer(this);
+                    recognizer.setRecognitionListener(listener);
+                    recognizer.startListening(sttIntent);
                 }
             }
         });
@@ -733,7 +728,7 @@ public class PlayActivity extends AppCompatActivity {
                     editor.putString("playDates", dayString);
                 }
 
-                editor.putString("notRecommend", todayStr);
+                editor.putString("lastPlayDay", todayStr);
                 editor.commit();
 
                 ttsBtn.setVisibility(View.GONE);
@@ -889,14 +884,14 @@ public class PlayActivity extends AppCompatActivity {
                     hideCoinView(true);
                 }
                 else{
-                    resultCheerText.setText("지금부터 놀이를 진행합니다. \n알맞은 답을 고르고 우측 상단의 \n\"다음\" 버튼을 눌러주세요.");
+                    resultCheerText.setText("지금부터 놀이를 진행합니다.\n알맞은 답을 고르고 우측 상단의 \n\"다음\" 버튼을 눌러주세요.");
                     resultBaseText.setText(baseMsg);
                 }
                 resultCoinLayout.setVisibility(View.GONE);
                 resultPerQuizLayout.setVisibility(View.VISIBLE);
                 return;
             case 5: //인지 선별 검사 문제
-                resultCheerText.setText("결과가 저장되었습니다.");
+                resultCheerText.setText("결과가 저장되었습니다");
                 resultBaseText.setText(baseMsg);
                 resultCoinLayout.setVisibility(View.GONE);
                 resultPerQuizLayout.setVisibility(View.VISIBLE);

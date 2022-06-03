@@ -26,11 +26,7 @@ public abstract class GameFragment extends Fragment {
     final int maxRemainNum = 99;
     int ttsRemainNum = maxRemainNum;
     String quizTTS;
-    String gameName;
-    String gameField;
     String detail = "문제 설명";
-    Bitmap pictures[];
-    String helpdata;
     boolean isReadyToShow = false;
     boolean isReadyToCommit = false;
 
@@ -47,7 +43,6 @@ public abstract class GameFragment extends Fragment {
     boolean isSTTAble;
 
     abstract public int commit();
-    abstract void onHelp();
     abstract public void receiveSTTResult(String voice);
     public void init(){
         quizTTS = "";

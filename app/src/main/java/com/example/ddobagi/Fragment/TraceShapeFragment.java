@@ -74,10 +74,6 @@ public class TraceShapeFragment extends GameFragment{
         return result;
     }
 
-    void onHelp(){
-
-    }
-
     public void onGetGameDataResponse(String response){
         String url = Communication.getQuizDataUrl + gameID + "/" + quizID + "/";
 

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,8 +37,6 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.format.ArrayWeekDayFormatter;
 import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
@@ -54,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
     TextView curCoin;
     ImageView coinImgView;
 
-    Dialog recommendDialog;
+    Dialog calendarDialog;
+    TextView attendanceText, recommendText;
+    Button attendanceBtn, recommendBtn;
+    LinearLayout attendanceLayout, recommendLayout;
 
     public void setLogin(boolean login) {
         isLogin = login;
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setCalender(){
-        MaterialCalendarView calendarView = recommendDialog.findViewById(R.id.calendar);
+        MaterialCalendarView calendarView = calendarDialog.findViewById(R.id.calendar);
 
         // 월, 요일을 한글로 보이게 설정 (MonthArrayTitleFormatter의 작동을 확인하려면 밑의 setTitleFormatter()를 지운다)
         calendarView.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
@@ -256,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else{
-                    makeToast("로그인 이후 사용할 수 있습니다");
+                    makeToast("로그인 이후 사용하실 수 있습니다");
                 }
             }
         });
@@ -321,18 +323,24 @@ public class MainActivity extends AppCompatActivity {
         coinImgView = findViewById(R.id.coin_img);
 
 
-        recommendDialog = new Dialog(this);
-        recommendDialog.setContentView(R.layout.recommend_dialog);
+        calendarDialog = new Dialog(this);
+        calendarDialog.setContentView(R.layout.recommend_dialog);
+        
+        recommendLayout = calendarDialog.findViewById(R.id.recommend_layout);
+        recommendText = calendarDialog.findViewById(R.id.recommend_text_top);
+        recommendBtn = calendarDialog.findViewById(R.id.recommend_play_btn);
+        attendanceLayout = calendarDialog.findViewById(R.id.attendance_layout);
+        attendanceBtn = calendarDialog.findViewById(R.id.attendance_btn);
+        attendanceText = calendarDialog.findViewById(R.id.attendance_text);
 
-        Button dialogRecommendBtn = recommendDialog.findViewById(R.id.recommend_play_btn);
-        dialogRecommendBtn.setOnClickListener(new View.OnClickListener() {
+        recommendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recommendDialog.dismiss();
+                calendarDialog.dismiss();
 
                 CalendarDay today = CalendarDay.today();
                 String todayStr = today.getYear()+"-"+ (today.getMonth()+1)+"-"+ today.getDay();
-                editor.putString("notRecommend", todayStr);
+                editor.putString("lastRecommendDay", todayStr);
                 editor.commit();
 
                 Intent intent = new Intent(getApplicationContext(), PlayActivity.class);
@@ -342,8 +350,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button dialogExitBtn = recommendDialog.findViewById(R.id.recommend_exit_btn);
-        CheckBox dialogCheck = recommendDialog.findViewById(R.id.recommend_check);
+        Button dialogExitBtn = calendarDialog.findViewById(R.id.recommend_exit_btn);
+        CheckBox dialogCheck = calendarDialog.findViewById(R.id.recommend_check);
         dialogExitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -353,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString("notRecommend", todayStr);
                     editor.commit();
                 }
-                recommendDialog.dismiss();
+                calendarDialog.dismiss();
             }
         });
     }
@@ -448,15 +456,103 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        recommendDialog.dismiss();
+        calendarDialog.dismiss();
     }
 
     private void showRecommendDialog(){
         CalendarDay today = CalendarDay.today();
-        String todayStr = today.getYear()+"-"+ (today.getMonth()+1)+"-"+ today.getDay();
+        int todayYear, todayMonth, todayDay;
+
+        todayYear = today.getYear();
+        todayMonth = (today.getMonth()+1);
+        todayDay = today.getDay();
+
+        String todayStr = todayYear + "-" + todayMonth + "-" + todayDay;
+
         if(!share.getString("notRecommend","").equals(todayStr)){
             setCalender();
-            recommendDialog.show();
+            Log.d("lastPlayDay", share.getString("lastPlayDay",""));
+            if(share.getString("lastPlayDay", "").equals(todayStr)){
+                String[] playDates = share.getString("playDates", "").split(",");
+
+                int attend = 1, curDay = todayDay - 1;
+
+                boolean loop = true;
+                while(curDay > 0 && loop){
+                    loop = false;
+                    for(String dayStr:playDates){
+                        String[] tmpDay = dayStr.split("-");
+                        if(!tmpDay[0].equals(Integer.toString(todayYear))){
+                            continue;
+                        }
+                        else if(!tmpDay[1].equals(Integer.toString(todayMonth))){
+                            continue;
+                        }
+
+                        if(tmpDay[2].equals(Integer.toString(curDay))){
+                            loop = true;
+                            curDay--;
+                            attend++;
+                            break;
+                        }
+                    }
+                }
+
+                attendanceText.setText("이번달\n\"" + attend + "일\" 연속 출석!");
+                final int fixAttend = attend;
+                if(!share.getString("attendDay","").equals(todayStr)){
+                    attendanceBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int coin = fixAttend * 200;
+
+                            editor.putString("attendDay", todayStr);
+                            editor.commit();
+
+                            makeToast(coin + "개 금화를 획득했습니다!");
+                            setCoin(getCoin() + coin);
+
+                            attendanceBtn.setBackgroundResource(R.drawable.grey_btn);
+                            attendanceBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    makeToast("오늘의 출석을 완료했습니다!\n내일 다시 출석해주세요");
+                                }
+                            });
+                        }
+                    });
+                }
+                else{
+                    attendanceBtn.setBackgroundResource(R.drawable.grey_btn);
+                    attendanceBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            makeToast("오늘의 출석을 완료했습니다!\n내일 다시 출석해주세요");
+                        }
+                    });
+                }
+
+
+                recommendLayout.setVisibility(View.INVISIBLE);
+                attendanceLayout.setVisibility(View.VISIBLE);
+            }
+            else if(share.getString("lastRecommendDay","").equals(todayStr)){
+                recommendText.setVisibility(View.GONE);
+                recommendBtn.setBackgroundResource(R.drawable.grey_btn);
+                recommendBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        makeToast("오늘 이미 추천 놀이를 즐기셨습니다.\n내일 다시 추천해드릴게요");
+                    }
+                });
+                recommendLayout.setVisibility(View.VISIBLE);
+                attendanceLayout.setVisibility(View.INVISIBLE);
+            }
+            else{
+                recommendLayout.setVisibility(View.VISIBLE);
+                attendanceLayout.setVisibility(View.INVISIBLE);
+            }
+            calendarDialog.show();
         }
     }
 

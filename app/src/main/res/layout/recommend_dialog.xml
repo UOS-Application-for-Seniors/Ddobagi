@@ -44,66 +44,126 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/recommend_text1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/font_nanum"
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="오늘의 추천 놀이가\n도착했습니다!"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/recommend_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/font_nanum"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:text="추천 놀이는 금화 획득량이 5배 더 많습니다"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/recommend_play_btn"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/green_btn"
-            android:fontFamily="@font/font_nanum"
-            android:text="추천 놀이\n하러가기"
-            android:textSize="60sp"
-            android:textStyle="bold" />
+            android:layout_weight="1">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/recommend_exit_btn"
+            <LinearLayout
+                android:id="@+id/recommend_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/recommend_text_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/font_nanum"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="오늘의 추천 놀이가\n도착했습니다!"
+                    android:textColor="@color/black"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/recommend_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_nanum"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:text="추천 놀이는 금화 획득량이 5배 더 많습니다"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/recommend_play_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/green_btn"
+                    android:fontFamily="@font/font_nanum"
+                    android:text="추천 놀이\n하러가기"
+                    android:textSize="60sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/attendance_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+                <TextView
+                    android:id="@+id/attendance_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/font_nanum"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="이번달\n&quot;&quot; 연속 출석!"
+                    android:textColor="@color/black"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/attendance_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_btn"
+                    android:fontFamily="@font/font_nanum"
+                    android:text="출석\n보상받기"
+                    android:textSize="60sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/yellow_btn"
-            android:fontFamily="@font/font_nanum"
-            android:text="다음에 하기"
-            android:textSize="50sp"
-            android:textStyle="bold" />
+            android:layout_weight="2"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/recommend_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:text="오늘 다시 보지 않기"
-            android:textSize="40sp" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/recommend_exit_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/yellow_btn"
+                android:fontFamily="@font/font_nanum"
+                android:text="달력 닫기"
+                android:textSize="50sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/recommend_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:text="오늘 다시 보지 않기"
+                android:textSize="40sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

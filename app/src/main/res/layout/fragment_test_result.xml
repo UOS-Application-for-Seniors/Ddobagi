@@ -10,7 +10,9 @@
         android:id="@+id/test_result_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="50dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -27,16 +29,26 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/test_result_text1"
+                    android:id="@+id/test_result_text_up"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:fontFamily="@font/font_nanum"
                     android:gravity="center"
-                    android:text="검사 결과"
+                    android:text="검사 결과 불러오는 중입니다."
                     android:textColor="@color/black"
                     android:textSize="40sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/test_result_text_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/font_nanum"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -53,7 +65,6 @@
                     android:fontFamily="@font/font_nanum"
                     android:gravity="center"
                     android:text="검사 결과에 맞춘\n추천 놀이가\n준비되었습니다"
-                    android:textColor="@color/black"
                     android:textSize="40sp"
                     android:textStyle="bold" />
 
