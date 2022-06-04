@@ -187,18 +187,18 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String name, id, password, year, month, day, add1, add2, NOKName, NOKPhone, NOKnotifi, userBirthDate, address;
                 boolean NOK = false;
-                name = userName.getText().toString();
-                id = UserID.getText().toString();
-                password = UserPassword.getText().toString();
-                year = userBirthYear.getText().toString();
-                month = userBirthMonth.getText().toString();
-                day = userBirthDay.getText().toString();
-                add1 = address1.getText().toString();
-                add2 = address2.getText().toString();
+                name = userName.getText().toString().trim();
+                id = UserID.getText().toString().trim();
+                password = UserPassword.getText().toString().trim();
+                year = userBirthYear.getText().toString().trim();
+                month = userBirthMonth.getText().toString().trim();
+                day = userBirthDay.getText().toString().trim();
+                add1 = address1.getText().toString().trim();
+                add2 = address2.getText().toString().trim();
                 //edulevel
-                NOKName = NOKNameEditText.getText().toString();
-                NOKPhone = NOKPhoneNumber.getText().toString();
-                NOKnotifi = NOKNotificationDays.getText().toString();
+                NOKName = NOKNameEditText.getText().toString().trim();
+                NOKPhone = NOKPhoneNumber.getText().toString().trim();
+                NOKnotifi = NOKNotificationDays.getText().toString().trim();
 
                 if(name.equals("")){
                     makeToast("성명을 입력해주세요");
@@ -225,7 +225,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         NOK = true;
                     }
                     else{
-                        makeToast("보호자 정보를 모두 입력하세요");
+                        makeToast("보호자 정보를 비워두거나 모두 입력하세요");
                         return;
                     }
                 }
@@ -239,7 +239,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     jsonObject.put("id", id);
                     jsonObject.put("password",password);
                     jsonObject.put("userBirthDate", userBirthDate);
-                    jsonObject.put("Address", address);
+                    jsonObject.put("address", address);
                     jsonObject.put("userEducationLevel", educationlevel);
                     if(NOK){
                         jsonObject.put("NOKName", NOKName);

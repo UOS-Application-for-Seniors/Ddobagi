@@ -447,8 +447,9 @@
                                 android:layout_marginBottom="10dp"
                                 android:layout_weight="0.8"
                                 android:background="@drawable/white_btn"
-                                android:maxLines="1"
                                 android:gravity="center"
+                                android:inputType="textPersonName"
+                                android:maxLines="1"
                                 android:textSize="60sp" />
 
                             <TextView
@@ -478,8 +479,9 @@
                                 android:layout_marginBottom="10dp"
                                 android:layout_weight="0.8"
                                 android:background="@drawable/white_btn"
-                                android:maxLines="1"
                                 android:gravity="center"
+                                android:inputType="textPersonName"
+                                android:maxLines="1"
                                 android:textSize="60sp" />
 
                             <TextView
@@ -541,8 +543,9 @@
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/white_btn"
-                        android:maxLines="1"
                         android:gravity="center"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
                         android:textSize="60sp" />
 
                 </LinearLayout>

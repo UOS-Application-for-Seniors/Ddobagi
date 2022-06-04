@@ -505,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
                     attendanceBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            int coin = fixAttend * 200;
+                            int coin = fixAttend * 100;
 
                             editor.putString("attendDay", todayStr);
                             editor.commit();
