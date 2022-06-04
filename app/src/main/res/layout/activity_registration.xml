@@ -320,7 +320,7 @@
                         android:background="@drawable/blue_btn"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="출생년도"
+                        android:text="생년월일"
                         android:textColor="@color/black"
                         android:textSize="60sp" />
 

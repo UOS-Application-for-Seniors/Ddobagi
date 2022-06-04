@@ -117,7 +117,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/green_btn"
                         android:fontFamily="@font/font_nanum"
-                        android:text="선택 놀이"
+                        android:text="놀이"
                         android:textSize="60sp"
                         android:textStyle="bold" />
                 </LinearLayout>

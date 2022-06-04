@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,7 @@ import com.google.gson.Gson;
 
 public class ShortAnswerFragment extends GameFragment{
     TextView quizDetail;
-    Button imgBtn;
+    ImageView imgView;
     EditText editText;
     String[] quizAnswer;
     String[] quizPicture;
@@ -90,7 +91,7 @@ public class ShortAnswerFragment extends GameFragment{
             quizAnswer = tmpAnswer.split(",");
         }
 
-        setImageOnButton(url + quizPicture[0] + ".jfif", imgBtn, buttonImgBound, 1);
+        setImageOnImageView(url + quizPicture[0] + ".jfif", imgView, buttonImgBound);
 
 //        choiceBtn[Integer.parseInt(quizAnswer)].setOnClickListener((new View.OnClickListener() {
 //            @Override
@@ -106,7 +107,7 @@ public class ShortAnswerFragment extends GameFragment{
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_short_answer, container, false);
         quizDetail = rootView.findViewById(R.id.quizDetail);
         editText = rootView.findViewById(R.id.editTextTextPersonName);
-        imgBtn = rootView.findViewById(R.id.short_answer_img_button);
+        imgView = rootView.findViewById(R.id.short_answer_img);
         return rootView;
     }
 
@@ -118,7 +119,7 @@ public class ShortAnswerFragment extends GameFragment{
 
     public void init(){
         super.init();
-        imgBtn.setCompoundDrawables(null, null, null, null);
+        imgView.setImageDrawable(null);
         editText.setText("");
     }
 }

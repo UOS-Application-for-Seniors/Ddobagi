@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         calendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader);
 
         String dayStr = share.getString("playDates", "");
-        dayStr += ",2022-5-29,2022-5-10,2022-5-20,2022-5-19,2022-5-28";
+        //dayStr += ",2022-5-29,2022-5-10,2022-5-20,2022-5-19,2022-5-28";
 
         Log.d("dayStr", dayStr);
 
