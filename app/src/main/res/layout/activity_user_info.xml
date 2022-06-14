@@ -88,7 +88,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/blue_btn"
                         android:fontFamily="@font/font_nanum"
-                        android:text="회원 정보\n수정"
+                        android:text="사용자 정보\n수정"
                         android:textSize="60sp"
                         android:textStyle="bold" />
 

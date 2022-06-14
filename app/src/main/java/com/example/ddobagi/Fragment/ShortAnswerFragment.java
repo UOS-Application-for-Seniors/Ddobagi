@@ -33,6 +33,26 @@ public class ShortAnswerFragment extends GameFragment{
     }
 
     public void receiveSTTResult(String voice){
+        if(voice.length() == 1){
+            String[] numStr = new String[10];
+            numStr[0] = "영공";
+            numStr[1] = "일";
+            numStr[2] = "이";
+            numStr[3] = "삼참";
+            numStr[4] = "사넷가자";
+            numStr[5] = "오";
+            numStr[6] = "육";
+            numStr[7] = "칠";
+            numStr[8] = "팔칼";
+            numStr[9] = "구국";
+
+            for(int i= 0; i<10; i++){
+                if(numStr[i].contains(voice)){
+                     voice = Integer.toString(i);
+                     break;
+                }
+            }
+        }
         editText.setText(voice);
     }
 

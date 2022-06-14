@@ -190,6 +190,7 @@ public class SequenceChoiceFragment extends GameFragment{
             choiceBtn[i].setText("");
             sequenceView[i].setText("");
             choiceBtn[i].setCompoundDrawables(null, null, null, null);
+            choiceBtn[i].setTextSize(20);
         }
         index = 0;
     }

@@ -3,6 +3,7 @@ package com.example.ddobagi.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,9 @@ public class TestResultFragment extends Fragment {
     int totalScore = 0;
     SharedPreferences share;
 
+    boolean isDementiaResultReceive = false;
+    boolean isDementia = false;
+
     public TestResultFragment(){
         maxFieldScore[0] = 5;
         maxFieldScore[1] = 3;
@@ -58,8 +62,6 @@ public class TestResultFragment extends Fragment {
     }
 
     public void setResult(int[] score){
-        dementiaDiagnosis();
-
         for(int i=0; i<score.length; i++){
             if(0 <= i && i <= 4){
                 fieldScore[ORIENTATION] += score[i];
@@ -109,21 +111,32 @@ public class TestResultFragment extends Fragment {
                 "앞으로 놀이를 즐기실 때\n부족한 영역을 우선해서 추천해드리겠습니다!");
     }
 
-    private void onDementiaDiagnosisResponse(String response){
+    public void onDementiaDiagnosisResponse(String response){
+        isDementiaResultReceive = true;
+
         Gson gson = new Gson();
         Dementia dementia = gson.fromJson(response, Dementia.class);
-
-
         if(dementia == null){
-            textViewUp.setText("서버로부터 정보를 불러오지 못했습니다");
-            textViewDown.setVisibility(View.GONE);
+            isDementiaResultReceive = false;
+            Log.d("TestResultFragment", "치매 진단 결과가 잘 들어오지 않았습니다");
+            return;
         }
 
-        if(dementia.isDemensia){
+        isDementia = dementia.isDemensia;
+
+        if(textViewUp == null){
+            return;
+        }
+
+        setDementiaDiagnosisText();
+    }
+
+    private void setDementiaDiagnosisText(){
+        if(isDementia){
             textViewUp.setTextSize(25);
             textViewUp.setText("인지기능이 다른 분들에 비해서 조금 낮게 나오셨습니다.\n점수가 낮다고 해서 반드시 치매가 있는 것은 아니며,\n" +
                     "인지기능은 우울이나 건강상의 다양한 원인에 의해서\n점수가 낮아질 수 있습니다.\n\n" +
-                    "먼저 또바기 놀이와 검사를 지속적으로 해보시고\n그럼에도 점수가 계속 낮게 나온다면 추가적인 진단 검사가 필요합니다.");
+                    "먼저 또바기 놀이와 검사를 지속적으로 해보시고\n그럼에도 점수가 계속 낮게 나온다면\n관리 기관에서 추가적인 진단 검사가 필요합니다.");
             textViewDown.setVisibility(View.GONE);
         }
         else{
@@ -133,46 +146,6 @@ public class TestResultFragment extends Fragment {
 
     private class Dementia{
         public boolean isDemensia;
-    }
-
-    private void dementiaDiagnosis(){
-        String url;
-        url = Communication.sendTestResultUrl;
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Communication.println("치매 진단 결과: " + response);
-                        onDementiaDiagnosisResponse(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Communication.handleVolleyError(error);
-                    }
-                }
-        ){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", "Bearer " + share.getString("Access_token", ""));
-                return headers;
-            }
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("gameID", "54");
-                params.put("score", "0");
-
-                return params;
-            }
-        };
-        request.setShouldCache(false);
-        Communication.requestQueue.add(request);
     }
 
     @Nullable
@@ -191,6 +164,10 @@ public class TestResultFragment extends Fragment {
                 play.startRecommendQuiz();
             }
         });
+
+        if(isDementiaResultReceive){
+            setDementiaDiagnosisText();
+        }
         return rootView;
     }
 

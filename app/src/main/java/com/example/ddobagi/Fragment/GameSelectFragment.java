@@ -261,7 +261,7 @@ public class GameSelectFragment extends Fragment {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getActivity(), "로그인 이후 사용할 수 있습니다",Toast.LENGTH_SHORT).show();
+                        makeToast("로그인 이후 사용할 수 있습니다");
                     }
                 });
                 return;
@@ -306,7 +306,7 @@ public class GameSelectFragment extends Fragment {
                                                     game.openedDifficulty += 1;
                                                     adapter.setItem(position, game);
                                                     adapter.notifyItemChanged(position);
-                                                    Toast.makeText(getActivity(), "개방되었습니다", Toast.LENGTH_SHORT).show();
+                                                    makeToast("개방되었습니다.");
                                                 }
                                             },
                                             new Response.ErrorListener() {
@@ -317,7 +317,7 @@ public class GameSelectFragment extends Fragment {
                                                             Communication.refreshToken(getActivity());
                                                         }
                                                         else if(error.networkResponse.statusCode==406){
-                                                            Toast.makeText(play, "금화가 부족합니다(서버)", Toast.LENGTH_SHORT).show();
+                                                            makeToast("금화가 부족합니다(서버)");
                                                         }
                                                     }
                                                     else{
@@ -345,7 +345,8 @@ public class GameSelectFragment extends Fragment {
                                     Communication.requestQueue.add(request);
                                     Communication.println("selectQuizList 요청 보냄");
                                 }
-                                else{Toast.makeText(getActivity(), "금화가 모자랍니다", Toast.LENGTH_SHORT).show();
+                                else{
+                                    makeToast("금화가 모자랍니다");
                                 }
                                 dialog.dismiss();
                             }
@@ -355,7 +356,7 @@ public class GameSelectFragment extends Fragment {
                         noBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(getActivity(), "취소되었습니다", Toast.LENGTH_SHORT).show();
+                                makeToast("취소되었습니다");
                                 dialog.dismiss();
                             }
                         });
@@ -380,6 +381,17 @@ public class GameSelectFragment extends Fragment {
         }
     }
 
+    private void makeToast(String str){
+        PlayActivity play = (PlayActivity) getActivity();
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) play.findViewById(R.id.layout));
+        TextView textView = layout.findViewById(R.id.text);
+        textView.setText(str);
+
+        Toast toast = Toast.makeText(play, str, Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
+    }
     @Override
     public void onStart() {
         super.onStart();

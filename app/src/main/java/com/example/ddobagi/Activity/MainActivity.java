@@ -27,6 +27,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.ddobagi.R;
 
 import com.example.ddobagi.Class.*;
@@ -39,6 +44,8 @@ import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormat
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_MAIN = 101;
@@ -510,7 +517,8 @@ public class MainActivity extends AppCompatActivity {
                             editor.putString("attendDay", todayStr);
                             editor.commit();
 
-                            makeToast(coin + "개 금화를 획득했습니다!");
+                            makeToast("금화 " + coin + "개를 획득했습니다!");
+                            sendServerCoin(coin);
                             setCoin(getCoin() + coin);
 
                             attendanceBtn.setBackgroundResource(R.drawable.grey_btn);
@@ -538,7 +546,7 @@ public class MainActivity extends AppCompatActivity {
                 attendanceLayout.setVisibility(View.VISIBLE);
             }
             else if(share.getString("lastRecommendDay","").equals(todayStr)){
-                recommendText.setVisibility(View.GONE);
+                recommendText.setVisibility(View.INVISIBLE);
                 recommendBtn.setBackgroundResource(R.drawable.grey_btn);
                 recommendBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -564,6 +572,44 @@ public class MainActivity extends AppCompatActivity {
         if(isLogin){
             showRecommendDialog();
         }
+    }
+
+    private void sendServerCoin(int coin){
+            String url= Communication.addCoinUrl;
+
+            StringRequest request = new StringRequest(
+                    Request.Method.POST,
+                    url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Communication.println("출석 금화" + coin + " 서버로 보냄");
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Communication.handleVolleyError(error);
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", "Bearer " + share.getString("Access_token", ""));
+                    return headers;
+                }
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("coin", Integer.toString(coin));
+
+                    return params;
+                }
+            };
+            request.setShouldCache(false);
+            Communication.requestQueue.add(request);
     }
 
     private void makeToast(String str){

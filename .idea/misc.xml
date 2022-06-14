@@ -25,6 +25,7 @@
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/calendar_today.xml" value="0.25" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/center_btn.xml" value="0.42" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/commit_btn.xml" value="0.42" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/ddo_icon_foreground.xml" value="0.3845" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/grey_btn.xml" value="0.42" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/light_blue_btn.xml" value="0.355" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/drawable/light_green_btn.xml" value="0.42" />
@@ -62,7 +63,7 @@
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_fluent_test.xml" value="0.26856884057971014" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_game_select.xml" value="0.25" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_line_connection.xml" value="0.33" />
-        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_listen_and_solve.xml" value="0.12" />
+        <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_listen_and_solve.xml" value="0.22" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_memorization.xml" value="0.18" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_memory_recall.xml" value="0.3536458333333333" />
         <entry key="..\:/Users/pes48/Desktop/Ddobagi_original/app/src/main/res/layout/fragment_mutiple_choice.xml" value="0.14" />

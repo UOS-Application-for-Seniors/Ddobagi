@@ -163,7 +163,7 @@
         android:background="@drawable/white_btn"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -213,7 +213,7 @@
         android:layout_marginBottom="100dp"
         android:background="@drawable/white_btn"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/result_coin_layout"

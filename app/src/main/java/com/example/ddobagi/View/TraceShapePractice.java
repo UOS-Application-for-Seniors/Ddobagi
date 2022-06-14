@@ -116,7 +116,7 @@ public class TraceShapePractice extends View {
 
         pointInterval = squareWidth/(pointCount + 1);
         pointRadius = pointInterval / 8;
-        pointTouchRadius = pointRadius * 3;
+        pointTouchRadius = pointRadius * 4;
 
         for(int i=0; i< pointCount*pointCount; i++){
             int row = i % pointCount;

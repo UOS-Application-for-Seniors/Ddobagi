@@ -38,9 +38,9 @@ public class PlayResultFragment extends Fragment {
         }
 
         for(int i = 0; i<quizList.length;i++){
-            if(quizCoin[i] == 0){
-                continue;
-            }
+//            if(quizCoin[i] == 0){
+//                continue;
+//            }
             adapter.addItem(new QuizResult(i+1, quizList[i].gamename, Integer.parseInt(quizList[i].difficulty), quizCoin[i]));
         }
         adapter.notifyDataSetChanged();

@@ -35,7 +35,7 @@
             android:gravity="center"
             android:hint="이곳을 터치해 정답을 입력하세요"
             android:inputType="textPersonName"
-            android:textSize="40sp" />
+            android:textSize="30sp" />
 
     </LinearLayout>
 

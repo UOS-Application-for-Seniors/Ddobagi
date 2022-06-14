@@ -43,6 +43,7 @@ public class Communication {
     public static String getQuizDataUrl = url + "/file/";
     public static String dictQuizUrl = url + "/quiz/DICTQuiz";
     public static String recordUrl = url + "/users/getUserResult";
+    public static String addCoinUrl = url + "/users/userAddCoin";
     public static RequestQueue requestQueue;
     public static SharedPreferences share;
     public static SharedPreferences.Editor edit;

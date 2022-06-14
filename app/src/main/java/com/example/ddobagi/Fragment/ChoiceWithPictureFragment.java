@@ -85,7 +85,7 @@ public class ChoiceWithPictureFragment extends GameFragment {
         else if(voice.contains("3") || voice.contains("삼") || voice.contains("서이") || voice.contains("산") || voice.contains("세")){
             vAnsChoice = 3;
         }
-        else if(voice.contains("4") || voice.contains("사") || voice.contains("넷")){
+        else if(voice.contains("4") || voice.contains("사") || voice.contains("넷") || voice.contains("자")){
             vAnsChoice = 4;
         }
 
@@ -153,7 +153,6 @@ public class ChoiceWithPictureFragment extends GameFragment {
                     if(isChoicesDetail){
                         location = 1;
                     }
-                    Log.d("bool", Boolean.toString(isChoicesDetail));
                     setImageOnButton(tmp, choiceBtn[i - 1], buttonImgBound, location);
                 }
             }

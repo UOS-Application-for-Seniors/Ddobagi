@@ -240,7 +240,7 @@ public class UserInfoEditActivity extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Toast.makeText(UserInfoEditActivity.this, "정보 수정 완료", Toast.LENGTH_LONG).show();
+                                makeToast("정보 수정 완료");
                                 finish();
                             }
                         },
@@ -275,7 +275,7 @@ public class UserInfoEditActivity extends AppCompatActivity {
                                     params.put("userBirthDate", userBirthDate);
                                 }
                                 if(!address.equals(",")){
-                                    params.put("Address", address);
+                                    params.put("address", address);
                                 }
 
                                 params.put("userEducationLevel", Integer.toString(educationlevel));

@@ -77,7 +77,7 @@ import nl.dionsegijn.konfetti.core.models.Size;
 import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 public class PlayActivity extends AppCompatActivity {
-    final int wrongAnswerCoin = 20;
+    final int wrongAnswerCoin = 0;
     final int correctAnswerCoin = 100;
 
     GameFragment curGameFragment;
@@ -186,7 +186,7 @@ public class PlayActivity extends AppCompatActivity {
         }
 
         if(type.equals("select")){
-            setCenterText("선택 놀이");
+            setCenterText("놀이");
             gameSelectFragment = new GameSelectFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.container, gameSelectFragment).commit();
             ttsBtn.setVisibility(View.GONE);
@@ -249,7 +249,7 @@ public class PlayActivity extends AppCompatActivity {
             return;
         }
 
-        refreshShare();
+        //refreshShare();
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
@@ -270,7 +270,8 @@ public class PlayActivity extends AppCompatActivity {
                             }
                         }
                         else{
-                        Communication.handleVolleyError(error);
+                            Communication.handleVolleyError(error);
+                            makeToast("서버가 켜져 있지 않습니다\n잠시 후 다시 시도해보세요");
                         }
                     }
                 }
@@ -308,32 +309,36 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void getSelectQuizList(int gameID, int difficulty){
-        //refreshShare();
-        String url = Communication.selectQuizList;
-        StringRequest request = new StringRequest(
-                Request.Method.POST,
-                url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Communication.println("getSelectQuizList: " + response);
-                        onGetQuizListResponse(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if(!String.valueOf(error).equals("com.android.volley.TimeoutError")){
-                            if(error.networkResponse.statusCode==401) {
-                                Communication.refreshToken(getApplicationContext());
+            //refreshShare();
+            String url = Communication.selectQuizList;
+            StringRequest request = new StringRequest(
+                    Request.Method.POST,
+                    url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Communication.println("getSelectQuizList: " + response);
+                            onGetQuizListResponse(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if(!String.valueOf(error).equals("com.android.volley.TimeoutError")){
+                                if(error.networkResponse.statusCode==401) {
+                                    Communication.refreshToken(getApplicationContext());
+                                }
+                                else if(error.networkResponse.statusCode==406){
+                                    makeToast("선택한 놀이가 서버에 등록되지 않았습니다\n다른 놀이와 난이도를 즐겨주세요");
+                                }
+                            }
+                            else{
+                                Communication.handleVolleyError(error);
+                                makeToast("서버가 켜져 있지 않습니다\n잠시 후 다시 시도해보세요");
                             }
                         }
-                        else{
-                            Communication.handleVolleyError(error);
-                        }
                     }
-                }
-        ) {
+            ) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -375,6 +380,11 @@ public class PlayActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Communication.println("gameID:" + gameID + ", score: " + score + " 서버로 보냄");
+                        if(isTest){
+                            if(gameID == 54){
+                                onDementiaDiagnosisResponse(response);
+                            }
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -686,7 +696,7 @@ public class PlayActivity extends AppCompatActivity {
 
             quizScore[quizIndex] = score;
 
-            Log.d("score", Integer.toString(quizIndex) + ": " + Integer.toString(score));
+            //Log.d("score", Integer.toString(quizIndex) + ": " + Integer.toString(score));
             int difficulty;
             if(isTest){
                 difficulty = 0;
@@ -748,6 +758,10 @@ public class PlayActivity extends AppCompatActivity {
                 curGameFragment = null;
             }
         }
+    }
+
+    private void onDementiaDiagnosisResponse(String response){
+        testResultFragment.onDementiaDiagnosisResponse(response);
     }
 
     private int calcTestScore(int gameid, int result){
@@ -834,7 +848,9 @@ public class PlayActivity extends AppCompatActivity {
                 }
                 if(quizIndex + 1 > quizList.length){
                     centerText.setText("결과");
-                    konfettiView.start(resultRain);
+                    if(!isTest){
+                        konfettiView.start(resultRain);
+                    }
                 }
                 else if(curGameFragment.isReadyToShow()){
                     centerText.setText((quizIndex+1) + " 번 / " + (quizList.length) + " 문제");
@@ -936,16 +952,20 @@ public class PlayActivity extends AppCompatActivity {
             resultCoinBonusText.setVisibility(View.INVISIBLE);
             coin = wrongAnswerCoin;
             konfettiView.start(explode);
+            resultCoinLayout.setVisibility(View.GONE);
+
         }
         else if(result == 1){
             msg = "완벽합니다";
             coin *= correctAnswerCoin;
             konfettiView.start(paradeLeft, paradeRight);
+            setCoin(getCoin() + coin);
         }
         else if(result == 2){
             msg = "훌륭합니다";
             coin *= correctAnswerCoin/2;
             konfettiView.start(quizRain);
+            setCoin(getCoin() + coin);
         }
 
         resultCoinText.setText("금화 " + coinFormat(coin) +"개 획득");
@@ -954,7 +974,6 @@ public class PlayActivity extends AppCompatActivity {
         resultCoinImg.setVisibility(View.VISIBLE);
         resultCoinText.setVisibility(View.VISIBLE);
         resultPerQuizLayout.setVisibility(View.VISIBLE);
-        setCoin(getCoin() + coin);
         quizCoin[quizIndex] = coin;
     }
 
